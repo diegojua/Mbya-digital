@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>{{CLIENT_NAME}} — {{BADGE_TEXT}}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;0,700;1,300&family=Outfit:wght@200;300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --bg-primary: {{BG_PRIMARY}};
+            --bg-card: {{BG_CARD}};
+            --text-primary: {{TEXT_PRIMARY}};
+            --text-muted: {{TEXT_MUTED}};
+            --accent: {{ACCENT}};
+            --accent-glow: {{ACCENT_GLOW}};
+            --border-color: {{BORDER_COLOR}};
+            --font-headline: '{{FONT_HEADLINE}}', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #f1f5f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* ============================================================
+           BLUEPRINT A — SPLIT EDITORIAL 50/50
+           Baseado em: dentista_criativo1.html
+           Layout: Conteúdo Esquerda | Imagem Full-Bleed Direita
+           ============================================================ */
+        .feed-container {
+            width: 1080px;
+            height: 1080px;
+            background-color: var(--bg-primary);
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border: 1px solid var(--border-color);
+        }
+
+        /* LEFT: Dark Solid Content Block */
+        .content-side {
+            padding: 90px 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background-color: var(--bg-primary);
+            z-index: 10;
+        }
+
+        .brand-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .logo-text {
+            font-family: var(--font-headline);
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            letter-spacing: -2px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            color: var(--accent);
+            font-size: 1.6rem;
+            margin-right: 4px;
+        }
+
+        .logo-sub {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-top: 5px;
+        }
+
+        .main-text { margin: 40px 0; }
+
+        .badge {
+            display: inline-block;
+            background: var(--accent-glow);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            font-family: var(--font-headline);
+            font-size: 2.3rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            line-height: 1.2;
+            letter-spacing: -1.5px;
+            margin-bottom: 25px;
+        }
+
+        h1 span {
+            font-weight: 200;
+            color: var(--text-muted);
+            display: block;
+            margin-top: 5px;
+        }
+
+        .body-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            font-weight: 500;
+            margin-bottom: 30px;
+        }
+
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .check-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 1px solid var(--accent);
+        }
+
+        .footer-tag {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            border-top: 1px solid var(--border-color);
+            padding-top: 25px;
+        }
+
+        .footer-tag span {
+            color: var(--text-primary);
+            font-weight: 800;
+            display: block;
+            font-size: 1rem;
+            margin-top: 3px;
+        }
+
+        /* RIGHT: Full-bleed Image */
+        .image-side {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .image-side img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-side::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, var(--bg-primary) 0%, rgba(0,0,0,0) 25%),
+                        linear-gradient(0deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 20%);
+            pointer-events: none;
+        }
+
+        .cta-pill-float {
+            position: absolute;
+            bottom: 60px;
+            right: 60px;
+            background: var(--accent);
+            color: var(--bg-primary);
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 900;
+            font-size: 1.02rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 10px 30px var(--accent-glow);
+            z-index: 20;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="feed-container">
+        <!-- LEFT: Editorial Content -->
+        <div class="content-side">
+            <div class="brand-header">
+                <div class="logo-text"><span class="logo-icon">{{LOGO_ICON}}</span>{{LOGO_TEXT}}</div>
+                <div class="logo-sub">{{LOGO_SUB}}</div>
+            </div>
+
+            <div class="main-text">
+                <div class="badge">{{BADGE_TEXT}}</div>
+                <h1>
+                    {{HEADLINE_LINE1}}
+                    <span>{{HEADLINE_LINE2}}</span>
+                </h1>
+                <p class="body-text">{{BODY_TEXT}}</p>
+
+                <div class="checklist">
+                    {{CHECKLIST_HTML}}
+                </div>
+            </div>
+
+            <div class="footer-tag">
+                📍 {{LOCATION}}
+                <span>{{FOOTER_CTA_TEXT}}</span>
+            </div>
+        </div>
+
+        <!-- RIGHT: Full Bleed Image -->
+        <div class="image-side">
+            <img src="{{IMAGE_URL}}" alt="{{IMAGE_ALT}}">
+            <a href="{{WHATSAPP_URL}}" class="cta-pill-float">{{CTA_TEXT}} ➔</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "meta_dados": {
+    "cliente": "Panificadora Diamante",
+    "nicho": "comercio_produto",
+    "framework_copy": "Gary_Halbert_Hook_System",
+    "sistema_design": "Premium Dark System"
+  },
+  
+  "stage_1_market_intelligence": {
+    "dor_real": "Frustração de comprar pão congelado de supermercado que amanhece duro e sem sabor.",
+    "desejo_oculto": "Sentir o conforto do cheiro de pão fresco de verdade e ter uma experiência de café da manhã premium em família.",
+    "mecanismo_unico": "Fermentação Natural de 48h com Trigo Rígido Importado (Sem aditivos químicos)."
+  },
+
+  "stage_2_landing_page_props": {
+    "headline": "O Sabor do Pão de Verdade, Assado Sete Vezes Ao Dia.",
+    "subheadline": "Esqueça os pães congelados de supermercado. Sinta a crocância perfeita e o miolo leve da verdadeira fermentação natural de 48h.",
+    "ctaText": "Reservar Fornada Agora",
+    "whatsappLink": "https://wa.me/5587999999999"
+  },
+
+  "stage_3_comfyui_flux_tokens": {
+    "post_feed_texto": "Fermentação Natural. Trigo Real. Sem Pressa.",
+    "post_stories_texto": "Crocante por fora, absurdamente macio por dentro. Nova fornada saindo em minutos.",
+    "layout_constraint": "text_aligned_left_heavy",
+    "color_palette_reference": "warm_gold_and_charcoal"
+  }
+}

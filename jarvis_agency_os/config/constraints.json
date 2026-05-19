@@ -1,0 +1,42 @@
+{
+  "forbidden_patterns": [
+    "3d_clay_style",
+    "excessive_gradients",
+    "cartoon_children",
+    "centered_text_everywhere",
+    "busy_backgrounds",
+    "low_contrast_text",
+    "stock_photo_generic_smile",
+    "rainbow_colors",
+    "comic_sans_or_papyrus",
+    "generic_blue_gradient"
+  ],
+  "mandatory_rules": {
+    "typography": {
+      "max_font_families": 2,
+      "headline_must_be": "left_or_center",
+      "body_must_not_exceed_lines": 4,
+      "cta_contrast_ratio_min": 4.5
+    },
+    "layout": {
+      "negative_space_min_percent": 20,
+      "brand_logo_position": "top_left",
+      "cta_must_be_visible_without_scroll": true,
+      "max_colors_in_palette": 4
+    },
+    "content": {
+      "headline_max_chars": 60,
+      "subheadline_max_chars": 120,
+      "cta_max_chars": 25,
+      "checklist_max_items": 4,
+      "forbidden_cta_words": ["clique aqui", "saiba mais genérico"],
+      "must_include_location": true,
+      "must_include_whatsapp": true
+    }
+  },
+  "quality_gates": {
+    "min_score_for_auto_approve": 85,
+    "min_score_for_human_review": 60,
+    "below_min_score_action": "regenerate"
+  }
+}

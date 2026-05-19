@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>{{CLIENT_NAME}} — {{BADGE_TEXT}}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800;900&display=swap');
+        :root {
+            --bg-primary: {{BG_PRIMARY}};
+            --text-primary: {{TEXT_PRIMARY}};
+            --text-muted: {{TEXT_MUTED}};
+            --accent: {{ACCENT}};
+            --accent-glow: {{ACCENT_GLOW}};
+            --border-color: {{BORDER_COLOR}};
+            --accent-cta: {{ACCENT_CTA}};
+            --font-headline: '{{FONT_HEADLINE}}', sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+        body { background: #f1f5f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .feed-container {
+            width: 1080px; height: 1080px;
+            background: radial-gradient(circle at 90% 10%, var(--accent-glow) 0%, rgba(255,255,255,0) 50%), var(--bg-primary);
+            position: relative; overflow: hidden; display: flex; flex-direction: column;
+            justify-content: space-between; padding: 80px 90px; border: 1px solid var(--border-color);
+        }
+        .brand-header { display: flex; justify-content: space-between; align-items: center; width: 100%; z-index: 10; }
+        .logo-text { font-size: 2.8rem; font-weight: 900; color: var(--text-primary); letter-spacing: -2px; line-height: 1; display: flex; align-items: center; }
+        .logo-icon { color: var(--accent); font-size: 2.4rem; margin: 0 4px; }
+        .logo-sub { font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin-top: 3px; }
+        .badge-limited { background: var(--accent-glow); color: var(--accent); padding: 8px 18px; border-radius: 50px; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.3px; }
+        .content-body { flex: 1; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 50px; align-items: center; margin: 30px 0; z-index: 10; }
+        .text-column { display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+        .text-column h1 { font-family: var(--font-headline); font-size: 2.5rem; font-weight: 900; color: var(--text-primary); line-height: 1.15; letter-spacing: -1.5px; margin-bottom: 25px; }
+        .text-column h1 span { font-weight: 300; color: var(--accent); display: block; margin-top: 6px; }
+        .text-column p { font-size: 1.1rem; color: var(--text-muted); line-height: 1.5; font-weight: 500; margin-bottom: 25px; }
+        .checklist { display: flex; flex-direction: column; gap: 15px; }
+        .check-item { display: flex; align-items: center; gap: 14px; font-size: 1.05rem; font-weight: 700; color: var(--text-primary); }
+        .check-icon { width: 22px; height: 22px; border-radius: 50%; background: var(--accent-glow); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .illustration-column { display: flex; justify-content: center; align-items: center; position: relative; }
+        .illustration-column::before { content: ''; position: absolute; top: -15px; left: -15px; width: 100%; height: 100%; border-radius: 30px; background: linear-gradient(135deg, var(--accent-glow), rgba(0,0,0,0.02)); z-index: 1; transform: rotate(-1.5deg); }
+        .illustration-card { width: 100%; height: 380px; border-radius: 30px; overflow: hidden; border: 6px solid var(--bg-primary); box-shadow: 0 20px 45px rgba(0,0,0,0.08); z-index: 2; position: relative; }
+        .illustration-card img { width: 100%; height: 100%; object-fit: cover; }
+        .footer-cta-floating { display: flex; justify-content: space-between; align-items: center; background: var(--text-primary); padding: 24px 40px; border-radius: 28px; color: #fff; box-shadow: 0 15px 35px rgba(0,0,0,0.15); z-index: 10; }
+        .footer-info { font-size: 0.95rem; color: rgba(255,255,255,0.7); font-weight: 600; }
+        .footer-info span { color: #fff; font-weight: 800; display: block; font-size: 1.15rem; margin-top: 3px; }
+        .cta-btn-accent { background: var(--accent-cta); color: #fff; padding: 14px 32px; border-radius: 50px; font-weight: 900; font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 8px 20px var(--accent-glow); text-decoration: none; display: inline-block; }
+    </style>
+</head>
+<body>
+    <div class="feed-container">
+        <div class="brand-header">
+            <div class="logo">
+                <div class="logo-text"><span class="logo-icon">{{LOGO_ICON}}</span>{{LOGO_TEXT}}</div>
+                <div class="logo-sub">{{LOGO_SUB}}</div>
+            </div>
+            <div class="badge-limited">{{BADGE_TEXT}}</div>
+        </div>
+        <div class="content-body">
+            <div class="text-column">
+                <h1>{{HEADLINE_LINE1}}<span>{{HEADLINE_LINE2}}</span></h1>
+                <p>{{BODY_TEXT}}</p>
+                <div class="checklist">{{CHECKLIST_HTML}}</div>
+            </div>
+            <div class="illustration-column">
+                <div class="illustration-card"><img src="{{IMAGE_URL}}" alt="{{IMAGE_ALT}}"></div>
+            </div>
+        </div>
+        <div class="footer-cta-floating">
+            <div class="footer-info">📍 {{LOCATION}}<span>{{FOOTER_CTA_TEXT}}</span></div>
+            <a href="{{WHATSAPP_URL}}" class="cta-btn-accent">{{CTA_TEXT}} ➔</a>
+        </div>
+    </div>
+</body>
+</html>

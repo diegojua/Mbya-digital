@@ -1,0 +1,65 @@
+{
+  "dimensions": {
+    "legibility": {
+      "weight": 0.20,
+      "description": "Contraste texto/fundo, tamanho de fonte adequado",
+      "checks": [
+        "headline_contrast_ratio >= 4.5",
+        "body_contrast_ratio >= 3.0",
+        "font_size_headline >= 2rem",
+        "no_text_over_busy_image"
+      ]
+    },
+    "hierarchy": {
+      "weight": 0.20,
+      "description": "Headline > Subheadline > Body > CTA claramente distinguíveis",
+      "checks": [
+        "headline_is_largest_text",
+        "cta_is_visually_distinct",
+        "max_2_levels_of_emphasis"
+      ]
+    },
+    "cta_visibility": {
+      "weight": 0.20,
+      "description": "O CTA é imediatamente visível e acessível",
+      "checks": [
+        "cta_has_contrasting_background",
+        "cta_has_action_verb",
+        "cta_within_bottom_40_percent"
+      ]
+    },
+    "constraint_compliance": {
+      "weight": 0.15,
+      "description": "Cumpre todas as regras de constraints.json",
+      "checks": [
+        "headline_under_max_chars",
+        "max_2_fonts_used",
+        "negative_space_sufficient",
+        "no_forbidden_patterns"
+      ]
+    },
+    "design_state_alignment": {
+      "weight": 0.15,
+      "description": "As cores, tipografia e tom correspondem ao design state",
+      "checks": [
+        "palette_matches_state",
+        "tone_matches_state",
+        "imagery_matches_state"
+      ]
+    },
+    "batch_diversity": {
+      "weight": 0.10,
+      "description": "No batch, os criativos são visualmente distintos entre si",
+      "checks": [
+        "different_blueprint_from_siblings",
+        "different_copy_angle_from_siblings"
+      ]
+    }
+  },
+  "scoring": {
+    "max_score": 100,
+    "auto_approve_threshold": 85,
+    "human_review_threshold": 60,
+    "reject_threshold": 40
+  }
+}

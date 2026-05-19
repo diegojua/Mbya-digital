@@ -1,0 +1,18 @@
+{
+  "current_node": "FINALIZAR",
+  "ramo_escolhido": "comercio_produto",
+  "perguntas_concluidas": [
+    "NICHOS_ROOT",
+    "RAMO_COMERCIO",
+    "MECANISMO_UNICO",
+    "OFERTA_CTA",
+    "ESTILO_VISUAL"
+  ],
+  "briefing_data": {
+    "modelo_negocio": "comercio_produto",
+    "dor_audiencia": "Frustração de comprar pão congelado de supermercado que amanhece duro e sem sabor.",
+    "mecanismo_unico": "Fermentação Natural de 48h com Trigo Rígido Importado (Sem aditivos químicos).",
+    "oferta_cta": "Reservar Fornada Agora",
+    "estilo_visual": "Premium Dark System"
+  }
+}
