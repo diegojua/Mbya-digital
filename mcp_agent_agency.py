@@ -15,6 +15,9 @@ from jarvis_agency_os.creative_engine import generate_creatives
 from jarvis_agency_os.ranker import rank_creatives
 from jarvis_agency_os.visual_memory import record_campaign
 from jarvis_agency_os.renderer import render_html_to_png
+from jarvis_agency_os.landing_engine import generate_landing_page
+from jarvis_agency_os.asset_catalog import match_catalog_entry
+from jarvis_agency_os.pipeline import run_campaign_pipeline
 
 load_dotenv()
 
@@ -32,15 +35,15 @@ def load_catalog():
             return json.load(f)
     return {}
 
-def open_design_inject(copy_data: dict, palette: str, niche: str, catalog: dict):
+def open_design_inject(copy_data: dict, palette: str, niche: str, catalog: dict, context: dict = None):
     """
     Realiza a injeção/hidratação estruturada dos dados no blueprint JSON de renderização do Next.js.
     """
-    niche_key = next((k for k in catalog.keys() if k != "global_automation" and (niche.lower() in k or k in niche.lower())), None)
-    
-    template_data = {"_base_template": "default"}
-    if niche_key and "page" in catalog[niche_key]:
-        page_dir = os.path.join(ASSETS_DIR, "Templates", catalog[niche_key]["page"])
+    catalog_match = match_catalog_entry(niche, catalog, asset_type="page")
+
+    template_data = {"_base_template": "default", "catalog_match": catalog_match}
+    if catalog_match.get("status") == "matched":
+        page_dir = catalog_match["absolute_path"]
         print(f"[Open-Design] Mapeando template premium do diretório: {page_dir}")
         template_data["_base_template"] = page_dir
     else:
@@ -54,78 +57,68 @@ def open_design_inject(copy_data: dict, palette: str, niche: str, catalog: dict)
         template_data["benefits"] = copy_data.get("benefits", [])
         template_data["testimonials"] = copy_data.get("testimonials", [])
         template_data["footer"] = copy_data.get("footer", {})
-        
+
         output_path = os.path.join(WORKSPACE_DIR, "rendered_template.json")
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(template_data, f, indent=2, ensure_ascii=False)
-            
-        return {"status": "success", "asset_path": output_path}
+
+        landing = generate_landing_page(
+            workspace_dir=WORKSPACE_DIR,
+            context=context or {"niche": niche, "palette": {"accent": palette}},
+            copy_data=copy_data,
+            catalog_match=catalog_match,
+        )
+
+        return {
+            "status": "success",
+            "asset_path": landing["file"],
+            "manifest_path": landing["manifest"],
+            "legacy_json_path": output_path,
+            "visual_qa": landing.get("visual_qa"),
+        }
     except Exception as e:
         return {"error": f"Falha no Open-Design JSON Parser: {str(e)}"}
 
 @mcp.tool()
-def executar_pipeline_completo_saas(nome_cliente: str, objetivo: str, nicho: str = "geral") -> str:
+def executar_pipeline_completo_saas(nome_cliente: str, objetivo: str, nicho: str = "geral",
+                                    formatos: str = "feed") -> str:
     """
-    Pipeline JarvisAgency OS: Pesquisa Mercado (Graphify) -> Xquads (Copy) -> 
+    Pipeline JarvisAgency OS: Pesquisa Mercado (Graphify) -> Xquads (Copy) ->
     Next.js Hydration (Landing Page) -> Creative Engine HTML Blueprint -> Playwright Render -> Ranker -> Visual Memory.
     """
     logs = []
     logs.append(f"🚀 Iniciando pipeline SaaS unificado para {nome_cliente} (Nicho: {nicho})...")
 
-    # Atualizar o briefing.txt para guiar o motor
-    briefing_path = os.path.join(WORKSPACE_DIR, "briefing.txt")
-    with open(briefing_path, "w", encoding="utf-8") as f:
-        f.write(f"Cliente: {nome_cliente}\n")
-        f.write(f"Nicho: {nicho}\n")
-        f.write(f"Objetivo: {objetivo}\n")
-        f.write(f"Detalhes: Geração automatizada de alta conversão sob o padrão do Creative OS.\n")
-        f.write(f"Localização: Petrolina e Juazeiro\n")
-        f.write(f"Logo_icone: ✦\n")
-        f.write(f"Logo_texto: {nome_cliente.upper()}\n")
-        f.write(f"Logo_subtitulo: {nicho.lower()}\n")
-
-    # 1. Geração de Variações de Criativos via HTML Blueprints
-    logs.append("📦 [Passo 1/4] Disparando Creative Engine: Hidratando blueprints estruturais...")
-    res_generation = generate_creatives(WORKSPACE_DIR)
-    if "error" in res_generation:
-        return f"❌ Erro na geração: {res_generation['error']}"
-    
-    generated = res_generation["generated"]
-    logs.append(f"✅ {len(generated)} variações de criativos HTML criadas com sucesso.")
-
-    # 2. Avaliação de Qualidade (Creative Ranker)
-    logs.append("🏆 [Passo 2/4] Executando Creative Ranker: Avaliando legibilidade e hierarquia...")
-    res_ranking = rank_creatives(generated, top_n=2)
-    top_candidates = res_ranking["top"]
-    
-    logs.append("   Resultados da avaliação:")
-    for c in res_ranking["all_scored"]:
-        logs.append(f"   → Variação [{c['blueprint']}]: Score {c['score']} ({c['action']})")
-
-    # 3. Renderização via Playwright do Melhor Candidato
-    logs.append("📸 [Passo 3/4] Playwright Renderer: Gerando PNG final do criativo campeão...")
-    best = top_candidates[0]
-    out_png_name = f"final_{nome_cliente.lower().replace(' ', '_')}_{best['blueprint']}.png"
-    out_png_path = os.path.join(WORKSPACE_DIR, out_png_name)
-    
-    render_res = render_html_to_png(best["file"], out_png_path)
-    if render_res.get("status") == "success":
-        logs.append(f"✅ Criativo campeão renderizado perfeitamente em PNG: {out_png_name}")
-    else:
-        logs.append(f"⚠️ Playwright Offline. O criativo HTML está disponível para visualização: {best['file']}")
-
-    # 4. Gravação na Visual Memory
-    logs.append("🧠 [Passo 4/4] Salvando aprendizado na Visual Memory...")
-    record_campaign(
-        client=nome_cliente,
-        design_state=best["design_state"],
-        blueprint=best["blueprint"],
-        score=best["score"],
-        headline=best["headline"],
-        approved=best["action"] == "auto_approve"
+    result = run_campaign_pipeline(
+        client_name=nome_cliente,
+        objective=objetivo,
+        niche=nicho,
+        workspace_dir=WORKSPACE_DIR,
+        formats=formatos,
+        include_landing=True,
+        render_winners=True,
     )
+    if result.get("status") != "success":
+        return f"❌ Erro no pipeline: {result.get('stage')} — {result.get('error')}"
 
-    return "\n".join(logs) + f"\n\n🎉 [SUCESSO] Campanha finalizada. Criativo campeão: {best['blueprint']} (Score: {best['score']})."
+    generation = result["generation"]
+    ranking = result["ranking"]
+    logs.append(f"✅ Briefing atualizado: {result['briefing_path']}")
+    logs.append(f"📦 Criativos gerados: {generation.get('total', 0)}")
+    logs.append("🏆 Resultados por variação:")
+    for creative in ranking.get("all_scored", []):
+        qa_status = (creative.get("visual_qa") or {}).get("status", "n/a")
+        logs.append(
+            f"   → [{creative.get('format')}:{creative['blueprint']}] "
+            f"Score {creative['score']} ({creative['action']}, QA {qa_status})"
+        )
+    for format_name, creative in result.get("winners", {}).items():
+        logs.append(f"📸 Campeão {format_name}: {creative['file']}")
+    if result.get("landing"):
+        logs.append(f"🌐 Landing gerada: {result['landing']['file']}")
+    logs.append(f"🧠 Memória atualizada: {len(result.get('memory_records', []))} registros")
+
+    return "\n".join(logs) + "\n\n🎉 [SUCESSO] Campanha finalizada pelo Campaign Pipeline."
 
 @mcp.tool()
 def rodar_campanha_completa(nome_cliente: str, objetivo: str, nicho: str = "geral") -> str:
@@ -133,7 +126,7 @@ def rodar_campanha_completa(nome_cliente: str, objetivo: str, nicho: str = "gera
     Inicia o fluxo completo de marketing do JarvisAgency MCP integrado ao novo Creative OS.
     """
     yield f"🚀 Iniciando campanha integrada JarvisAgency MCP para: {nome_cliente}..."
-    
+
     # 1. Pipeline SaaS
     yield "📊 [1/4] Processando e gerando criativos baseados em Design States..."
     result_str = executar_pipeline_completo_saas(nome_cliente, objetivo, nicho)
@@ -147,7 +140,13 @@ def rodar_campanha_completa(nome_cliente: str, objetivo: str, nicho: str = "gera
     copy_result = generate_copy(context, objetivo)
     copy_data = copy_result["copy_data"]
 
-    design_result = open_design_inject(copy_data, context.get("palette", {}).get("accent", "#d9a752"), nicho, catalog)
+    design_result = open_design_inject(
+        copy_data,
+        context.get("palette", {}).get("accent", "#d9a752"),
+        nicho,
+        catalog,
+        context=context,
+    )
     if "error" in design_result:
         yield f"❌ Erro no Open-Design: {design_result['error']}"
         return
@@ -155,10 +154,10 @@ def rodar_campanha_completa(nome_cliente: str, objetivo: str, nicho: str = "gera
     # 3. Deer-Flow
     yield "🤖 [3/4] Deer-Flow: Instanciando Chatbot de Atendimento..."
     deploy_typebot_flow(nicho, catalog, ASSETS_DIR)
-    
+
     yield "⏳ [4/4] Deer-Flow: Registrando aprovação da campanha no pipeline..."
     dispatch_for_approval(design_result["asset_path"], copy_data)
-    
+
     yield "🎉 Campanha registrada com sucesso no pipeline de tráfego!"
 
 

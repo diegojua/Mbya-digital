@@ -1,0 +1,42 @@
+# JarvisAgency OS Creative Engine - Production Requirements
+# Generated: 2026-05-19
+# Python 3.10+
+# Install Playwright browsers: playwright install chromium
+
+# Core MCP Server & Web Framework
+fastmcp==3.3.1
+mcp==1.27.1
+starlette==1.0.0
+uvicorn==0.47.0
+
+# Data & Configuration
+pydantic==2.13.4
+pydantic-settings==2.14.1
+python-dotenv==1.2.2
+
+# HTTP & Async
+requests==2.31.0
+httpx==0.28.1
+aiofile==3.11.1
+anyio==4.13.0
+
+# Browser Automation (Playwright)
+fastmcp-slim==3.3.1
+
+# Optional: For text processing & rendering
+beautifulsoup4==4.12.3
+html2text==2024.2.26
+markdown==3.5.2
+Pillow==10.2.0
+
+# Utilities
+PyYAML==6.0.1
+
+# ═══════════════════════════════════════════════════════════════
+# Development & Testing
+# ═══════════════════════════════════════════════════════════════
+pytest>=7.4.0
+pytest-cov>=4.1.0
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.0.0

@@ -4,6 +4,7 @@ import requests
 import subprocess
 from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
+from jarvis_agency_os.pipeline import run_campaign_pipeline
 
 load_dotenv()
 
@@ -77,7 +78,7 @@ def iniciar_entrevista_campanha() -> str:
     """Inicializa ou reseta o sistema de entrevista baseado em grafos de decisão."""
     novo_estado = inicializar_json_estado()
     salvar_sessao(novo_estado)
-    
+
     return (
         "🧠 [JarvisAgency OS — Sistema de Ingestão Estruturada]\n"
         "Inicializando onboarding inteligente baseado em PM-Frameworks.\n"
@@ -104,22 +105,22 @@ def responder_pergunta_entrevista(resposta_usuario: str) -> str:
     if no_atual == "NICHOS_ROOT":
         if resposta not in ["1", "2", "3"]:
             return "⚠️ Resposta inválida. Por favor, responda estritamente digitando '1', '2' ou '3'."
-        
+
         mapa_ramos = {"1": "servico_local", "2": "comercio_produto", "3": "negocio_digital"}
         mapa_proximos = {"1": "RAMO_SERVICO", "2": "RAMO_COMERCIO", "3": "RAMO_DIGITAL"}
-        
+
         session["ramo_escolhido"] = mapa_ramos[resposta]
         session["briefing_data"]["modelo_negocio"] = mapa_ramos[resposta]
         session["perguntas_concluidas"].append(no_atual)
         session["current_node"] = mapa_proximos[resposta]
         salvar_sessao(session)
-        
+
         proximo_no = session["current_node"]
         return f"✅ Categoria definida: {mapa_ramos[resposta].upper()}\n\n{GRAFO_ENTREVISTA[proximo_no]['pergunta']}"
 
     # --- LÓGICA DOS NÓS DE CONTEÚDO E CONSTRAINTS ---
     save_key = config_no["save_key"]
-    
+
     # Tratamento específico para o nó final de estilo visual
     if no_atual == "ESTILO_VISUAL":
         if list(resposta)[0] not in ["1", "2", "3"]:
@@ -141,7 +142,7 @@ def responder_pergunta_entrevista(resposta_usuario: str) -> str:
     if proximo_no == "FINALIZAR":
         session["current_node"] = "FINALIZAR"
         salvar_sessao(session)
-        
+
         # Compilação do briefing estruturado final livre de amadorismo
         dados = session["briefing_data"]
         briefing_final = (
@@ -155,11 +156,11 @@ def responder_pergunta_entrevista(resposta_usuario: str) -> str:
             f"SISTEMA DE DESIGN TOKENS: {dados.get('estilo_visual', '')}\n"
             f"=================================================="
         )
-        
+
         os.makedirs(os.path.dirname(BRIEFING_FILE), exist_ok=True)
         with open(BRIEFING_FILE, 'w', encoding='utf-8') as f:
             f.write(briefing_final)
-            
+
         return (
             "🎉 [ONBOARDING ESTRUTURADO CONCLUÍDO COM SUCESSO]\n\n"
             "O arquivo `workspace/briefing.txt` foi gerado e lockado com sucesso.\n"
@@ -219,80 +220,34 @@ def gerar_post_profissional_comfyui(texto_criativo: str, layout_ref: str, estilo
         pass
 
 @mcp.tool()
-def executar_pipeline_completo_saas(nome_cliente: str, objetivo: str) -> str:
-    base_workspace = os.path.abspath("./workspace")
-    blueprints_store = os.path.abspath("./assets_globais/code_blueprints")
-    templates_psd_png = os.path.abspath("./assets_globais/templates_psd_png")
-    brand_dna_file = os.path.abspath("./assets_globais/brand_dna.json")
-    
-    pipeline_logs = []
+def executar_pipeline_completo_saas(nome_cliente: str, objetivo: str, nicho: str = "geral",
+                                    formatos: str = "feed,story") -> str:
+    """Wrapper legado: redireciona para o Campaign Pipeline canônico."""
+    result = run_campaign_pipeline(
+        client_name=nome_cliente,
+        objective=objetivo,
+        niche=nicho,
+        workspace_dir=os.path.abspath("./workspace"),
+        formats=formatos,
+        include_landing=True,
+        render_winners=True,
+    )
+    if result.get("status") != "success":
+        return f"❌ Falha no Campaign Pipeline: {result.get('stage')} — {result.get('error')}"
 
-    # 1. DATA MINING & LOGIC PM STRATEGY
-    pipeline_logs.append("🧠 [Passo 1/4] Executando PM-Claude-Skills para blindar o escopo da campanha...")
-    briefing_file = os.path.join(base_workspace, "briefing.txt")
-    if not os.path.exists(briefing_file):
-        # Cria um briefing mock se não existir
-        os.makedirs(base_workspace, exist_ok=True)
-        with open(briefing_file, 'w', encoding='utf-8') as f:
-            f.write("Cliente busca reforço escolar individualizado para o ensino infantil.")
-            
-    with open(briefing_file, 'r', encoding='utf-8') as f:
-        briefing_bruto = f.read()
-    escopo_pm = executar_estrategia_pm_skills(briefing_bruto)
-
-    # 2. PSYCHOLOGICAL COPY COMPLIANCE
-    pipeline_logs.append("✍️ [Passo 2/4] Xquads gerando e validando blocos de cópias psicológicas...")
-    copy_payload = {
-        "headline": "Atenção Individual de Verdade para Seu Filho Dominar as Provas.",
-        "subheadline": "Não aceite o ensino genérico. Nosso método foca nas reais dificuldades do aluno com plano individual.",
-        "ctaText": "Garantir Vaga no Reforço",
-        "whatsappLink": "https://wa.me/5587999999999"
-    }
-
-    if briefing_bruto.strip().startswith("{"):
-        try:
-            briefing_json = json.loads(briefing_bruto)
-            lp_props = briefing_json.get("stage_2_landing_page_props", {})
-            copy_payload = {
-                "headline": lp_props.get("headline", copy_payload["headline"]),
-                "subheadline": lp_props.get("subheadline", copy_payload["subheadline"]),
-                "ctaText": lp_props.get("ctaText", copy_payload["ctaText"]),
-                "whatsappLink": lp_props.get("whatsappLink", copy_payload["whatsappLink"])
-            }
-            pipeline_logs.append("🔍 [JSON Briefing] Dados da campanha carregados com sucesso!")
-        except Exception as e:
-            pipeline_logs.append(f"⚠️ Erro ao decodificar JSON do briefing: {e}")
-    else:
-        for line in briefing_bruto.split("\n"):
-            if "DIRETRIZ DE CONVERSÃO" in line and ":" in line:
-                copy_payload["ctaText"] = line.split(":", 1)[1].strip()
-            elif "ÂNGULO DE AUDIÊNCIA" in line and ":" in line:
-                copy_payload["headline"] = line.split(":", 1)[1].strip()
-
-    # 3. REACT HYDRATION
-    pipeline_logs.append("⚛️ [Passo 3/4] Hidratando propriedades do Blueprint Next.js/Tailwind...")
-    try:
-        final_tsx_code = hydrate_react_component(os.path.join(blueprints_store, "HeroSection.tsx"), copy_payload)
-        os.makedirs(os.path.join(base_workspace, "output_code"), exist_ok=True)
-        with open(os.path.join(base_workspace, "output_code", "HeroSection.tsx"), 'w', encoding='utf-8') as f:
-            f.write(final_tsx_code)
-        pipeline_logs.append("✅ Interface Next.js montada com Layout Locking!")
-    except Exception as e:
-        return f"Falha na montagem do código: {str(e)}"
-
-    # 4. DIGITAL ART GENERATION
-    pipeline_logs.append("🎨 [Passo 4/4] Invocando Diffusion Engine (Flux + ControlNet) para criar o Post...")
-    try:
-        layout_img = os.path.join(templates_psd_png, "estrutura_grid.png")
-        estilo_img = os.path.join(templates_psd_png, "identidade_cor.png")
-        os.makedirs(os.path.join(base_workspace, "output_creatives"), exist_ok=True)
-        output_prefix = os.path.join(base_workspace, "output_creatives", f"post_{nome_cliente.lower().replace(' ', '_')}")
-        gerar_post_profissional_comfyui(copy_payload["headline"], layout_img, estilo_img, output_prefix)
-        pipeline_logs.append("✅ Post de alta conversão exportado nativamente em PNG profissional!")
-    except Exception as e:
-        return f"Falha no motor gráfico: {str(e)}"
-
-    return "\n".join(pipeline_logs) + "\n\n🎉 [SUCESSO] Operação concluída. Artefatos de código de mercado e imagens reais salvos em /workspace!"
+    winners = ", ".join(
+        f"{fmt}: {creative['blueprint']}"
+        for fmt, creative in result.get("winners", {}).items()
+    ) or "nenhum"
+    landing = (result.get("landing") or {}).get("file", "não gerada")
+    export_manifest = (result.get("campaign_export") or {}).get("manifest_path", "não gerado")
+    return (
+        "✅ Campaign Pipeline executado pela rota canônica.\n"
+        f"Formatos: {', '.join(result.get('formats', []))}\n"
+        f"Campeões: {winners}\n"
+        f"Landing: {landing}\n"
+        f"Manifest export: {export_manifest}"
+    )
 
 if __name__ == "__main__":
     mcp.run(transport="stdio")

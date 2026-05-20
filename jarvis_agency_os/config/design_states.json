@@ -95,6 +95,22 @@
       "cta_style": "solid_blue",
       "image_overlay": "light_clean",
       "niches": ["curso", "mentoria", "coaching", "treinamento", "capacitação", "EAD"]
+    },
+    "performance": {
+      "description": "Disciplined high-energy — academias, luta, performance física",
+      "bg_primary": "#07100d",
+      "bg_card": "#0e1b17",
+      "text_primary": "#f6fff9",
+      "text_muted": "#9db5aa",
+      "accent": "#22c55e",
+      "accent_glow": "rgba(34, 197, 94, 0.28)",
+      "border_color": "rgba(34, 197, 94, 0.14)",
+      "tone": "disciplined_direct",
+      "font_headline": "Outfit",
+      "font_editorial": "Outfit",
+      "cta_style": "solid_green",
+      "image_overlay": "dark_cinematic",
+      "niches": ["jiujitsu", "jiu-jitsu", "jitsu", "luta", "artes marciais", "academia", "defesa pessoal", "mma"]
     }
   },
   "fallback_state": "authority"

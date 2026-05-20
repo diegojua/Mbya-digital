@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{CLIENT_NAME}} - Story Jurídico Premium</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family={{FONT_HEADLINE}}:wght@700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: {{BG_PRIMARY}};
+      --surface: {{BG_CARD}};
+      --text: {{TEXT_PRIMARY}};
+      --muted: {{TEXT_MUTED}};
+      --accent: {{ACCENT}};
+      --border: {{BORDER_COLOR}};
+      --font-headline: "{{FONT_HEADLINE}}", Inter, sans-serif;
+    }
+    body {
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, sans-serif;
+    }
+    .story {
+      position: relative;
+      width: 1080px;
+      height: 1920px;
+      padding: 84px 76px 78px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 52px;
+      background:
+        radial-gradient(circle at 82% 12%, {{ACCENT_GLOW}}, transparent 320px),
+        linear-gradient(180deg, var(--bg) 0%, color-mix(in srgb, var(--surface) 78%, var(--bg)) 100%);
+    }
+    .grid-line {
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(90deg, rgba(245,247,250,0.035) 0 1px, transparent 1px 72px),
+        repeating-linear-gradient(0deg, rgba(245,247,250,0.022) 0 1px, transparent 1px 40px);
+      pointer-events: none;
+    }
+    .brand {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+      min-height: 72px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+    }
+    .brand-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      min-width: 0;
+    }
+    .mark {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border: 1px solid color-mix(in srgb, var(--accent) 62%, transparent);
+      color: var(--accent);
+      font-size: 20px;
+      font-weight: 900;
+    }
+    .brand strong {
+      display: block;
+      max-width: 600px;
+      font-size: 22px;
+      line-height: 1.05;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .brand span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+    .badge {
+      color: var(--accent);
+      font-size: 15px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      text-align: right;
+    }
+    .hero {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-rows: auto 650px auto;
+      gap: 42px;
+      min-height: 0;
+    }
+    h1 {
+      max-width: 900px;
+      font-family: var(--font-headline);
+      font-size: 86px;
+      line-height: 0.96;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+    h1 span {
+      display: block;
+      color: var(--accent);
+    }
+    .photo {
+      position: relative;
+      height: 650px;
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+    }
+    .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      filter: saturate(0.82) contrast(1.06);
+    }
+    .photo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(11,16,32,0.04) 0%, rgba(11,16,32,0.52) 100%);
+      pointer-events: none;
+    }
+    .body-copy {
+      max-width: 850px;
+      color: var(--muted);
+      font-size: 32px;
+      line-height: 1.28;
+      font-weight: 500;
+    }
+    .bottom {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+      padding-top: 30px;
+      border-top: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+    }
+    .signals {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+      background: color-mix(in srgb, var(--surface) 76%, transparent);
+    }
+    .signal {
+      min-height: 122px;
+      padding: 22px;
+      border-right: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+    }
+    .signal:last-child { border-right: 0; }
+    .signal span {
+      display: block;
+      color: var(--accent);
+      font-family: var(--font-headline);
+      font-size: 22px;
+      font-weight: 900;
+      line-height: 1;
+    }
+    .signal strong {
+      display: block;
+      margin-top: 18px;
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.12;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+    .cta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+    }
+    .footer-note {
+      max-width: 500px;
+      color: var(--muted);
+      font-size: 20px;
+      line-height: 1.35;
+      font-weight: 700;
+    }
+    .cta {
+      flex: 0 0 auto;
+      min-width: 310px;
+      min-height: 76px;
+      padding: 0 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent);
+      color: var(--bg);
+      text-decoration: none;
+      font-size: 22px;
+      line-height: 1.05;
+      font-weight: 900;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <main class="story">
+    <div class="grid-line"></div>
+    <header class="brand">
+      <div class="brand-left">
+        <div class="mark">{{LOGO_ICON}}</div>
+        <div>
+          <strong>{{LOGO_TEXT}}</strong>
+          <span>{{LOGO_SUB}}</span>
+        </div>
+      </div>
+      <div class="badge">{{BADGE_TEXT}}</div>
+    </header>
+
+    <section class="hero">
+      <h1>{{HEADLINE_LINE1}} <span>{{HEADLINE_LINE2}}</span></h1>
+      <figure class="photo">
+        <img src="{{IMAGE_URL}}" alt="{{IMAGE_ALT}}">
+      </figure>
+      <p class="body-copy">{{BODY_TEXT}}</p>
+    </section>
+
+    <footer class="bottom">
+      <div class="signals">{{SIGNAL_HTML}}</div>
+      <div class="cta-row">
+        <p class="footer-note">{{FOOTER_CTA_TEXT}}</p>
+        <a class="cta" href="{{WHATSAPP_URL}}">{{CTA_TEXT}}</a>
+      </div>
+    </footer>
+  </main>
+</body>
+</html>

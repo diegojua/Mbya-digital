@@ -1,0 +1,98 @@
+name: Tests & Validation
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Validate configurations
+        run: |
+          python validate_configs.py
+
+      - name: Test MCP Server
+        run: |
+          python test_mcp_server.py
+
+      - name: Run pytest
+        run: |
+          python -m pytest tests/ -v --tb=short --cov=jarvis_agency_os --cov-report=xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install linting tools
+        run: |
+          pip install flake8 black mypy
+
+      - name: Run black
+        run: black --check jarvis_agency_os/ graphify/ xquads/ deer_flow/
+        continue-on-error: true
+
+      - name: Run flake8
+        run: flake8 jarvis_agency_os/ graphify/ xquads/ deer_flow/ --max-line-length=100
+        continue-on-error: true
+
+      - name: Run mypy
+        run: mypy jarvis_agency_os/ --ignore-missing-imports
+        continue-on-error: true
+
+  deploy-check:
+    runs-on: ubuntu-latest
+    needs: [test, lint]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Check deployment readiness
+        run: |
+          python test_mcp_server.py
+          python validate_configs.py
+
+      - name: Create deployment manifest
+        run: |
+          echo "Deployment ready at $(date)" > .deploy-ready

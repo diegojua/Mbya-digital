@@ -1,0 +1,92 @@
+{
+  "default_direction": "premium_baseline",
+  "directions": {
+    "premium_baseline": {
+      "description": "Padrão global premium — composição editorial, baixa densidade visual e acabamento de agência.",
+      "match": ["*"],
+      "preferred_blueprints": [
+        "feed_split_editorial",
+        "feed_dark_cinematic",
+        "feed_fullbleed_overlay",
+        "feed_card_editorial"
+      ],
+      "typography": {
+        "font_headline": "Outfit",
+        "font_body": "Inter",
+        "headline_weight": 800
+      },
+      "photography": {
+        "style": "editorial_realistic",
+        "treatment": "clean_cinematic",
+        "images": [
+          "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=88",
+          "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=88",
+          "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=88"
+        ]
+      },
+      "composition": {
+        "visual_density": "low",
+        "spacing": "large",
+        "alignment": "left",
+        "cta_visibility": "high",
+        "avoid_generic_template": true
+      },
+      "quality_rules": {
+        "prefer_negative_space": true,
+        "avoid_centered_text_blocks": true,
+        "avoid_excessive_gradients": true,
+        "avoid_visual_noise": true,
+        "prefer_editorial_image_crop": true
+      }
+    },
+    "advocacia_premium": {
+      "description": "Legal boutique premium — autoridade moderna, institucional, sem clichês jurídicos.",
+      "match": ["advocacia_premium", "advocacia", "advogado", "juridic", "direito", "legal"],
+      "preferred_blueprints": [
+        "feed_legal_premium_editorial",
+        "feed_dark_cinematic",
+        "feed_split_editorial"
+      ],
+      "design_state": "authority",
+      "palette": {
+        "bg_primary": "#0B1020",
+        "bg_card": "#121826",
+        "accent": "#D4AF37",
+        "accent_glow": "rgba(212, 175, 55, 0.18)",
+        "text_primary": "#F5F7FA",
+        "text_muted": "#94A3B8",
+        "border_color": "rgba(245, 247, 250, 0.12)"
+      },
+      "typography": {
+        "font_headline": "Outfit",
+        "font_body": "Inter",
+        "headline_weight": 800
+      },
+      "photography": {
+        "style": "editorial_realistic_lawyer_office",
+        "treatment": "cinematic_soft_dark",
+        "images": [
+          "https://images.unsplash.com/photo-1521791055366-0d553872125f?auto=format&fit=crop&w=1200&q=88",
+          "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=88",
+          "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=88"
+        ]
+      },
+      "composition": {
+        "visual_density": "low",
+        "spacing": "large",
+        "alignment": "left",
+        "layout": "60_40_split",
+        "cta_visibility": "high"
+      },
+      "avoid": [
+        "martelo",
+        "balança",
+        "tribunal genérico",
+        "homem olhando janela",
+        "dourado exagerado",
+        "glassmorphism excessivo",
+        "texto centralizado poluído"
+      ]
+    }
+  }
+}

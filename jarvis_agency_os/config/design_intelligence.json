@@ -1,0 +1,140 @@
+{
+  "default_profile": "premium_agency",
+  "profiles": {
+    "premium_agency": {
+      "description": "Sistema base para criativos premium com acabamento de agência, alinhamento rigoroso e legibilidade alta.",
+      "match": ["*"],
+      "style_keywords": [
+        "clean",
+        "premium",
+        "hierarquia forte",
+        "espaçamento generoso",
+        "composição editorial"
+      ],
+      "layout_rules": [
+        "usar grid consistente e margens simétricas",
+        "manter CTA fora de blocos de texto longos",
+        "evitar cards desalinhados ou com rotações acidentais",
+        "não sobrepor texto em rostos ou áreas visualmente complexas",
+        "preservar respiro entre headline, imagem, lista e CTA"
+      ],
+      "icon_rules": [
+        "preferir SVG line icons com stroke consistente",
+        "evitar símbolos Unicode como ícones principais",
+        "usar containers circulares ou quadrados consistentes",
+        "manter tamanho visual uniforme entre ícones"
+      ],
+      "anti_patterns": [
+        "template genérico",
+        "texto espremido",
+        "cards desalinhados",
+        "ícones amadores",
+        "excesso de sombras",
+        "gradiente saturado sem controle"
+      ],
+      "quality_gates": {
+        "alignment": "Todos os blocos principais devem compartilhar eixo ou grid claro.",
+        "legibility": "Texto deve ser legível em mobile sem depender de zoom.",
+        "cta": "CTA precisa estar visível, isolado e sem colisão com outros blocos.",
+        "icons": "Ícones devem vir de SVGs consistentes ou biblioteca equivalente.",
+        "brand": "Logo deve aparecer sem distorção e com área de respiro."
+      }
+    },
+    "educacao_infantil_premium": {
+      "description": "Direção visual para educação infantil, psicopedagogia e acompanhamento pedagógico: acolhedora, leve e profissional.",
+      "match": ["educação infantil", "educacao infantil", "pedagog", "escola", "reforço", "infantil", "criança", "crianca", "amar"],
+      "palette": {
+        "bg_primary": "#FFE8F2",
+        "bg_card": "#FFF6FA",
+        "text_primary": "#073272",
+        "text_muted": "#506A8A",
+        "accent": "#ED2B7C",
+        "accent_secondary": "#16A7DC",
+        "accent_warm": "#FFD348",
+        "border_color": "rgba(7, 50, 114, 0.10)"
+      },
+      "typography": {
+        "font_headline": "Nunito",
+        "font_body": "Inter",
+        "headline_weight": 900
+      },
+      "style_keywords": [
+        "acolhedor",
+        "infantil sofisticado",
+        "pastel",
+        "emocional",
+        "campanha Meta Ads premium"
+      ],
+      "layout_rules": [
+        "usar rosa pastel como campo emocional e azul como cor de confiança",
+        "combinar elementos infantis leves com grid profissional",
+        "usar foto real em card com borda branca e sombra suave",
+        "organizar benefícios em linhas ou cards de altura consistente",
+        "evitar sobrepor CTA em listas ou fotos"
+      ],
+      "icon_rules": [
+        "usar ícones educacionais em SVG line",
+        "evitar emoji e caracteres soltos para lupa, alvo, gráfico, sorriso e família",
+        "usar stroke entre 2.4 e 3.0 com borda rosa consistente"
+      ],
+      "anti_patterns": [
+        "visual de panfleto escolar antigo",
+        "clipart infantil exagerado",
+        "ícones de emoji",
+        "texto em excesso sem respiro",
+        "foto achatada ou esticada",
+        "caixas tortas sem intenção clara"
+      ],
+      "quality_gates": {
+        "alignment": "Logo, headline, imagem, lista e CTA devem seguir margens coerentes.",
+        "legibility": "Headline e benefícios precisam ser lidos em até 2 segundos.",
+        "cta": "CTA deve aparecer em bloco próprio no rodapé, sem cobrir conteúdo.",
+        "icons": "Todos os ícones devem ser SVGs com linguagem visual única.",
+        "brand": "A marca Amar deve parecer integrada, não apenas colada no layout."
+      }
+    },
+    "advocacia_premium": {
+      "description": "Direção visual para escritórios jurídicos boutique: autoridade, sobriedade e sofisticação moderna.",
+      "match": ["advocacia", "advogado", "juridic", "direito", "legal"],
+      "palette": {
+        "bg_primary": "#0B1020",
+        "bg_card": "#121826",
+        "text_primary": "#F5F7FA",
+        "text_muted": "#94A3B8",
+        "accent": "#D4AF37",
+        "border_color": "rgba(245, 247, 250, 0.12)"
+      },
+      "style_keywords": [
+        "institucional premium",
+        "editorial",
+        "minimalista",
+        "sofisticado"
+      ],
+      "layout_rules": [
+        "usar texto alinhado à esquerda",
+        "manter muito espaço negativo",
+        "evitar clichês jurídicos",
+        "usar fotografia editorial realista",
+        "separar CTA do corpo de texto"
+      ],
+      "icon_rules": [
+        "evitar ícones jurídicos clichês",
+        "usar linhas finas e detalhes abstratos quando necessário"
+      ],
+      "anti_patterns": [
+        "martelo",
+        "balança dourada gigante",
+        "tribunal genérico",
+        "homem olhando janela",
+        "glassmorphism excessivo"
+      ],
+      "quality_gates": {
+        "alignment": "Composição deve parecer editorial, com eixo claro e layout 60/40 quando houver foto.",
+        "legibility": "Headline grande com contraste alto.",
+        "cta": "CTA deve ser discreto, premium e visível.",
+        "icons": "Não usar ícones jurídicos clichês.",
+        "brand": "Marca deve parecer escritório boutique, não template genérico."
+      }
+    }
+  }
+}

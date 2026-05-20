@@ -1,7 +1,7 @@
 {
   "dimensions": {
     "legibility": {
-      "weight": 0.20,
+      "weight": 0.16,
       "description": "Contraste texto/fundo, tamanho de fonte adequado",
       "checks": [
         "headline_contrast_ratio >= 4.5",
@@ -11,7 +11,7 @@
       ]
     },
     "hierarchy": {
-      "weight": 0.20,
+      "weight": 0.16,
       "description": "Headline > Subheadline > Body > CTA claramente distinguíveis",
       "checks": [
         "headline_is_largest_text",
@@ -20,7 +20,7 @@
       ]
     },
     "cta_visibility": {
-      "weight": 0.20,
+      "weight": 0.16,
       "description": "O CTA é imediatamente visível e acessível",
       "checks": [
         "cta_has_contrasting_background",
@@ -29,7 +29,7 @@
       ]
     },
     "constraint_compliance": {
-      "weight": 0.15,
+      "weight": 0.12,
       "description": "Cumpre todas as regras de constraints.json",
       "checks": [
         "headline_under_max_chars",
@@ -39,7 +39,7 @@
       ]
     },
     "design_state_alignment": {
-      "weight": 0.15,
+      "weight": 0.12,
       "description": "As cores, tipografia e tom correspondem ao design state",
       "checks": [
         "palette_matches_state",
@@ -53,6 +53,27 @@
       "checks": [
         "different_blueprint_from_siblings",
         "different_copy_angle_from_siblings"
+      ]
+    },
+    "design_intelligence": {
+      "weight": 0.10,
+      "description": "Aderência ao perfil visual, regras de layout, ícones e anti-patterns por nicho",
+      "checks": [
+        "design_profile_applied",
+        "premium_rules_available",
+        "anti_patterns_avoided",
+        "layout_and_icon_guidelines_present"
+      ]
+    },
+    "visual_quality": {
+      "weight": 0.08,
+      "description": "QA visual estático do HTML: tokens, ícones, CTA, cores e sinais de template",
+      "checks": [
+        "no_unresolved_tokens",
+        "no_emoji_feature_icons",
+        "no_generic_placeholder_images",
+        "cta_rendered_as_button_or_link",
+        "no_default_ai_color_patterns"
       ]
     }
   },

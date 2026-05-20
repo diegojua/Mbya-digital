@@ -1,6 +1,17 @@
 venv/
+.venv/
 __pycache__/
+*/__pycache__/
+.pytest_cache/
 *.pyc
 .env
 node_modules/
 .npm-global/
+*.db
+workspace/generated_creatives/
+workspace/generated_landings/
+workspace/rendered_winners/
+workspace/**/exports/
+amar_pedagogico/**/exports/
+assets_globais/
+open-design/

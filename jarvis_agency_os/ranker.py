@@ -1,9 +1,12 @@
 """
-Creative Ranker — Scoring automático em 6 dimensões.
+Creative Ranker — Scoring automático em múltiplas dimensões.
 Avalia criativos gerados e retorna os top N para aprovação humana.
 """
 import json
 import os
+
+from jarvis_agency_os.design_intelligence import evaluate_design_metadata
+from jarvis_agency_os.visual_qa import evaluate_visual_quality
 
 CONFIG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config")
 
@@ -111,6 +114,18 @@ def _score_batch_diversity(creative: dict, batch: list, index: int) -> float:
     return 30.0  # Muito repetido
 
 
+def _score_design_intelligence(creative: dict) -> float:
+    """Avalia presença e aderência básica ao perfil de Design Intelligence."""
+    return evaluate_design_metadata(creative).get("score", 0.0)
+
+
+def _score_visual_quality(creative: dict) -> float:
+    """Avalia sinais visuais do HTML e anexa o relatório ao criativo."""
+    qa = evaluate_visual_quality(creative)
+    creative["visual_qa"] = qa
+    return qa.get("score", 0.0)
+
+
 def rank_creatives(creatives: list, top_n: int = 2) -> dict:
     """
     Rankeia um batch de criativos e retorna os top N.
@@ -129,13 +144,29 @@ def rank_creatives(creatives: list, top_n: int = 2) -> dict:
             "design_state_alignment": _score_state_alignment(creative) * dimensions.get("design_state_alignment", {}).get("weight", 0.15),
             "batch_diversity": _score_batch_diversity(creative, creatives, i) * dimensions.get("batch_diversity", {}).get("weight", 0.1),
         }
-        total = sum(scores.values())
-        creative["score"] = round(total, 1)
-        creative["score_breakdown"] = {k: round(v, 1) for k, v in scores.items()}
-
+        if "design_intelligence" in dimensions:
+            scores["design_intelligence"] = (
+                _score_design_intelligence(creative)
+                * dimensions["design_intelligence"].get("weight", 0)
+            )
+        if "visual_quality" in dimensions:
+            scores["visual_quality"] = (
+                _score_visual_quality(creative)
+                * dimensions["visual_quality"].get("weight", 0)
+            )
         # Determine action
         threshold_approve = scoring.get("auto_approve_threshold", 85)
         threshold_review = scoring.get("human_review_threshold", 60)
+        visual_qa = creative.get("visual_qa") or {}
+        total = sum(scores.values())
+        if visual_qa.get("status") == "fail":
+            total = min(total, threshold_review - 1)
+        elif visual_qa.get("status") == "review":
+            total = min(total, threshold_approve - 1)
+
+        creative["score"] = round(total, 1)
+        creative["score_breakdown"] = {k: round(v, 1) for k, v in scores.items()}
+
         if total >= threshold_approve:
             creative["action"] = "auto_approve"
         elif total >= threshold_review:

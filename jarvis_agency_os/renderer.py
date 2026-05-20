@@ -18,8 +18,20 @@ def render_html_to_png(html_path: str, output_path: str,
         return {"error": f"HTML não encontrado: {html_path}"}
 
     # Tentar renderização via script Node.js inline
+    root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    playwright_path = os.path.join(
+        root_dir,
+        "open-design",
+        "node_modules",
+        ".pnpm",
+        "playwright@1.59.1",
+        "node_modules",
+        "playwright",
+    )
+    require_target = playwright_path if os.path.exists(playwright_path) else "playwright"
+
     node_script = f"""
-const {{ chromium }} = require('playwright');
+const {{ chromium }} = require('{require_target}');
 (async () => {{
     const browser = await chromium.launch({{ headless: true }});
     const page = await browser.newPage({{

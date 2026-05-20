@@ -53,6 +53,11 @@ def process_briefing(workspace_dir: str):
     logo_text = metadata.get("logo_texto", client_name)
     logo_icon = metadata.get("logo_icone", "✦")
     logo_sub = metadata.get("logo_subtitulo", niche)
+    headline = metadata.get("headline", "")
+    subtext = metadata.get("subtext", metadata.get("subheadline", metadata.get("subtitulo", "")))
+    cta = metadata.get("cta", "")
+    badge = metadata.get("badge", metadata.get("eyebrow", ""))
+    formats = metadata.get("formatos", metadata.get("formats", metadata.get("formato", "")))
 
     # Carregar configs
     states_config = _load_config("design_states.json")
@@ -81,6 +86,11 @@ def process_briefing(workspace_dir: str):
         "comida": ["sabor", "gastronomia", "receitas", "delicioso", "artesanal"],
         "padaria": ["pão", "fermentação", "forno", "massa", "artesanal"],
         "finan": ["finanças", "investimento", "retorno", "rendimento", "cripto"],
+        "jiujitsu": ["jiu-jitsu", "disciplina", "defesa pessoal", "condicionamento", "evolução"],
+        "jiu-jitsu": ["jiu-jitsu", "disciplina", "defesa pessoal", "condicionamento", "evolução"],
+        "academia": ["treino", "condicionamento", "disciplina", "força", "performance"],
+        "joia": ["joias", "ouro", "prata", "presente", "elegância"],
+        "joalheria": ["joias", "ouro", "prata", "presente", "elegância"],
     }
     keywords = ["marketing", "conversão", "leads", "resultados"]
     for key, words in niche_keywords.items():
@@ -100,6 +110,11 @@ def process_briefing(workspace_dir: str):
             "logo_text": logo_text,
             "logo_icon": logo_icon,
             "logo_sub": logo_sub,
+            "headline": headline,
+            "subtext": subtext,
+            "cta": cta,
+            "badge": badge,
+            "formats": formats,
             "extracted_keywords": keywords,
             "palette": palette,
             "design_state": state_key,

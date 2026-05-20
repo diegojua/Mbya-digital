@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{CLIENT_NAME}} - Story Educação</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family={{FONT_HEADLINE}}:wght@700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: {{BG_PRIMARY}};
+            --card: {{BG_CARD}};
+            --text: {{TEXT_PRIMARY}};
+            --muted: {{TEXT_MUTED}};
+            --accent: {{ACCENT}};
+            --border: {{BORDER_COLOR}};
+            --font-headline: '{{FONT_HEADLINE}}', Inter, sans-serif;
+            --blue: #2f80ed;
+            --yellow: #ffd166;
+        }
+        body {
+            width: 1080px;
+            height: 1920px;
+            overflow: hidden;
+            background: var(--bg);
+            font-family: Inter, sans-serif;
+            color: var(--text);
+        }
+        .story {
+            position: relative;
+            width: 1080px;
+            height: 1920px;
+            padding: 86px 72px 78px;
+            display: grid;
+            grid-template-rows: auto auto 1fr auto;
+            gap: 34px;
+            background:
+                radial-gradient(circle at 14% 9%, rgba(255,209,102,0.38) 0, transparent 300px),
+                radial-gradient(circle at 86% 22%, rgba(47,128,237,0.16) 0, transparent 360px),
+                linear-gradient(180deg, color-mix(in srgb, var(--bg) 86%, white) 0%, #ffffff 58%, color-mix(in srgb, var(--bg) 72%, white) 100%);
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 28px;
+            min-height: 78px;
+        }
+        .brand-mark {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            min-width: 0;
+        }
+        .logo-icon {
+            width: 58px;
+            height: 58px;
+            border-radius: 18px;
+            display: grid;
+            place-items: center;
+            color: #ffffff;
+            background: linear-gradient(135deg, var(--accent), var(--blue));
+            font-size: 30px;
+            font-weight: 800;
+            line-height: 1;
+            box-shadow: 0 16px 38px color-mix(in srgb, var(--accent) 24%, transparent);
+        }
+        .logo-text { min-width: 0; }
+        .logo-text strong {
+            display: block;
+            font-size: 32px;
+            line-height: 1.05;
+            letter-spacing: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .logo-text span {
+            display: block;
+            margin-top: 6px;
+            font-size: 18px;
+            line-height: 1.25;
+            color: var(--muted);
+        }
+        .badge {
+            flex: 0 0 auto;
+            max-width: 340px;
+            min-height: 44px;
+            padding: 12px 18px;
+            border-radius: 999px;
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--blue);
+            border: 1px solid rgba(47,128,237,0.18);
+            background: rgba(47,128,237,0.09);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .headline {
+            margin-top: 12px;
+            max-width: 900px;
+            font-family: var(--font-headline);
+            font-size: 86px;
+            font-weight: 800;
+            line-height: 0.98;
+            letter-spacing: 0;
+        }
+        .headline em {
+            display: block;
+            font-style: normal;
+            color: var(--accent);
+        }
+        .body-copy {
+            max-width: 850px;
+            font-size: 31px;
+            line-height: 1.28;
+            color: var(--muted);
+        }
+        .photo-wrap {
+            position: relative;
+            min-height: 760px;
+            border-radius: 34px;
+            overflow: hidden;
+            border: 1px solid rgba(18,51,107,0.1);
+            background: #ffffff;
+            box-shadow: 0 30px 90px rgba(18,51,107,0.16);
+        }
+        .photo-wrap img {
+            width: 100%;
+            height: 760px;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+        .photo-wrap::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 54%, rgba(255,255,255,0.76) 100%);
+            pointer-events: none;
+        }
+        .photo-note {
+            position: absolute;
+            left: 28px;
+            right: 28px;
+            bottom: 28px;
+            z-index: 1;
+            padding: 22px;
+            border-radius: 22px;
+            background: rgba(255,255,255,0.9);
+            border: 1px solid rgba(18,51,107,0.1);
+            backdrop-filter: blur(10px);
+            color: var(--text);
+        }
+        .photo-note strong {
+            display: block;
+            font-size: 25px;
+            line-height: 1.18;
+        }
+        .photo-note span {
+            display: block;
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 19px;
+            line-height: 1.34;
+        }
+        .bottom {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            padding: 28px;
+            min-height: 274px;
+            border-radius: 32px;
+            border: 1px solid rgba(18,51,107,0.1);
+            background: #ffffff;
+            box-shadow: 0 18px 48px rgba(18,51,107,0.08);
+        }
+        .check-list {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+        .check-item {
+            display: grid;
+            grid-template-columns: 34px 1fr;
+            align-items: center;
+            gap: 10px;
+            min-height: 64px;
+            padding: 12px;
+            border-radius: 18px;
+            background: color-mix(in srgb, var(--bg) 64%, white);
+            font-size: 18px;
+            font-weight: 800;
+            line-height: 1.12;
+            color: var(--text);
+        }
+        .check-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: rgba(237,43,124,0.1);
+            border: 1px solid rgba(237,43,124,0.2);
+        }
+        .check-icon svg { width: 19px; height: 19px; color: var(--accent); }
+        .cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 82px;
+            width: 100%;
+            padding: 0 34px;
+            border-radius: 999px;
+            background: var(--accent);
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.05;
+            text-align: center;
+            box-shadow: 0 18px 40px color-mix(in srgb, var(--accent) 26%, transparent);
+        }
+    </style>
+</head>
+<body>
+    <main class="story">
+        <header class="brand">
+            <div class="brand-mark">
+                <div class="logo-icon">{{LOGO_ICON}}</div>
+                <div class="logo-text">
+                    <strong>{{LOGO_TEXT}}</strong>
+                    <span>{{LOGO_SUB}}</span>
+                </div>
+            </div>
+            <div class="badge">{{BADGE_TEXT}}</div>
+        </header>
+
+        <section>
+            <h1 class="headline">{{HEADLINE_LINE1}} <em>{{HEADLINE_LINE2}}</em></h1>
+        </section>
+
+        <figure class="photo-wrap">
+            <img src="{{IMAGE_URL}}" alt="{{IMAGE_ALT}}">
+            <figcaption class="photo-note">
+                <strong>{{FOOTER_CTA_TEXT}}</strong>
+                <span>{{BODY_TEXT}}</span>
+            </figcaption>
+        </figure>
+
+        <footer class="bottom">
+            <div class="check-list">{{CHECKLIST_HTML}}</div>
+            <a class="cta" href="{{WHATSAPP_URL}}">{{CTA_TEXT}}</a>
+        </footer>
+    </main>
+</body>
+</html>

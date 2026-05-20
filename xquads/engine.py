@@ -55,22 +55,22 @@ COPY_BANK = {
     "authority": {
         "angles": [
             {
-                "headline_1": "Redescubra a segurança de",
-                "headline_2": "sorrir sem hesitar.",
-                "body": "Tecnologia clínica digital 3D, sedação assistida indolor e reabilitações completas planejadas para seu absoluto conforto.",
-                "badge": "Tecnologia Digital 3D",
-                "checklist": ["Implantes de Carga Imediata", "Lentes de Contato Cerâmicas", "Sedação Assistida"],
-                "cta": "Agendar Avaliação",
-                "footer_cta": "Atendimento Premium de Verdade"
+                "headline_1": "Autoridade começa com",
+                "headline_2": "clareza na oferta.",
+                "body": "Comunique valor, diferenciação e próximo passo com uma presença visual mais madura e preparada para conversão.",
+                "badge": "Posicionamento premium",
+                "checklist": ["Mensagem clara", "Design consistente", "CTA visível"],
+                "cta": "Falar com especialista",
+                "footer_cta": "Estratégia, identidade e performance trabalhando na mesma direção."
             },
             {
-                "headline_1": "Seu sorriso merece a",
-                "headline_2": "assinatura da excelência.",
-                "body": "Com alinhadores invisíveis 3D e tratamento sob sedação suave, restaure sua autoestima no conforto de um spa.",
-                "badge": "Odontologia Spa",
-                "checklist": ["Alinhadores Invisíveis", "Odontologia Sem Dor"],
-                "cta": "Fale Conosco",
-                "footer_cta": "Conforto e precisão digital"
+                "headline_1": "Transforme atenção em",
+                "headline_2": "confiança de compra.",
+                "body": "Uma comunicação premium reduz ruído, organiza a decisão do cliente e aumenta a percepção de valor da marca.",
+                "badge": "Estratégia visual",
+                "checklist": ["Hierarquia forte", "Prova de valor", "Experiência limpa"],
+                "cta": "Começar agora",
+                "footer_cta": "Criativos pensados para parecer marca, não template."
             }
         ]
     },
@@ -122,6 +122,37 @@ COPY_BANK = {
             }
         ]
     },
+    "performance": {
+        "angles": [
+            {
+                "headline_1": "Entre no tatame e",
+                "headline_2": "supere seus limites.",
+                "body": "Aulas de jiu-jitsu para iniciantes e avançados, com treino técnico, disciplina e acompanhamento próximo.",
+                "badge": "Aula Experimental",
+                "checklist": ["Defesa Pessoal", "Condicionamento Físico", "Turmas Iniciantes", "Treino Infantil e Adulto"],
+                "cta": "Agendar Aula",
+                "footer_cta": "Primeira aula experimental via WhatsApp"
+            },
+            {
+                "headline_1": "Jiu-jitsu para ganhar",
+                "headline_2": "confiança de verdade.",
+                "body": "Aprenda técnica, controle emocional e força funcional em um ambiente seguro para todos os níveis.",
+                "badge": "Vagas Abertas",
+                "checklist": ["Professor Faixa Preta", "Ambiente Familiar", "Evolução por Graduação", "Treinos Semanais"],
+                "cta": "Falar no WhatsApp",
+                "footer_cta": "Turmas manhã, tarde e noite"
+            },
+            {
+                "headline_1": "Seu próximo nível começa",
+                "headline_2": "com uma queda no tatame.",
+                "body": "Treinos guiados para desenvolver técnica, resistência e mentalidade competitiva sem perder segurança.",
+                "badge": "Treino Guiado",
+                "checklist": ["Base Técnica", "Preparação Física", "Disciplina", "Comunidade Forte"],
+                "cta": "Reservar Vaga",
+                "footer_cta": "Vagas limitadas por turma"
+            }
+        ]
+    },
     "legal": {
         "angles": [
             {
@@ -146,6 +177,192 @@ COPY_BANK = {
     }
 }
 
+NICHE_COPY_OVERRIDES = {
+    "pedagogia_infantil": {
+        "match": ["educação infantil", "educacao infantil", "pedagog", "reforço", "reforco", "acompanhamento pedagógico", "acompanhamento pedagogico"],
+        "angles": [
+            {
+                "headline_1": "Acompanhamento pedagógico é",
+                "headline_2": "investir no futuro do seu filho.",
+                "body": "Cada criança aprende de um jeito. O suporte certo transforma dificuldades em conquistas, com acolhimento, método e rotina.",
+                "badge": "Desenvolvimento infantil",
+                "checklist": ["Plano individual de aprendizagem", "Mais foco e autonomia", "Evolução acompanhada de perto"],
+                "cta": "Fale com nossa equipe",
+                "footer_cta": "Converse com a equipe Amar e entenda o melhor caminho para o seu filho."
+            },
+            {
+                "headline_1": "Seu filho está com",
+                "headline_2": "dificuldades na escola?",
+                "body": "O acompanhamento pedagógico ajuda a identificar obstáculos, fortalecer a confiança e tornar o aprendizado mais leve.",
+                "badge": "Avaliação pedagógica",
+                "checklist": ["Mais confiança", "Melhor aprendizado", "Rotina de estudos"],
+                "cta": "Agende avaliação",
+                "footer_cta": "Agende uma avaliação e receba orientação personalizada."
+            },
+            {
+                "headline_1": "Dificuldade escolar não precisa",
+                "headline_2": "virar insegurança.",
+                "body": "Com orientação certa, a criança ganha repertório, autonomia e segurança para avançar no próprio ritmo.",
+                "badge": "Aprender com leveza",
+                "checklist": ["Apoio individualizado", "Estratégia por idade", "Família mais orientada"],
+                "cta": "Falar no WhatsApp",
+                "footer_cta": "Atendimento acolhedor para famílias que querem agir cedo."
+            }
+        ]
+    },
+    "legal_premium": {
+        "match": ["advocacia", "advogado", "juridic", "direito", "legal"],
+        "angles": [
+            {
+                "headline_1": "Você conhece todos",
+                "headline_2": "os seus direitos?",
+                "body": "Atendimento jurídico especializado com estratégia, clareza e suporte personalizado para pessoas e empresas.",
+                "badge": "Atendimento jurídico especializado",
+                "checklist": ["Análise objetiva", "Estratégia personalizada", "Atendimento direto"],
+                "cta": "Fale com um especialista",
+                "footer_cta": "Consultoria jurídica para decisões trabalhistas, cíveis, empresariais e previdenciárias."
+            },
+            {
+                "headline_1": "Proteja seus direitos",
+                "headline_2": "antes de decidir.",
+                "body": "Orientação jurídica clara para reduzir riscos, organizar próximos passos e agir com segurança.",
+                "badge": "Estratégia e clareza",
+                "checklist": ["Diagnóstico inicial", "Plano de ação", "Comunicação transparente"],
+                "cta": "Agendar conversa",
+                "footer_cta": "Atendimento digital e presencial com sigilo profissional."
+            },
+            {
+                "headline_1": "Segurança jurídica para",
+                "headline_2": "decisões importantes.",
+                "body": "Suporte especializado para pessoas e empresas que precisam de uma resposta objetiva antes do problema crescer.",
+                "badge": "Advocacia moderna",
+                "checklist": ["Atendimento direto", "Análise de risco", "Suporte personalizado"],
+                "cta": "Falar no WhatsApp",
+                "footer_cta": "Equipe preparada para orientar seu próximo movimento."
+            }
+        ]
+    },
+    "odontology": {
+        "match": ["odonto", "dent", "odontologia", "implante", "sorriso"],
+        "angles": [
+            {
+                "headline_1": "Redescubra a segurança de",
+                "headline_2": "sorrir sem hesitar.",
+                "body": "Tecnologia clínica digital 3D, sedação assistida indolor e reabilitações completas planejadas para seu absoluto conforto.",
+                "badge": "Tecnologia Digital 3D",
+                "checklist": ["Implantes de Carga Imediata", "Lentes de Contato Cerâmicas", "Sedação Assistida"],
+                "cta": "Agendar Avaliação",
+                "footer_cta": "Atendimento premium de verdade"
+            },
+            {
+                "headline_1": "Seu sorriso merece a",
+                "headline_2": "assinatura da excelência.",
+                "body": "Com alinhadores invisíveis 3D e tratamento sob sedação suave, restaure sua autoestima no conforto de um spa.",
+                "badge": "Odontologia Spa",
+                "checklist": ["Alinhadores Invisíveis", "Odontologia Sem Dor"],
+                "cta": "Fale Conosco",
+                "footer_cta": "Conforto e precisão digital"
+            }
+        ]
+    },
+    "jewelry": {
+        "match": ["joia", "joias", "joalheria", "semijoia", "semi joia", "aliança", "alianca", "ouro", "prata"],
+        "angles": [
+            {
+                "headline_1": "Joias que marcam",
+                "headline_2": "momentos para sempre.",
+                "body": "Coleções em ouro, prata e peças selecionadas para presentear com elegância, brilho e significado.",
+                "badge": "Coleção Especial",
+                "checklist": ["Ouro e Prata", "Presentes Especiais", "Peças Selecionadas", "Atendimento Personalizado"],
+                "cta": "Ver Coleção",
+                "footer_cta": "Escolha sua peça pelo WhatsApp"
+            },
+            {
+                "headline_1": "O presente certo tem",
+                "headline_2": "brilho próprio.",
+                "body": "Anéis, colares, pulseiras e brincos para transformar datas especiais em lembranças inesquecíveis.",
+                "badge": "Presente Premium",
+                "checklist": ["Embalagem Especial", "Opções para Ela", "Compra por WhatsApp", "Retirada na Loja"],
+                "cta": "Escolher Presente",
+                "footer_cta": "Atendimento rápido para presentes"
+            },
+            {
+                "headline_1": "Alianças para celebrar",
+                "headline_2": "a história de vocês.",
+                "body": "Modelos clássicos e modernos para noivado, casamento e renovação de votos, com acabamento impecável.",
+                "badge": "Alianças",
+                "checklist": ["Modelos Clássicos", "Design Moderno", "Acabamento Premium", "Consulta de Medidas"],
+                "cta": "Consultar Modelos",
+                "footer_cta": "Fale com nossa consultora"
+            }
+        ]
+    }
+}
+
+
+def _split_headline(headline: str) -> tuple:
+    """Divide headline longa em duas linhas equilibradas."""
+    words = headline.strip().split()
+    if len(words) <= 4:
+        return headline.strip(), ""
+
+    midpoint = max(2, len(words) // 2)
+    return " ".join(words[:midpoint]), " ".join(words[midpoint:])
+
+
+def _context_defaults_for_niche(niche: str) -> dict:
+    """Defaults para briefing com headline/CTA explícitos, sem cair em texto jurídico genérico."""
+    niche_lower = (niche or "").lower()
+    if any(term in niche_lower for term in ["educação", "educacao", "pedagog", "reforço", "reforco", "infantil"]):
+        return {
+            "body": "Acompanhamento pedagógico com acolhimento, método e suporte personalizado para fortalecer o aprendizado da criança.",
+            "badge": "Acompanhamento pedagógico",
+            "checklist": ["Plano individual", "Mais foco e autonomia", "Evolução acompanhada"],
+            "footer_cta": "Converse com a equipe e entenda o melhor caminho para seu filho.",
+        }
+    if any(term in niche_lower for term in ["advocacia", "advogado", "juridic", "direito", "legal"]):
+        return {
+            "body": "Atendimento jurídico especializado com estratégia, clareza e suporte personalizado.",
+            "badge": "Atendimento jurídico especializado",
+            "checklist": ["Análise objetiva", "Estratégia personalizada", "Atendimento direto"],
+            "footer_cta": "Consultoria jurídica para decisões trabalhistas, cíveis, empresariais e previdenciárias.",
+        }
+    return {
+        "body": "Atendimento especializado com clareza, método e acompanhamento próximo.",
+        "badge": "Atendimento especializado",
+        "checklist": ["Diagnóstico claro", "Plano personalizado", "Suporte próximo"],
+        "footer_cta": "Converse com nossa equipe e entenda o melhor caminho.",
+    }
+
+
+def _custom_angle_from_context(context_graph: dict) -> dict:
+    headline = context_graph.get("headline", "").strip()
+    subtext = context_graph.get("subtext", "").strip()
+    cta = context_graph.get("cta", "").strip()
+    if not headline and not subtext and not cta:
+        return {}
+
+    defaults = _context_defaults_for_niche(context_graph.get("niche", ""))
+    h1, h2 = _split_headline(headline or "Estratégia clara para avançar com confiança.")
+    return {
+        "headline_1": h1,
+        "headline_2": h2,
+        "body": subtext or defaults["body"],
+        "badge": context_graph.get("badge") or defaults["badge"],
+        "checklist": defaults["checklist"],
+        "cta": cta or "Fale com um especialista",
+        "footer_cta": context_graph.get("details") or defaults["footer_cta"]
+    }
+
+
+def _get_niche_angles(niche: str):
+    """Retorna ângulos específicos quando o nicho pede copy dedicada."""
+    niche_lower = niche.lower()
+    for override in NICHE_COPY_OVERRIDES.values():
+        if any(term in niche_lower for term in override["match"]):
+            return override["angles"]
+    return None
+
 
 def generate_copy(context_graph: dict, objective: str):
     """
@@ -162,9 +379,12 @@ def generate_copy(context_graph: dict, objective: str):
     max_sub = constraints.get("mandatory_rules", {}).get("content", {}).get("subheadline_max_chars", 120)
     max_cta = constraints.get("mandatory_rules", {}).get("content", {}).get("cta_max_chars", 25)
 
-    # Buscar ângulos do banco para o design state
+    custom_angle = _custom_angle_from_context(context_graph)
+
+    # Buscar copy explícita do briefing, depois ângulos por nicho; se não houver, usa o design state.
+    niche_angles = _get_niche_angles(niche)
     state_bank = COPY_BANK.get(design_state, COPY_BANK.get("authority"))
-    angles = state_bank.get("angles", [])
+    angles = [custom_angle] if custom_angle else niche_angles or state_bank.get("angles", [])
 
     all_warnings = []
     validated_angles = []
