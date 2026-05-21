@@ -154,6 +154,44 @@ class TestVisualMemory:
 
         assert memory.get_best_blueprint_for_state(state, niche=niche) == "good_visual_blueprint"
 
+    def test_visual_memory_v2_reports_ab_experiment_variants(self):
+        """Memória v2 deve agrupar variantes e apontar vencedor por conversão."""
+        from jarvis_agency_os.visual_memory_v2 import get_memory
+
+        memory = get_memory()
+        experiment_id = "exp_test_ab_memory"
+        first = memory.record_campaign(
+            client="AB Test Client",
+            niche="ab_niche",
+            design_state="safety",
+            blueprint="story_a",
+            score=88,
+            headline="Variant A",
+            experiment_id=experiment_id,
+            variant_label="story-v1",
+            creative_hash="exp_test_ab_memory_a",
+        )
+        second = memory.record_campaign(
+            client="AB Test Client",
+            niche="ab_niche",
+            design_state="safety",
+            blueprint="story_b",
+            score=84,
+            headline="Variant B",
+            experiment_id=experiment_id,
+            variant_label="story-v2",
+            creative_hash="exp_test_ab_memory_b",
+        )
+
+        memory.record_performance(first["id"], impressions=1000, conversions=80, spend=120)
+        memory.record_performance(second["id"], impressions=1000, conversions=30, spend=90)
+
+        report = memory.get_experiment_report(experiment_id)
+
+        assert report["variant_count"] == 2
+        assert report["winner"]["variant_label"] == "story-v1"
+        assert report["significance"]["status"] == "significant"
+
 
 class TestRanker:
     """Testa o Creative Ranker."""
@@ -765,6 +803,7 @@ class TestIntegration:
             )
 
             assert result["status"] == "success"
+            assert result["experiment_id"]
             assert result["formats"] == ["carousel"]
             assert "carousel" in result["winners"]
             assert result["winners"]["carousel"]["blueprint"] == "carousel_education_steps"
@@ -772,6 +811,7 @@ class TestIntegration:
             assert result["winners"]["carousel"]["height"] == 1080
             assert len(result["carousel_slides"]) == 3
             assert all(slide["format"] == "carousel" for slide in result["carousel_slides"])
+            assert all(record["experiment_id"] == result["experiment_id"] for record in result["memory_records"])
 
     def test_mcp_server_available(self):
         """Testa se MCP server pode ser importado."""

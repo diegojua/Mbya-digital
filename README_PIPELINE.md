@@ -15,6 +15,7 @@ Também aceita carrossel:
 O pipeline executa:
 
 - briefing estruturado em `workspace/briefing.txt`;
+- criação de `experiment_id` para rastrear variantes A/B;
 - geração de criativos HTML;
 - QA visual estático e renderizado;
 - ranking;
@@ -72,6 +73,14 @@ Registrar aprovação/reprovação:
 ./jarvisagency feedback --file workspace/generated_creatives/arquivo.html --label approved --notes "boa hierarquia"
 ./jarvisagency feedback --file workspace/generated_creatives/arquivo.html --label rejected --notes "texto muito perto da borda"
 ```
+
+## Experimentos A/B
+
+Cada execução de `run_campaign_pipeline()` retorna `experiment_id` e grava as
+variações como `feed-v1`, `story-v2`, `carousel-v3` na Visual Memory v2.
+Depois de inserir métricas reais com `record_performance()`, use
+`get_experiment_report(experiment_id)` para comparar variantes por conversão,
+custo por conversão e uma leitura aproximada de significância.
 
 ## Vídeo Para Reels/TikTok
 

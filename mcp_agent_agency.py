@@ -104,6 +104,7 @@ def executar_pipeline_completo_saas(nome_cliente: str, objetivo: str, nicho: str
     generation = result["generation"]
     ranking = result["ranking"]
     logs.append(f"✅ Briefing atualizado: {result['briefing_path']}")
+    logs.append(f"🧪 Experimento A/B: {result['experiment_id']}")
     logs.append(f"📦 Criativos gerados: {generation.get('total', 0)}")
     logs.append("🏆 Resultados por variação:")
     for creative in ranking.get("all_scored", []):

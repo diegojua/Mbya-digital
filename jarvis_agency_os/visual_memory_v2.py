@@ -44,6 +44,8 @@ def _init_database():
             action TEXT,
             file_path TEXT,
             creative_hash TEXT,
+            experiment_id TEXT,
+            variant_label TEXT,
             score_breakdown_json TEXT,
             metadata_json TEXT,
             human_approved BOOLEAN,
@@ -121,6 +123,8 @@ def _init_database():
         "action": "ALTER TABLE campaigns ADD COLUMN action TEXT",
         "file_path": "ALTER TABLE campaigns ADD COLUMN file_path TEXT",
         "creative_hash": "ALTER TABLE campaigns ADD COLUMN creative_hash TEXT",
+        "experiment_id": "ALTER TABLE campaigns ADD COLUMN experiment_id TEXT",
+        "variant_label": "ALTER TABLE campaigns ADD COLUMN variant_label TEXT",
         "score_breakdown_json": "ALTER TABLE campaigns ADD COLUMN score_breakdown_json TEXT",
         "metadata_json": "ALTER TABLE campaigns ADD COLUMN metadata_json TEXT",
         "feedback_label": "ALTER TABLE campaigns ADD COLUMN feedback_label TEXT",
@@ -145,6 +149,7 @@ def _init_database():
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_campaigns_design_state ON campaigns(design_state)")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_campaigns_blueprint ON campaigns(blueprint)")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_campaigns_format ON campaigns(format)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_campaigns_experiment_id ON campaigns(experiment_id)")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_campaigns_visual_qa_status ON campaigns(visual_qa_status)")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_campaigns_score ON campaigns(score)")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_campaigns_created_at ON campaigns(created_at)")
@@ -190,6 +195,8 @@ class VisualMemory:
                        metadata: Dict = None,
                        format: str = None, width: int = None, height: int = None,
                        visual_qa_status: str = None,
+                       experiment_id: str = None,
+                       variant_label: str = None,
                        creative_hash: str = None) -> Dict:
         """Registra uma campanha na memória."""
         conn = self._get_connection()
@@ -204,13 +211,15 @@ class VisualMemory:
             cursor.execute("""
                 INSERT INTO campaigns
                 (client, niche, objective, design_state, blueprint, score, headline,
-                 body, cta, action, file_path, creative_hash, score_breakdown_json,
+                 body, cta, action, file_path, creative_hash, experiment_id, variant_label, score_breakdown_json,
                  metadata_json, human_approved, format, width, height, visual_qa_status,
                  ctr, lead_cost)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(creative_hash) DO UPDATE SET
                     score=excluded.score,
                     action=excluded.action,
+                    experiment_id=COALESCE(excluded.experiment_id, campaigns.experiment_id),
+                    variant_label=COALESCE(excluded.variant_label, campaigns.variant_label),
                     score_breakdown_json=excluded.score_breakdown_json,
                     metadata_json=excluded.metadata_json,
                     format=COALESCE(excluded.format, campaigns.format),
@@ -222,7 +231,7 @@ class VisualMemory:
                     lead_cost=COALESCE(excluded.lead_cost, campaigns.lead_cost),
                     updated_at=CURRENT_TIMESTAMP
             """, (client, niche, objective, design_state, blueprint, score, headline,
-                  body, cta, action, file_path, creative_hash, score_breakdown_json,
+                  body, cta, action, file_path, creative_hash, experiment_id, variant_label, score_breakdown_json,
                   metadata_json, approved, format, width, height, visual_qa_status,
                   ctr, lead_cost))
 
@@ -251,6 +260,8 @@ class VisualMemory:
                 "headline": headline,
                 "action": action,
                 "format": format,
+                "experiment_id": experiment_id,
+                "variant_label": variant_label,
                 "visual_qa_status": visual_qa_status,
                 "human_approved": approved,
                 "creative_hash": creative_hash,
@@ -393,6 +404,98 @@ class VisualMemory:
         finally:
             conn.close()
 
+    def get_experiment_report(self, experiment_id: str) -> Dict:
+        """
+        Retorna leitura A/B simples por experimento.
+
+        Quando há impressões e conversões em pelo menos duas variantes, calcula
+        uma comparação z-score aproximada entre as duas melhores taxas de conversão.
+        """
+        conn = self._get_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute("""
+                SELECT
+                    COALESCE(variant_label, creative_hash, CAST(id AS TEXT)) as variant_label,
+                    creative_hash,
+                    blueprint,
+                    format,
+                    score,
+                    human_approved,
+                    visual_qa_status,
+                    COALESCE(impressions, 0) as impressions,
+                    COALESCE(clicks, 0) as clicks,
+                    COALESCE(conversions, 0) as conversions,
+                    COALESCE(spend, 0) as spend,
+                    COALESCE(revenue, 0) as revenue,
+                    ctr,
+                    lead_cost,
+                    file_path
+                FROM campaigns
+                WHERE experiment_id = ?
+                ORDER BY created_at ASC, id ASC
+            """, (experiment_id,))
+            rows = [dict(row) for row in cursor.fetchall()]
+        finally:
+            conn.close()
+
+        variants = []
+        for row in rows:
+            impressions = int(row.get("impressions") or 0)
+            conversions = int(row.get("conversions") or 0)
+            clicks = int(row.get("clicks") or 0)
+            spend = float(row.get("spend") or 0)
+            revenue = float(row.get("revenue") or 0)
+            conversion_rate = conversions / impressions if impressions > 0 else None
+            click_rate = clicks / impressions if impressions > 0 else row.get("ctr")
+            cost_per_conversion = spend / conversions if conversions > 0 else row.get("lead_cost")
+            variants.append({
+                **row,
+                "conversion_rate": conversion_rate,
+                "click_rate": click_rate,
+                "cost_per_conversion": cost_per_conversion,
+                "roas": revenue / spend if spend > 0 else None,
+            })
+
+        variants.sort(
+            key=lambda item: (
+                item["conversion_rate"] is not None,
+                item["conversion_rate"] or 0,
+                item.get("score") or 0,
+            ),
+            reverse=True,
+        )
+
+        significance = {"status": "needs_more_data"}
+        measurable = [
+            item for item in variants
+            if item.get("impressions", 0) > 0 and item.get("conversions") is not None
+        ]
+        if len(measurable) >= 2:
+            a, b = measurable[0], measurable[1]
+            n1, n2 = a["impressions"], b["impressions"]
+            x1, x2 = a["conversions"], b["conversions"]
+            p1 = x1 / n1 if n1 else 0
+            p2 = x2 / n2 if n2 else 0
+            pooled = (x1 + x2) / (n1 + n2) if (n1 + n2) else 0
+            variance = pooled * (1 - pooled) * ((1 / n1) + (1 / n2)) if n1 and n2 else 0
+            z_score = (p1 - p2) / (variance ** 0.5) if variance > 0 else 0
+            significance = {
+                "status": "significant" if abs(z_score) >= 1.96 else "inconclusive",
+                "winner": a["variant_label"] if p1 >= p2 else b["variant_label"],
+                "baseline": b["variant_label"],
+                "z_score": round(z_score, 3),
+                "confidence_approx": "95%" if abs(z_score) >= 1.96 else "<95%",
+            }
+
+        return {
+            "experiment_id": experiment_id,
+            "variant_count": len(variants),
+            "winner": variants[0] if variants else None,
+            "variants": variants,
+            "significance": significance,
+        }
+
     def get_winning_creatives(self, niche: str = None, design_state: str = None,
                               limit: int = 10) -> List[Dict]:
         """Retorna criativos vencedores combinando aprovação, score e métricas reais."""
@@ -430,11 +533,16 @@ class VisualMemory:
                               auto_approve_actions: bool = True) -> List[Dict]:
         """Registra um lote rankeado de criativos e devolve os registros salvos."""
         context = context or {}
+        experiment_id = context.get("experiment_id")
         saved = []
         for creative in creatives:
             action = creative.get("action")
             approved = True if auto_approve_actions and action == "auto_approve" else None
             visual_qa = creative.get("visual_qa") or {}
+            variant_label = creative.get("variant_label")
+            if not variant_label:
+                angle_number = int(creative.get("angle_index", 0)) + 1
+                variant_label = f"{creative.get('format') or 'creative'}-v{angle_number}"
             saved.append(self.record_campaign(
                 client=creative.get("client") or context.get("client_name") or context.get("client") or "Cliente Geral",
                 niche=creative.get("niche") or context.get("niche"),
@@ -463,6 +571,8 @@ class VisualMemory:
                 width=creative.get("width"),
                 height=creative.get("height"),
                 visual_qa_status=visual_qa.get("status"),
+                experiment_id=creative.get("experiment_id") or experiment_id,
+                variant_label=variant_label,
                 approved=approved,
             ))
         self.create_snapshot()
@@ -824,7 +934,9 @@ def record_campaign(client: str, design_state: str, blueprint: str,
                    file_path: str = None, score_breakdown: Dict = None,
                    metadata: Dict = None, format: str = None,
                    width: int = None, height: int = None,
-                   visual_qa_status: str = None) -> Dict:
+                   visual_qa_status: str = None,
+                   experiment_id: str = None,
+                   variant_label: str = None) -> Dict:
     """Wrapper compatível com a API anterior."""
     return get_memory().record_campaign(
         client, design_state, blueprint, score, headline,
@@ -833,6 +945,8 @@ def record_campaign(client: str, design_state: str, blueprint: str,
         score_breakdown=score_breakdown, metadata=metadata,
         format=format, width=width, height=height,
         visual_qa_status=visual_qa_status,
+        experiment_id=experiment_id,
+        variant_label=variant_label,
     )
 
 
@@ -889,3 +1003,8 @@ def record_performance(campaign_id: int = None,
         ctr=ctr,
         lead_cost=lead_cost,
     )
+
+
+def get_experiment_report(experiment_id: str) -> Dict:
+    """Wrapper para relatório A/B de um experimento."""
+    return get_memory().get_experiment_report(experiment_id)

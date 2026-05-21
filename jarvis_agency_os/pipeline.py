@@ -7,6 +7,8 @@ rankeia, registra aprendizado, renderiza campeões e cria landing page real.
 from __future__ import annotations
 
 import os
+import hashlib
+from datetime import datetime
 from typing import Any
 
 from graphify.engine import process_briefing
@@ -52,6 +54,17 @@ def _write_briefing(workspace_dir: str, client_name: str, niche: str, objective:
         if extra.get("whatsapp"):
             f.write(f"WhatsApp: {extra['whatsapp']}\n")
     return path
+
+
+def _build_experiment_id(client_name: str, objective: str, niche: str, formats: list[str]) -> str:
+    payload = "|".join([
+        client_name or "",
+        objective or "",
+        niche or "",
+        ",".join(formats or []),
+        datetime.now().isoformat(timespec="seconds"),
+    ])
+    return hashlib.sha1(payload.encode("utf-8")).hexdigest()[:12]
 
 
 def _top_by_format(scored: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
@@ -116,6 +129,9 @@ def run_campaign_pipeline(
     """Executa campanha completa em uma única rota."""
     workspace_dir = workspace_dir or WORKSPACE_DIR
     selected_formats = normalize_formats(formats or "feed")
+    experiment_id = (extra or {}).get("experiment_id") or _build_experiment_id(
+        client_name, objective, niche, selected_formats
+    )
     briefing_path = _write_briefing(workspace_dir, client_name, niche, objective, selected_formats, extra)
 
     generation = generate_creatives(
@@ -135,7 +151,12 @@ def run_campaign_pipeline(
     all_scored = ranking.get("all_scored", [])
     memory_records = get_memory().record_creative_batch(
         all_scored,
-        context={"client_name": client_name, "niche": niche, "objective": objective},
+        context={
+            "client_name": client_name,
+            "niche": niche,
+            "objective": objective,
+            "experiment_id": experiment_id,
+        },
     ) if all_scored else []
 
     winners = _top_by_format(all_scored)
@@ -166,6 +187,7 @@ def run_campaign_pipeline(
     result = {
         "status": "success",
         "briefing_path": briefing_path,
+        "experiment_id": experiment_id,
         "formats": selected_formats,
         "generation": generation,
         "ranking": ranking,
