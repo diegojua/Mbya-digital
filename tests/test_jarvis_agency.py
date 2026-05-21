@@ -657,6 +657,88 @@ class TestExportEngine:
             assert "ffmpeg" in result["conversion"]["install_hint"]
 
 
+class TestAnalyticsDashboard:
+    """Testa geração do dashboard analítico."""
+
+    class FakeMemory:
+        def get_history(self, limit=200, client=None, design_state=None):
+            return [{
+                "id": 1,
+                "client": "Dashboard Client",
+                "niche": "educação",
+                "format": "story",
+                "blueprint": "story_education_soft_premium",
+                "score": 91.4,
+                "visual_qa_status": "pass",
+                "human_approved": 1,
+                "experiment_id": "exp_dashboard",
+                "variant_label": "story-v1",
+                "impressions": 1000,
+                "conversions": 80,
+                "spend": 120,
+                "file_path": "/tmp/story.html",
+            }]
+
+        def get_experiment_report(self, experiment_id):
+            return {
+                "experiment_id": experiment_id,
+                "variant_count": 1,
+                "winner": {"variant_label": "story-v1"},
+                "variants": [],
+                "significance": {"status": "needs_more_data"},
+            }
+
+        def get_stats(self):
+            return {
+                "total_generated": 10,
+                "total_approved": 7,
+                "approval_rate": 70,
+                "avg_score": 88.4,
+                "avg_ctr": 0.03,
+                "avg_lead_cost": 12.5,
+            }
+
+        def get_performance_by_state(self):
+            return {
+                "safety": {
+                    "total_generated": 5,
+                    "total_approved": 4,
+                    "avg_score": 90,
+                    "avg_ctr": 0.04,
+                }
+            }
+
+        def get_trending_blueprints(self, limit=8):
+            return [("story_education_soft_premium", 3, 91.2)]
+
+        def get_winning_creatives(self, niche=None, design_state=None, limit=8):
+            return self.get_history(limit=limit)
+
+    def test_dashboard_data_and_html_render(self):
+        from jarvis_agency_os.analytics_dashboard import build_dashboard_data, render_dashboard_html
+
+        data = build_dashboard_data(memory=self.FakeMemory(), limit=4)
+        html = render_dashboard_html(data)
+
+        assert data["stats"]["total_generated"] == 10
+        assert data["experiments"][0]["experiment_id"] == "exp_dashboard"
+        assert "JarvisAgency Analytics" in html
+        assert "story_education_soft_premium" in html
+
+    def test_write_dashboard_outputs_files(self):
+        from jarvis_agency_os.analytics_dashboard import write_dashboard
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            html_path = os.path.join(tmpdir, "dashboard.html")
+            json_path = os.path.join(tmpdir, "dashboard.json")
+
+            result = write_dashboard(html_path, json_path=json_path, memory=self.FakeMemory())
+
+            assert result["status"] == "success"
+            assert os.path.exists(html_path)
+            assert os.path.exists(json_path)
+
+
 class TestGraphify:
     """Testa o Graphify Engine."""
 

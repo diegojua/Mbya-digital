@@ -82,6 +82,18 @@ Depois de inserir métricas reais com `record_performance()`, use
 `get_experiment_report(experiment_id)` para comparar variantes por conversão,
 custo por conversão e uma leitura aproximada de significância.
 
+## Dashboard Analítico
+
+Gerar um painel HTML local com KPIs, performance por design state, blueprints em
+alta, criativos vencedores e experimentos A/B:
+
+```bash
+./jarvisagency dashboard --output workspace/analytics_dashboard.html --json workspace/analytics_dashboard.json
+```
+
+O dashboard lê a Visual Memory v2 (`visual_memory.db`) e não depende de Grafana,
+Superset ou APIs externas. O JSON exportado pode alimentar essas ferramentas depois.
+
 ## Vídeo Para Reels/TikTok
 
 O `ExportManager.export_for_tiktok_ads()` aceita MP4 pronto ou PNG/JPG renderizado.

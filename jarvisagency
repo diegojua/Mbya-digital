@@ -11,6 +11,7 @@ Uso rapido:
   ./jarvisagency pipeline "Amar" "conversão" --nicho "educação infantil" --formatos feed,story,carrossel
   ./jarvisagency qa caminho/arte.html
   ./jarvisagency feedback --file caminho/arte.html --label approved
+  ./jarvisagency dashboard --output workspace/analytics_dashboard.html
   ./jarvisagency campanha "Cliente" "Objetivo" --nicho "odonto"
   ./jarvisagency server
 """
@@ -133,6 +134,18 @@ def cmd_feedback(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_dashboard(args: argparse.Namespace) -> int:
+    from jarvis_agency_os.analytics_dashboard import write_dashboard
+
+    result = write_dashboard(
+        output_path=args.output,
+        json_path=args.json,
+        limit=args.limit,
+    )
+    _print_result(result)
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="jarvisagency",
@@ -183,6 +196,12 @@ def build_parser() -> argparse.ArgumentParser:
     p_feedback.add_argument("--label", required=True, help="approved, rejected, ajustado, etc.")
     p_feedback.add_argument("--notes", default="")
     p_feedback.set_defaults(func=cmd_feedback)
+
+    p_dashboard = sub.add_parser("dashboard", help="Gera dashboard HTML da Visual Memory v2.")
+    p_dashboard.add_argument("--output", default="workspace/analytics_dashboard.html")
+    p_dashboard.add_argument("--json", default=None, help="Opcional: salva o payload consolidado em JSON.")
+    p_dashboard.add_argument("--limit", type=int, default=8)
+    p_dashboard.set_defaults(func=cmd_dashboard)
 
     return parser
 
