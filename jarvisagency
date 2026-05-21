@@ -12,6 +12,7 @@ Uso rapido:
   ./jarvisagency qa caminho/arte.html
   ./jarvisagency feedback --file caminho/arte.html --label approved
   ./jarvisagency dashboard --output workspace/analytics_dashboard.html
+  ./jarvisagency publish-plan --asset caminho/arte.png --caption "Legenda"
   ./jarvisagency campanha "Cliente" "Objetivo" --nicho "odonto"
   ./jarvisagency server
 """
@@ -146,6 +147,23 @@ def cmd_dashboard(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_publish_plan(args: argparse.Namespace) -> int:
+    from jarvis_agency_os.publication_queue import schedule_publication
+
+    result = schedule_publication(
+        asset_path=args.asset,
+        caption=args.caption,
+        platform=args.platform,
+        campaign_name=args.campaign,
+        scheduled_at=args.scheduled_at,
+        dispatch_now=args.dispatch_now,
+        dry_run=not args.live,
+        endpoint=args.endpoint,
+    )
+    _print_result(result)
+    return 0 if result.get("status") == "queued" else 1
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="jarvisagency",
@@ -202,6 +220,17 @@ def build_parser() -> argparse.ArgumentParser:
     p_dashboard.add_argument("--json", default=None, help="Opcional: salva o payload consolidado em JSON.")
     p_dashboard.add_argument("--limit", type=int, default=8)
     p_dashboard.set_defaults(func=cmd_dashboard)
+
+    p_publish = sub.add_parser("publish-plan", help="Agenda publicação em fila local e opcionalmente dispara webhook.")
+    p_publish.add_argument("--asset", required=True)
+    p_publish.add_argument("--caption", required=True)
+    p_publish.add_argument("--platform", default="meta_ads")
+    p_publish.add_argument("--campaign", default="campaign")
+    p_publish.add_argument("--scheduled-at", default=None)
+    p_publish.add_argument("--endpoint", default=None)
+    p_publish.add_argument("--dispatch-now", action="store_true")
+    p_publish.add_argument("--live", action="store_true", help="Envia webhook real; sem isso roda em dry-run.")
+    p_publish.set_defaults(func=cmd_publish_plan)
 
     return parser
 

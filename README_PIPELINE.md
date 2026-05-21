@@ -101,6 +101,18 @@ Quando `ffmpeg` está instalado, imagens estáticas viram MP4 vertical de 15 seg
 em 1080x1920. Sem `ffmpeg`, o retorno vem como `conversion_unavailable` com o
 comando de conversão sugerido.
 
+## Fila De Publicação
+
+Preparar uma publicação para Meta/Instagram sem enviar nada por acidente:
+
+```bash
+./jarvisagency publish-plan --asset workspace/rendered_winners/winner_story.png --caption "Nova campanha no ar" --campaign "Amar"
+```
+
+O comando salva um job em `workspace/publication_queue.jsonl`. Para testar um
+webhook em dry-run, use `--dispatch-now`; para envio real, configure um endpoint
+e passe `--live`.
+
 ## Direção Técnica
 
 Use `jarvis_agency_os.pipeline.run_campaign_pipeline()` como entrada principal em novas integrações. Evite criar fluxos paralelos que chamem Graphify, Xquads, Ranker e Landing Engine manualmente.

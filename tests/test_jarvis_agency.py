@@ -739,6 +739,42 @@ class TestAnalyticsDashboard:
             assert os.path.exists(json_path)
 
 
+class TestPublicationQueue:
+    """Testa fila local e webhooks de publicação."""
+
+    def test_schedule_publication_writes_queue(self):
+        from jarvis_agency_os.publication_queue import load_publication_queue, schedule_publication
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            queue_path = os.path.join(tmpdir, "publication_queue.jsonl")
+            result = schedule_publication(
+                asset_path="/tmp/story.png",
+                caption="Legenda de teste",
+                platform="meta_ads",
+                campaign_name="Campaign Test",
+                queue_path=queue_path,
+            )
+            jobs = load_publication_queue(queue_path)
+
+            assert result["status"] == "queued"
+            assert len(jobs) == 1
+            assert jobs[0]["caption"] == "Legenda de teste"
+            assert jobs[0]["platform"] == "meta_ads"
+
+    def test_dispatch_webhook_defaults_to_dry_run(self):
+        from jarvis_agency_os.publication_queue import build_publication_payload, dispatch_webhook
+
+        payload = build_publication_payload(
+            asset_path="/tmp/feed.png",
+            caption="Legenda",
+            campaign_name="Dry Run",
+        )
+        result = dispatch_webhook(payload)
+
+        assert result["status"] == "dry_run"
+        assert result["payload"]["campaign_name"] == "Dry Run"
+
+
 class TestGraphify:
     """Testa o Graphify Engine."""
 
