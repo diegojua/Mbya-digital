@@ -913,6 +913,56 @@ class VisualMemory:
         finally:
             conn.close()
 
+    def backup_database(self, output_path: str = None) -> str:
+        """Cria uma cópia consistente do SQLite usando a API nativa de backup."""
+        if output_path is None:
+            output_path = os.path.join(
+                BACKUP_DIR,
+                f"visual_memory_{datetime.now().strftime('%Y%m%d_%H%M%S')}.db",
+            )
+
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        source = self._get_connection()
+        target = sqlite3.connect(output_path)
+        try:
+            source.backup(target)
+            return output_path
+        finally:
+            target.close()
+            source.close()
+
+    def create_full_backup(self, output_dir: str = None) -> Dict:
+        """Gera backup JSON + réplica SQLite e registra no audit log."""
+        output_dir = output_dir or BACKUP_DIR
+        os.makedirs(output_dir, exist_ok=True)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        json_path = os.path.join(output_dir, f"visual_memory_{timestamp}.json")
+        sqlite_path = os.path.join(output_dir, f"visual_memory_{timestamp}.db")
+
+        exported_json = self.export_to_json(json_path)
+        exported_db = self.backup_database(sqlite_path)
+
+        conn = self._get_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute("""
+                INSERT INTO audit_log (action, details_json)
+                VALUES (?, ?)
+            """, ("create_full_backup", json.dumps({
+                "json_path": exported_json,
+                "sqlite_path": exported_db,
+            }, ensure_ascii=False)))
+            conn.commit()
+        finally:
+            conn.close()
+
+        return {
+            "status": "success",
+            "json_path": exported_json,
+            "sqlite_path": exported_db,
+            "created_at": datetime.now().isoformat(),
+        }
+
 
 # Singleton instance
 _instance = None
@@ -1008,3 +1058,8 @@ def record_performance(campaign_id: int = None,
 def get_experiment_report(experiment_id: str) -> Dict:
     """Wrapper para relatório A/B de um experimento."""
     return get_memory().get_experiment_report(experiment_id)
+
+
+def create_full_backup(output_dir: str = None) -> Dict:
+    """Wrapper para backup JSON + SQLite."""
+    return get_memory().create_full_backup(output_dir=output_dir)

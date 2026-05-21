@@ -13,6 +13,7 @@ Uso rapido:
   ./jarvisagency feedback --file caminho/arte.html --label approved
   ./jarvisagency dashboard --output workspace/analytics_dashboard.html
   ./jarvisagency publish-plan --asset caminho/arte.png --caption "Legenda"
+  ./jarvisagency memory-backup --output-dir workspace/backups
   ./jarvisagency campanha "Cliente" "Objetivo" --nicho "odonto"
   ./jarvisagency server
 """
@@ -164,6 +165,14 @@ def cmd_publish_plan(args: argparse.Namespace) -> int:
     return 0 if result.get("status") == "queued" else 1
 
 
+def cmd_memory_backup(args: argparse.Namespace) -> int:
+    from jarvis_agency_os.visual_memory_v2 import create_full_backup
+
+    result = create_full_backup(output_dir=args.output_dir)
+    _print_result(result)
+    return 0 if result.get("status") == "success" else 1
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="jarvisagency",
@@ -231,6 +240,10 @@ def build_parser() -> argparse.ArgumentParser:
     p_publish.add_argument("--dispatch-now", action="store_true")
     p_publish.add_argument("--live", action="store_true", help="Envia webhook real; sem isso roda em dry-run.")
     p_publish.set_defaults(func=cmd_publish_plan)
+
+    p_backup = sub.add_parser("memory-backup", help="Gera backup JSON e réplica SQLite da Visual Memory v2.")
+    p_backup.add_argument("--output-dir", default="workspace/backups")
+    p_backup.set_defaults(func=cmd_memory_backup)
 
     return parser
 

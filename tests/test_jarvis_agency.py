@@ -192,6 +192,20 @@ class TestVisualMemory:
         assert report["winner"]["variant_label"] == "story-v1"
         assert report["significance"]["status"] == "significant"
 
+    def test_visual_memory_v2_creates_full_backup(self):
+        """Backup completo deve gerar JSON e réplica SQLite."""
+        from jarvis_agency_os.visual_memory_v2 import get_memory
+
+        memory = get_memory()
+        with tempfile.TemporaryDirectory() as tmpdir:
+            result = memory.create_full_backup(output_dir=tmpdir)
+
+            assert result["status"] == "success"
+            assert os.path.exists(result["json_path"])
+            assert os.path.exists(result["sqlite_path"])
+            assert result["json_path"].endswith(".json")
+            assert result["sqlite_path"].endswith(".db")
+
 
 class TestRanker:
     """Testa o Creative Ranker."""

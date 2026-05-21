@@ -94,6 +94,17 @@ alta, criativos vencedores e experimentos A/B:
 O dashboard lê a Visual Memory v2 (`visual_memory.db`) e não depende de Grafana,
 Superset ou APIs externas. O JSON exportado pode alimentar essas ferramentas depois.
 
+## Backup Da Memória
+
+Criar backup completo da Visual Memory v2 em JSON e réplica SQLite:
+
+```bash
+./jarvisagency memory-backup --output-dir workspace/backups
+```
+
+O backup JSON facilita inspeção e migração futura para PostgreSQL. A cópia
+SQLite preserva o banco pronto para restauração local.
+
 ## Vídeo Para Reels/TikTok
 
 O `ExportManager.export_for_tiktok_ads()` aceita MP4 pronto ou PNG/JPG renderizado.
