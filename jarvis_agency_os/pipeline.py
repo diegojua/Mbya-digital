@@ -63,6 +63,12 @@ def _top_by_format(scored: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
     return top
 
 
+def _slides_by_format(scored: list[dict[str, Any]], format_name: str, limit: int = 3) -> list[dict[str, Any]]:
+    """Seleciona múltiplos criativos do mesmo formato para pacotes como carrossel."""
+    slides = [creative for creative in scored if creative.get("format") == format_name]
+    return slides[:limit]
+
+
 def _render_winners(workspace_dir: str, winners: dict[str, dict[str, Any]]) -> dict[str, Any]:
     output_dir = os.path.join(workspace_dir, "rendered_winners")
     os.makedirs(output_dir, exist_ok=True)
@@ -75,6 +81,24 @@ def _render_winners(workspace_dir: str, winners: dict[str, dict[str, Any]]) -> d
             width=creative.get("width", 1080),
             height=creative.get("height", 1080),
         )
+    return rendered
+
+
+def _render_carousel_slides(workspace_dir: str, slides: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    output_dir = os.path.join(workspace_dir, "rendered_winners", "carousel")
+    os.makedirs(output_dir, exist_ok=True)
+    rendered = []
+    for index, creative in enumerate(slides, start=1):
+        output_path = os.path.join(output_dir, f"slide_{index:02d}_{creative['blueprint']}.png")
+        result = render_html_to_png(
+            creative["file"],
+            output_path,
+            width=creative.get("width", 1080),
+            height=creative.get("height", 1080),
+        )
+        result["slide"] = index
+        result["creative_file"] = creative["file"]
+        rendered.append(result)
     return rendered
 
 
@@ -115,7 +139,13 @@ def run_campaign_pipeline(
     ) if all_scored else []
 
     winners = _top_by_format(all_scored)
+    carousel_slides = _slides_by_format(all_scored, "carousel", limit=3) if "carousel" in selected_formats else []
     rendered = _render_winners(workspace_dir, winners) if render_winners and winners else {}
+    rendered_carousel_slides = (
+        _render_carousel_slides(workspace_dir, carousel_slides)
+        if render_winners and carousel_slides
+        else []
+    )
 
     landing = None
     if include_landing:
@@ -140,7 +170,9 @@ def run_campaign_pipeline(
         "generation": generation,
         "ranking": ranking,
         "winners": winners,
+        "carousel_slides": carousel_slides,
         "rendered_winners": rendered,
+        "rendered_carousel_slides": rendered_carousel_slides,
         "landing": landing,
         "memory_records": memory_records,
         "memory_stats": get_memory().get_stats(),

@@ -6,6 +6,12 @@ Rota canônica atual:
 ./jarvisagency pipeline "Amar" "conversão" --nicho "educação infantil" --formatos feed,story
 ```
 
+Também aceita carrossel:
+
+```bash
+./jarvisagency pipeline "Amar" "conversão" --nicho "educação infantil" --formatos feed,story,carrossel
+```
+
 O pipeline executa:
 
 - briefing estruturado em `workspace/briefing.txt`;
@@ -30,8 +36,19 @@ A pasta `exports/<campanha_timestamp>/` organiza:
 
 - `feed/`
 - `story/`
+- `carousel/`
 - `landing/`
 - `manifests/campaign_export_manifest.json`
+
+Quando `carrossel` é solicitado, o pipeline também expõe `carousel_slides`
+e renderiza múltiplos arquivos em `rendered_winners/carousel/` antes de copiar
+o pacote para `exports/<campanha_timestamp>/carousel/`.
+
+No log final do comando, confira:
+
+- `Carrossel renderizado: 3/3 slides`
+- `Export final: workspace/exports/<campanha_timestamp>`
+- `Pacote de carrossel: 3 slides no export`
 
 ## QA Manual
 

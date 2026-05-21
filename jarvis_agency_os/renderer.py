@@ -1,6 +1,6 @@
 """
 Playwright Renderer — Renderiza HTML blueprints hidratados em PNG de alta qualidade.
-Suporta feed (1080x1080), story (1080x1920) e landing page (1440xfull).
+Suporta feed/carrossel (1080x1080), story (1080x1920) e landing page (1440xfull).
 """
 import os
 import subprocess

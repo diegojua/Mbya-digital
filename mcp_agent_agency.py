@@ -114,8 +114,18 @@ def executar_pipeline_completo_saas(nome_cliente: str, objetivo: str, nicho: str
         )
     for format_name, creative in result.get("winners", {}).items():
         logs.append(f"📸 Campeão {format_name}: {creative['file']}")
+    carousel_slides = result.get("rendered_carousel_slides") or []
+    if carousel_slides:
+        rendered_count = sum(1 for slide in carousel_slides if slide.get("status") == "success")
+        logs.append(f"🎞️ Carrossel renderizado: {rendered_count}/{len(carousel_slides)} slides")
     if result.get("landing"):
         logs.append(f"🌐 Landing gerada: {result['landing']['file']}")
+    if result.get("campaign_export"):
+        export = result["campaign_export"]
+        logs.append(f"📁 Export final: {export.get('export_dir')}")
+        carousel_export = (export.get("formats") or {}).get("carousel") or {}
+        if carousel_export.get("slides"):
+            logs.append(f"📦 Pacote de carrossel: {len(carousel_export['slides'])} slides no export")
     logs.append(f"🧠 Memória atualizada: {len(result.get('memory_records', []))} registros")
 
     return "\n".join(logs) + "\n\n🎉 [SUCESSO] Campanha finalizada pelo Campaign Pipeline."

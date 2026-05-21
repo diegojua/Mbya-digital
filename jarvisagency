@@ -8,6 +8,7 @@ Uso rapido:
   ./jarvisagency amar
   ./jarvisagency design-brief --nicho "educação infantil" --cliente "Amar"
   ./jarvisagency pipeline "Cliente" "Objetivo" --nicho "advocacia" --formatos feed,story
+  ./jarvisagency pipeline "Amar" "conversão" --nicho "educação infantil" --formatos feed,story,carrossel
   ./jarvisagency qa caminho/arte.html
   ./jarvisagency feedback --file caminho/arte.html --label approved
   ./jarvisagency campanha "Cliente" "Objetivo" --nicho "odonto"
@@ -161,7 +162,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_pipeline.add_argument("cliente")
     p_pipeline.add_argument("objetivo")
     p_pipeline.add_argument("--nicho", default="geral")
-    p_pipeline.add_argument("--formatos", default="feed", help="Ex: feed,story")
+    p_pipeline.add_argument("--formatos", default="feed", help="Ex: feed,story,carrossel")
     p_pipeline.set_defaults(func=cmd_pipeline)
 
     p_campanha = sub.add_parser("campanha", help="Executa a campanha integrada.")

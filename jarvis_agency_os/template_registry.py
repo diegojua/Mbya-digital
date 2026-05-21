@@ -78,6 +78,17 @@ TEMPLATE_REGISTRY: dict[str, dict[str, Any]] = {
         "requires_image": True,
         "description": "Dark overlay cinematográfico com headline grande.",
     },
+    "carousel_education_steps": {
+        "file": "carousel_education_steps.html",
+        "format": "carousel",
+        "family": "education_carousel_steps",
+        "width": 1080,
+        "height": 1080,
+        "best_for": ["educational", "safety", "performance"],
+        "niche_only": ["educa", "escola", "pedagog", "infantil", "reforço", "reforco"],
+        "requires_image": True,
+        "description": "Slide de carrossel educacional com problema, benefício e CTA visualmente limpos.",
+    },
     "story_premium_editorial": {
         "file": "story_premium_editorial.html",
         "format": "story",
@@ -116,6 +127,7 @@ TEMPLATE_REGISTRY: dict[str, dict[str, Any]] = {
 FORMAT_DEFAULTS = {
     "feed": {"width": 1080, "height": 1080},
     "story": {"width": 1080, "height": 1920},
+    "carousel": {"width": 1080, "height": 1080},
     "landing": {"width": 1440, "height": 1800},
 }
 
@@ -136,6 +148,10 @@ def normalize_formats(value: Any) -> list[str]:
         "stories": "story",
         "instagram_story": "story",
         "vertical": "story",
+        "carousel": "carousel",
+        "carrossel": "carousel",
+        "instagram_carousel": "carousel",
+        "instagram_carrossel": "carousel",
         "lp": "landing",
         "landing_page": "landing",
         "landpage": "landing",

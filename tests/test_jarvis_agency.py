@@ -371,6 +371,7 @@ class TestTemplateRegistry:
         from jarvis_agency_os.template_registry import normalize_formats
 
         assert normalize_formats("instagram_feed, stories") == ["feed", "story"]
+        assert normalize_formats("carrossel, landing_page") == ["carousel", "landing"]
         assert normalize_formats(None) == ["feed"]
 
     def test_select_story_template(self):
@@ -396,6 +397,17 @@ class TestTemplateRegistry:
         )
 
         assert selected[0] == "feed_education_soft_premium"
+
+    def test_select_education_carousel_template_first(self):
+        from jarvis_agency_os.template_registry import select_templates
+
+        selected = select_templates(
+            "safety",
+            niche="educação infantil acompanhamento pedagógico",
+            formats=["carousel"],
+        )
+
+        assert selected[0] == "carousel_education_steps"
 
     def test_select_legal_story_template_first(self):
         from jarvis_agency_os.template_registry import select_templates
@@ -562,6 +574,32 @@ class TestExportEngine:
             assert os.path.exists(result["manifest_path"])
             assert result["formats"]["story"]["status"] == "success"
 
+    def test_export_campaign_artifacts_copies_carousel_slides(self):
+        from jarvis_agency_os.export_engine import export_campaign_artifacts
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            winner = os.path.join(tmpdir, "winner_carousel.png")
+            slide_1 = os.path.join(tmpdir, "slide_01.png")
+            slide_2 = os.path.join(tmpdir, "slide_02.png")
+            Path(winner).write_bytes(b"fakepng")
+            Path(slide_1).write_bytes(b"fakepng")
+            Path(slide_2).write_bytes(b"fakepng")
+
+            result = export_campaign_artifacts({
+                "winners": {"carousel": {"client": "Carousel Export", "blueprint": "carousel_education_steps"}},
+                "rendered_winners": {"carousel": {"status": "success", "path": winner}},
+                "rendered_carousel_slides": [
+                    {"status": "success", "path": slide_1, "slide": 1},
+                    {"status": "success", "path": slide_2, "slide": 2},
+                ],
+                "landing": {},
+            }, tmpdir)
+
+            assert result["status"] == "success"
+            assert result["formats"]["carousel"]["status"] == "success"
+            assert len(result["formats"]["carousel"]["slides"]) == 2
+            assert all(os.path.exists(slide["path"]) for slide in result["formats"]["carousel"]["slides"])
+
 
 class TestGraphify:
     """Testa o Graphify Engine."""
@@ -691,6 +729,31 @@ class TestIntegration:
                 "Agende avaliação",
                 "Falar no WhatsApp",
             }
+
+    def test_campaign_pipeline_generates_education_carousel(self):
+        """Carrossel deve ser um formato de campanha selecionável e rankeável."""
+        from jarvis_agency_os.pipeline import run_campaign_pipeline
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            result = run_campaign_pipeline(
+                client_name="Amar Carousel",
+                objective="conversão",
+                niche="educação infantil acompanhamento pedagógico",
+                workspace_dir=tmpdir,
+                formats="carrossel",
+                include_landing=False,
+                render_winners=False,
+                export_campaign=False,
+            )
+
+            assert result["status"] == "success"
+            assert result["formats"] == ["carousel"]
+            assert "carousel" in result["winners"]
+            assert result["winners"]["carousel"]["blueprint"] == "carousel_education_steps"
+            assert result["winners"]["carousel"]["width"] == 1080
+            assert result["winners"]["carousel"]["height"] == 1080
+            assert len(result["carousel_slides"]) == 3
+            assert all(slide["format"] == "carousel" for slide in result["carousel_slides"])
 
     def test_mcp_server_available(self):
         """Testa se MCP server pode ser importado."""

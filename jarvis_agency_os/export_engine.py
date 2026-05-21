@@ -90,6 +90,30 @@ def export_campaign_artifacts(pipeline_result: Dict, workspace_dir: str) -> Dict
             "path": target_path,
         }
 
+    rendered_carousel_slides = pipeline_result.get("rendered_carousel_slides") or []
+    if rendered_carousel_slides:
+        carousel_dir = os.path.join(base_dir, "carousel")
+        os.makedirs(carousel_dir, exist_ok=True)
+        exported["formats"].setdefault("carousel", {"status": "success", "slides": []})
+        exported["formats"]["carousel"].setdefault("slides", [])
+        for slide_result in rendered_carousel_slides:
+            source_path = slide_result.get("path")
+            if not source_path or not os.path.exists(source_path):
+                exported["formats"]["carousel"]["slides"].append({
+                    "status": "missing_render",
+                    "slide": slide_result.get("slide"),
+                    "source": source_path,
+                })
+                continue
+            target_path = os.path.join(carousel_dir, os.path.basename(source_path))
+            shutil.copy2(source_path, target_path)
+            exported["formats"]["carousel"]["slides"].append({
+                "status": "success",
+                "slide": slide_result.get("slide"),
+                "source": source_path,
+                "path": target_path,
+            })
+
     landing = pipeline_result.get("landing") or {}
     if landing.get("file") and os.path.exists(landing["file"]):
         landing_dir = os.path.join(base_dir, "landing")
