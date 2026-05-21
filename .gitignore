@@ -35,3 +35,6 @@ gerar_ad_*.py
 # External/cloned toolkits kept outside this repository history
 pm-claude-skills/
 xquads-squads/
+
+# Local QA captures
+development_landpages/screenshots/
