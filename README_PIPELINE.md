@@ -73,6 +73,13 @@ Registrar aprovação/reprovação:
 ./jarvisagency feedback --file workspace/generated_creatives/arquivo.html --label rejected --notes "texto muito perto da borda"
 ```
 
+## Vídeo Para Reels/TikTok
+
+O `ExportManager.export_for_tiktok_ads()` aceita MP4 pronto ou PNG/JPG renderizado.
+Quando `ffmpeg` está instalado, imagens estáticas viram MP4 vertical de 15 segundos
+em 1080x1920. Sem `ffmpeg`, o retorno vem como `conversion_unavailable` com o
+comando de conversão sugerido.
+
 ## Direção Técnica
 
 Use `jarvis_agency_os.pipeline.run_campaign_pipeline()` como entrada principal em novas integrações. Evite criar fluxos paralelos que chamem Graphify, Xquads, Ranker e Landing Engine manualmente.

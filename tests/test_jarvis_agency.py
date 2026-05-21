@@ -600,6 +600,24 @@ class TestExportEngine:
             assert len(result["formats"]["carousel"]["slides"]) == 2
             assert all(os.path.exists(slide["path"]) for slide in result["formats"]["carousel"]["slides"])
 
+    def test_tiktok_export_reports_missing_ffmpeg_for_static_image(self, monkeypatch):
+        from jarvis_agency_os import export_engine
+        from jarvis_agency_os.export_engine import ExportManager
+
+        monkeypatch.setattr(export_engine.shutil, "which", lambda _name: None)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            image_path = os.path.join(tmpdir, "story.png")
+            Path(image_path).write_bytes(b"fakepng")
+
+            manager = ExportManager(tmpdir)
+            result = manager.export_for_tiktok_ads(image_path, "Video Test")
+
+            assert result["status"] == "conversion_unavailable"
+            assert result["platform"] == "tiktok_ads"
+            assert result["conversion"]["status"] == "unavailable"
+            assert "ffmpeg" in result["conversion"]["install_hint"]
+
 
 class TestGraphify:
     """Testa o Graphify Engine."""

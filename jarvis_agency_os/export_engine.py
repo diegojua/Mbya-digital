@@ -6,6 +6,7 @@ import json
 import os
 import re
 import shutil
+import subprocess
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -41,6 +42,69 @@ EXPORT_FORMATS = {
 
 def _slug(value: str) -> str:
     return re.sub(r"[^a-zA-Z0-9]+", "_", str(value or "campaign").lower()).strip("_") or "campaign"
+
+
+def create_video_from_image(image_path: str, output_path: str, duration_seconds: int = 15,
+                            width: int = 1080, height: int = 1920, fps: int = 30) -> Dict:
+    """Converte um PNG/JPG estático em MP4 vertical para Reels/TikTok usando ffmpeg."""
+    if not os.path.exists(image_path):
+        return {"status": "error", "error": f"Imagem não encontrada: {image_path}"}
+
+    ffmpeg_bin = shutil.which("ffmpeg")
+    command = [
+        "ffmpeg", "-y",
+        "-loop", "1",
+        "-i", image_path,
+        "-t", str(duration_seconds),
+        "-r", str(fps),
+        "-vf",
+        (
+            f"scale={width}:{height}:force_original_aspect_ratio=decrease,"
+            f"pad={width}:{height}:(ow-iw)/2:(oh-ih)/2,"
+            "format=yuv420p"
+        ),
+        "-c:v", "libx264",
+        "-pix_fmt", "yuv420p",
+        "-movflags", "+faststart",
+        output_path,
+    ]
+
+    if not ffmpeg_bin:
+        return {
+            "status": "unavailable",
+            "error": "ffmpeg não encontrado no ambiente.",
+            "install_hint": "Instale ffmpeg para gerar MP4 automaticamente.",
+            "conversion_command": " ".join(command),
+        }
+
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    try:
+        result = subprocess.run(
+            [ffmpeg_bin, *command[1:]],
+            capture_output=True,
+            text=True,
+            timeout=max(30, duration_seconds + 20),
+        )
+    except subprocess.TimeoutExpired:
+        return {"status": "error", "error": "Timeout ao gerar vídeo com ffmpeg."}
+
+    if result.returncode != 0:
+        return {
+            "status": "error",
+            "error": "Falha ao gerar vídeo com ffmpeg.",
+            "stderr": result.stderr[-1000:],
+            "conversion_command": " ".join(command),
+        }
+
+    return {
+        "status": "success",
+        "path": output_path,
+        "source": image_path,
+        "duration_seconds": duration_seconds,
+        "width": width,
+        "height": height,
+        "fps": fps,
+    }
 
 
 def export_campaign_artifacts(pipeline_result: Dict, workspace_dir: str) -> Dict:
@@ -276,16 +340,13 @@ class ExportManager:
             return {"error": f"Falha na exportação Google Ads: {str(e)}"}
 
     def export_for_tiktok_ads(self, video_path: str, campaign_name: str,
-                             objective: str = "traffic") -> Dict:
+                             objective: str = "traffic", duration_seconds: int = 15) -> Dict:
         """
         Exporta vídeo para TikTok Ads.
-        Nota: Requer arquivo MP4, não PNG.
+        Aceita MP4 pronto ou converte PNG/JPG para MP4 vertical quando ffmpeg estiver disponível.
         """
         if not os.path.exists(video_path):
-            return {
-                "warning": "TikTok Ads requer vídeos (MP4). PNG pode ser convertido via ffmpeg.",
-                "conversion_command": f"ffmpeg -i {video_path} -c:v libx264 -crf 23 output.mp4"
-            }
+            return {"error": f"Arquivo não encontrado: {video_path}"}
 
         try:
             export_subdir = os.path.join(self.export_dir, "tiktok_ads")
@@ -295,14 +356,34 @@ class ExportManager:
             export_filename = f"{campaign_name}_{basename}.mp4"
             export_path = os.path.join(export_subdir, export_filename)
 
-            import shutil
-            shutil.copy2(video_path, export_path)
+            source_ext = os.path.splitext(video_path)[1].lower()
+            conversion = None
+            if source_ext in {".mp4", ".mov"}:
+                shutil.copy2(video_path, export_path)
+            else:
+                conversion = create_video_from_image(
+                    video_path,
+                    export_path,
+                    duration_seconds=duration_seconds,
+                    width=1080,
+                    height=1920,
+                )
+                if conversion.get("status") != "success":
+                    return {
+                        "status": "conversion_unavailable" if conversion.get("status") == "unavailable" else "error",
+                        "platform": "tiktok_ads",
+                        "source_path": video_path,
+                        "export_path": export_path,
+                        "conversion": conversion,
+                    }
 
             metadata = {
                 "platform": "tiktok_ads",
                 "campaign_name": campaign_name,
                 "objective": objective,
                 "asset_path": export_path,
+                "source_path": video_path,
+                "duration_seconds": duration_seconds,
                 "upload_instructions": {
                     "step_1": "Ir em TikTok Ads Manager",
                     "step_2": f"Fazer upload de: {export_path}",
@@ -319,6 +400,7 @@ class ExportManager:
                 "platform": "tiktok_ads",
                 "export_path": export_path,
                 "metadata": metadata,
+                "conversion": conversion,
                 "file_size": os.path.getsize(export_path),
                 "instructions": "Faça upload em TikTok Ads Manager"
             }
