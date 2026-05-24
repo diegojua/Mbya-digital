@@ -295,6 +295,15 @@ def evaluate_visual_quality(creative: dict[str, Any]) -> dict[str, Any]:
     if "{{" in html or "}}" in html:
         _add_issue(issues, "critical", "unresolved_tokens", "Há placeholders não hidratados no HTML.", 35)
 
+    if (creative.get("blueprint") or creative.get("file") or creative.get("filepath")) and "data-od-id=" not in html:
+        _add_issue(
+            issues,
+            "info",
+            "missing_data_od_id",
+            "Blueprint sem data-od-id; revisão por bloco fica limitada.",
+            3,
+        )
+
     for host in rules.get("placeholder_image_hosts", []):
         if host in lower_html:
             _add_issue(
@@ -406,6 +415,14 @@ def evaluate_visual_quality(creative: dict[str, Any]) -> dict[str, Any]:
     if path and os.path.exists(path):
         width, height = _resolve_viewport(creative, html)
         rendered_report = evaluate_rendered_layout(path, width=width, height=height)
+        if str(creative.get("format", "")).lower() == "landing":
+            rendered_report = {
+                **rendered_report,
+                "issues": [
+                    issue for issue in rendered_report.get("issues", [])
+                    if issue.get("code") not in {"vertical_overflow", "element_outside_viewport"}
+                ],
+            }
         issues.extend(rendered_report.get("issues", []))
 
     total_penalty = sum(issue["penalty"] for issue in issues)

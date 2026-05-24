@@ -16,6 +16,28 @@ BLUEPRINTS_DIR = os.path.join(BASE_DIR, "blueprints", "creatives")
 
 
 TEMPLATE_REGISTRY: dict[str, dict[str, Any]] = {
+    "feed_mbya_premium": {
+        "file": "../mbya_feed_premium.html",
+        "format": "feed",
+        "family": "mbya_promo_offer",
+        "width": 1080,
+        "height": 1080,
+        "best_for": ["performance", "authority", "luxury"],
+        "niche_only": ["marketing", "growth", "mídia", "midia", "performance", "tráfego", "trafego", "social media", "mbya"],
+        "requires_image": False,
+        "description": "Feed promocional Mbya premium, preto/dourado, oferta de site profissional, mockups e CTA WhatsApp.",
+    },
+    "story_mbya_premium": {
+        "file": "story_mbya_premium.html",
+        "format": "story",
+        "family": "mbya_promo_offer",
+        "width": 1080,
+        "height": 1920,
+        "best_for": ["performance", "authority", "luxury", "urgency"],
+        "niche_only": ["marketing", "growth", "mídia", "midia", "performance", "tráfego", "trafego", "social media", "mbya"],
+        "requires_image": False,
+        "description": "Story promocional Mbya premium, preto/dourado, oferta de landing page, mockups e CTA WhatsApp.",
+    },
     "feed_education_soft_premium": {
         "file": "feed_education_soft_premium.html",
         "format": "feed",
@@ -37,6 +59,16 @@ TEMPLATE_REGISTRY: dict[str, dict[str, Any]] = {
         "niche_only": ["advocacia", "advogado", "juridic", "direito", "legal"],
         "requires_image": True,
         "description": "Feed jurídico boutique premium. Texto à esquerda, foto editorial à direita.",
+    },
+    "feed_professional_photo": {
+        "file": "feed_professional_photo.html",
+        "format": "feed",
+        "family": "professional_photo_ad",
+        "width": 1080,
+        "height": 1080,
+        "best_for": ["authority", "performance", "luxury", "urgency", "safety"],
+        "requires_image": True,
+        "description": "Post profissional image-first com foto full-bleed, direção editorial e CTA forte.",
     },
     "feed_split_editorial": {
         "file": "feed_split_editorial.html",
@@ -121,6 +153,16 @@ TEMPLATE_REGISTRY: dict[str, dict[str, Any]] = {
         "requires_image": True,
         "description": "Story jurídico premium com grid editorial, sinais de autoridade e CTA inferior.",
     },
+    "story_professional_photo": {
+        "file": "story_professional_photo.html",
+        "format": "story",
+        "family": "professional_vertical_photo_ad",
+        "width": 1080,
+        "height": 1920,
+        "best_for": ["authority", "performance", "luxury", "urgency", "safety"],
+        "requires_image": True,
+        "description": "Story profissional image-first com foto full-screen, overlay premium e CTA robusto.",
+    },
 }
 
 
@@ -201,7 +243,12 @@ def select_templates(
         if niche_only and not any(term in niche_lower for term in niche_only):
             continue
         if design_state in template.get("best_for", []):
-            priority = 0 if niche_only else 1
+            if niche_only:
+                priority = 0
+            elif "professional" in template.get("family", ""):
+                priority = 1
+            else:
+                priority = 2
             compatible_ranked.append((priority, template_key))
 
     compatible = [key for _, key in sorted(compatible_ranked, key=lambda item: item[0])]

@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Criação de Sites Profissionais em Petrolina e Juazeiro. Landing Pages de alta conversão, ecommerce e sistemas empresariais. Promoção: R$ 600 com domínio incluso.">
+    <meta name="keywords" content="criação de sites profissionais, desenvolvedor de sites Petrolina, desenvolvedor de sites Juazeiro, landing pages alta conversão, agência de marketing Petrolina, agência digital Juazeiro, quanto custa criar site profissional">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Mbya Marketing - Criação de Sites Profissionais em Petrolina e Juazeiro">
+    <meta property="og:description" content="Landing Page Profissional + Domínio incluso por apenas R$ 600. 60% OFF. Especialista em sites de alta conversão.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <title>Mbya Marketing | Criação de Sites Profissionais em Petrolina e Juazeiro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg-deep: #050505;
+            --bg-surface: #111111;
+            --bg-card: #1a1a1a;
+            --bg-card-hover: #222222;
+            --accent: #f5b43c;
+            --accent-light: #fcd34d;
+            --accent-dark: #d97706;
+            --text-primary: #ffffff;
+            --text-secondary: #d4d4d4;
+            --text-muted: #a1a1aa;
+            --text-dim: #71717a;
+            --border: #27272a;
+            --border-light: #3f3f46;
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            --shadow-amber: 0 20px 60px rgba(245, 180, 60, 0.15);
+            --shadow-dark: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        html { scroll-behavior: smooth; background: var(--bg-deep); }
+
+        body {
+            font-family: var(--font-main);
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            width: min(1200px, calc(100% - 48px));
+            margin: 0 auto;
+        }
+
+        /* NAV */
+        .nav {
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-mark {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, var(--accent-light), var(--accent-dark));
+            color: #000;
+            font-weight: 900;
+            font-size: 20px;
+            box-shadow: 0 8px 24px rgba(245, 180, 60, 0.25);
+        }
+
+        .brand-name {
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-sub {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.35em;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        .nav-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 999px;
+            border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+            color: var(--accent-light);
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .nav-cta:hover {
+            background: color-mix(in srgb, var(--accent) 12%, transparent);
+        }
+
+        /* HERO */
+        .hero {
+            padding: 80px 0 100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(245, 180, 60, 0.12), transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -200px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(217, 119, 6, 0.1), transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 999px;
+            border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+            background: color-mix(in srgb, var(--accent) 10%, transparent);
+            color: var(--accent-light);
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 24px;
+        }
+
+        .badge svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        h1 {
+            font-size: clamp(40px, 5.5vw, 72px);
+            font-weight: 900;
+            line-height: 0.95;
+            letter-spacing: -0.03em;
+        }
+
+        h1 .gradient {
+            background: linear-gradient(135deg, #fef3c7, var(--accent), var(--accent-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-sub {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-top: 20px;
+            max-width: 560px;
+            line-height: 1.5;
+        }
+
+        .hero-desc {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-top: 16px;
+            max-width: 540px;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 28px;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, var(--accent-light), var(--accent-dark));
+            color: #000;
+            font-size: 16px;
+            font-weight: 800;
+            text-decoration: none;
+            box-shadow: var(--shadow-amber);
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 24px 70px rgba(245, 180, 60, 0.2);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 28px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-light);
+            color: var(--text-secondary);
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: color-mix(in srgb, var(--text-primary) 5%, transparent);
+        }
+
+        .seo-tags {
+            margin-top: 32px;
+            padding: 20px;
+            border-radius: var(--radius-lg);
+            border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+            background: color-mix(in srgb, var(--bg-card) 60%, transparent);
+        }
+
+        .seo-tags-label {
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text-dim);
+            margin-bottom: 12px;
+        }
+
+        .seo-tags-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .seo-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: color-mix(in srgb, var(--bg-deep) 50%, transparent);
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .seo-tag svg {
+            width: 14px;
+            height: 14px;
+            color: var(--accent);
+        }
+
+        /* HERO VISUAL */
+        .hero-visual {
+            position: relative;
+        }
+
+        .hero-visual-glow {
+            position: absolute;
+            inset: -40px;
+            background: radial-gradient(circle at center, rgba(245, 180, 60, 0.2), transparent 70%);
+            filter: blur(40px);
+            pointer-events: none;
+        }
+
+        .hero-card {
+            position: relative;
+            border-radius: var(--radius-xl);
+            border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+            background: color-mix(in srgb, var(--bg-card) 80%, transparent);
+            padding: 20px;
+            box-shadow: var(--shadow-dark);
+        }
+
+        .hero-card-inner {
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            background: linear-gradient(180deg, var(--bg-card), var(--bg-deep));
+            padding: 24px;
+            overflow: hidden;
+        }
+
+        .slider {
+            margin-bottom: 20px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            position: relative;
+            height: 200px;
+        }
+
+        .slider-track {
+            display: flex;
+            width: 300%;
+            animation: slide 14s infinite;
+        }
+
+        .slider-track img {
+            width: 33.333%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        @keyframes slide {
+            0%, 30% { transform: translateX(0); }
+            35%, 65% { transform: translateX(-33.333%); }
+            70%, 100% { transform: translateX(-66.666%); }
+        }
+
+        .browser-dots {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .browser-dots span {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .browser-dots span:nth-child(1) { background: #ef4444; }
+        .browser-dots span:nth-child(2) { background: #eab308; }
+        .browser-dots span:nth-child(3) { background: #22c55e; }
+
+        .offer-preview {
+            padding: 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+            background: color-mix(in srgb, var(--bg-deep) 60%, transparent);
+        }
+
+        .offer-preview-label {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+        }
+
+        .offer-preview h3 {
+            font-size: 22px;
+            font-weight: 900;
+            margin-top: 8px;
+        }
+
+        .offer-preview p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        .service-tags {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .service-tag {
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: color-mix(in srgb, var(--text-primary) 3%, transparent);
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            margin-top: 20px;
+            height: 8px;
+            border-radius: 999px;
+            background: var(--border);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 76%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--accent-light), var(--accent-dark));
+        }
+
+        .progress-label {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-top: 8px;
+        }
+
+        /* FLOATING BRAND */
+        .floating-brand {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+            background: color-mix(in srgb, var(--bg-card) 85%, transparent);
+            backdrop-filter: blur(12px);
+            box-shadow: var(--shadow-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 2;
+        }
+
+        .floating-brand .brand-mark {
+            width: 36px;
+            height: 36px;
+            font-size: 16px;
+        }
+
+        .floating-brand-name {
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .floating-brand-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* METRICS */
+        .metrics {
+            padding: 60px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-deep);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .metric-card {
+            text-align: center;
+            padding: 24px 16px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            transition: all 0.2s ease;
+        }
+
+        .metric-card:hover {
+            border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+        }
+
+        .metric-icon {
+            width: 28px;
+            height: 28px;
+            margin: 0 auto 12px;
+            color: var(--accent);
+        }
+
+        .metric-value {
+            font-size: 18px;
+            font-weight: 900;
+        }
+
+        .metric-label {
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+
+        /* BENEFITS */
+        .benefits {
+            padding: 80px 0;
+            background: linear-gradient(180deg, var(--bg-deep), #16110b);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 640px;
+            margin: 0 auto 48px;
+        }
+
+        .section-label {
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            color: var(--accent);
+        }
+
+        .section-title {
+            font-size: clamp(28px, 4vw, 48px);
+            font-weight: 900;
+            line-height: 1.05;
+            margin-top: 12px;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .benefit-card {
+            padding: 28px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            transition: all 0.2s ease;
+        }
+
+        .benefit-card:hover {
+            border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+            background: var(--bg-card-hover);
+        }
+
+        .benefit-icon {
+            width: 36px;
+            height: 36px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .benefit-title {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .benefit-text {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* BANNER */
+        .banner {
+            padding: 80px 0;
+            background: linear-gradient(180deg, #16110b, var(--bg-surface));
+        }
+
+        .banner-card {
+            position: relative;
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .banner-card img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .banner-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(0,0,0,0.85), rgba(0,0,0,0.4), transparent);
+            display: flex;
+            align-items: center;
+        }
+
+        .banner-content {
+            padding: 48px;
+            max-width: 560px;
+        }
+
+        .banner-label {
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            color: var(--accent);
+        }
+
+        .banner-title {
+            font-size: clamp(28px, 4vw, 48px);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-top: 12px;
+        }
+
+        .banner-text {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-top: 16px;
+            line-height: 1.6;
+        }
+
+        /* TESTIMONIALS */
+        .testimonials {
+            padding: 80px 0;
+            background: linear-gradient(180deg, var(--bg-surface), var(--bg-deep));
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .testimonial-card {
+            padding: 28px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+        }
+
+        .stars {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+            color: #fbbf24;
+        }
+
+        .stars svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .testimonial-text {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .testimonial-text::before { content: '"'; }
+        .testimonial-text::after { content: '"'; }
+
+        .testimonial-name {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--accent);
+            margin-top: 20px;
+        }
+
+        /* OFFER */
+        .offer {
+            padding: 80px 0 100px;
+            background: var(--bg-deep);
+        }
+
+        .offer-card {
+            position: relative;
+            border-radius: var(--radius-xl);
+            border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-deep));
+            padding: 48px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .offer-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(245, 180, 60, 0.12), transparent 60%);
+            pointer-events: none;
+        }
+
+        .offer-stars {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            color: #fbbf24;
+            margin-bottom: 16px;
+        }
+
+        .offer-stars svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .offer-title {
+            font-size: clamp(24px, 4vw, 40px);
+            font-weight: 900;
+        }
+
+        .offer-price {
+            margin-top: 16px;
+        }
+
+        .offer-price-old {
+            font-size: 20px;
+            color: var(--text-dim);
+            text-decoration: line-through;
+        }
+
+        .offer-price-new {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 900;
+            color: var(--accent);
+            display: block;
+            margin-top: 4px;
+        }
+
+        .offer-discount {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 6px 16px;
+            border-radius: 999px;
+            background: color-mix(in srgb, var(--accent) 15%, transparent);
+            color: var(--accent-light);
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .offer-desc {
+            font-size: 16px;
+            color: var(--text-muted);
+            max-width: 560px;
+            margin: 20px auto 0;
+            line-height: 1.6;
+        }
+
+        .offer-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+        }
+
+        .urgency {
+            margin-top: 24px;
+            font-size: 14px;
+            color: var(--text-dim);
+        }
+
+        .urgency strong {
+            color: var(--accent);
+        }
+
+        /* FOOTER */
+        .footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .hero-visual {
+                order: -1;
+            }
+
+            .floating-brand {
+                display: none;
+            }
+
+            .benefits-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .testimonials-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: min(100% - 32px, 640px);
+            }
+
+            .nav-cta {
+                display: none;
+            }
+
+            .hero {
+                padding: 48px 0 60px;
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .banner-card img {
+                height: 300px;
+            }
+
+            .banner-content {
+                padding: 32px;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .offer-card {
+                padding: 32px 24px;
+            }
+
+            .slider {
+                height: 160px;
+            }
+
+            .slider-track img {
+                height: 160px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-actions {
+                flex-direction: column;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .offer-actions {
+                flex-direction: column;
+            }
+
+            .offer-actions .btn-primary,
+            .offer-actions .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.94); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .animate-fade-up {
+            animation: fadeUp 0.7s ease-out both;
+        }
+
+        .animate-scale-in {
+            animation: scaleIn 0.8s ease-out 0.15s both;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <!-- NAV -->
+        <nav class="container nav">
+            <div class="brand">
+                <div class="brand-mark">M</div>
+                <div>
+                    <div class="brand-name">Mbya</div>
+                    <div class="brand-sub">MARKETING</div>
+                </div>
+            </div>
+            <a class="nav-cta" href="https://wa.me/5574981202260?text=Ol%C3%A1!%20Quero%20aproveitar%20a%20promo%C3%A7%C3%A3o%20da%20Landing%20Page%20por%20R%24600%20com%20dom%C3%ADnio%20incluso.">
+                Falar no WhatsApp
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/></svg>
+            </a>
+        </nav>
+
+        <!-- HERO -->
+        <section class="container hero">
+            <div class="hero-grid">
+                <div class="animate-fade-up">
+                    <div class="badge">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h8l-1 8 10-12h-8l1-8Z"/></svg>
+                        Promoção limitada: 60% de desconto
+                    </div>
+
+                    <h1>
+                        Criação de Sites Profissionais em <span class="gradient">Petrolina e Juazeiro</span>
+                    </h1>
+
+                    <p class="hero-sub">
+                        Especialista em criação de Landing Pages de alta conversão para empresários e profissionais liberais.
+                    </p>
+
+                    <p class="hero-desc">
+                        Desenvolvedor de sites profissionais em Petrolina e Juazeiro, criando páginas modernas, rápidas e preparadas para aparecer no Google e gerar mais clientes para empresas, clínicas, advogados, lojas, prestadores de serviço e negócios locais.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a class="btn-primary" href="https://wa.me/5574981202260?text=Ol%C3%A1!%20Quero%20aproveitar%20a%20promo%C3%A7%C3%A3o%20da%20Landing%20Page%20por%20R%24600%20com%20dom%C3%ADnio%20incluso.">
+                            Quero minha Landing Page
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                        </a>
+                        <a class="btn-secondary" href="#beneficios">
+                            Ver benefícios
+                        </a>
+                    </div>
+
+                    <div class="seo-tags">
+                        <p class="seo-tags-label">Pesquisas mais buscadas no Google</p>
+                        <div class="seo-tags-list">
+                            <span class="seo-tag">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12.5 10.7 15 16 9"/></svg>
+                                Criação de sites profissionais para empresas
+                            </span>
+                            <span class="seo-tag">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12.5 10.7 15 16 9"/></svg>
+                                Desenvolvedor de sites em Petrolina e Juazeiro
+                            </span>
+                            <span class="seo-tag">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12.5 10.7 15 16 9"/></svg>
+                                Quanto custa criar um site profissional
+                            </span>
+                            <span class="seo-tag">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12.5 10.7 15 16 9"/></svg>
+                                Especialista em Landing Pages de alta conversão
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-visual animate-scale-in">
+                    <div class="hero-visual-glow"></div>
+
+                    <div class="floating-brand">
+                        <div class="brand-mark">M</div>
+                        <div>
+                            <div class="floating-brand-name">Mbya Marketing</div>
+                            <div class="floating-brand-sub">Landing Pages Premium</div>
+                        </div>
+                    </div>
+
+                    <div class="hero-card">
+                        <div class="hero-card-inner">
+                            <div class="slider">
+                                <div class="slider-track">
+                                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop" alt="Dashboard empresarial para análise de marketing digital" loading="lazy">
+                                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop" alt="Desenvolvimento web profissional" loading="lazy">
+                                    <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=1200&auto=format&fit=crop" alt="Equipe criando estratégia digital para empresas" loading="lazy">
+                                </div>
+                            </div>
+
+                            <div class="browser-dots">
+                                <span></span><span></span><span></span>
+                            </div>
+
+                            <div class="offer-preview">
+                                <p class="offer-preview-label">Oferta especial</p>
+                                <h3>Landing Page otimizada para Google e vendas</h3>
+                                <p>Ideal para empresários e profissionais liberais de Petrolina e Juazeiro.</p>
+                                <div class="service-tags">
+                                    <div class="service-tag">SEO Local</div>
+                                    <div class="service-tag">Google Maps</div>
+                                    <div class="service-tag">Botão WhatsApp</div>
+                                    <div class="service-tag">Domínio incluso</div>
+                                </div>
+                            </div>
+
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                            <p class="progress-label">Estrutura otimizada para gerar ação do visitante.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- METRICS -->
+        <section class="metrics">
+            <div class="container">
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <svg class="metric-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>
+                        </svg>
+                        <p class="metric-value">Mais Leads</p>
+                        <p class="metric-label">foco em captação</p>
+                    </div>
+                    <div class="metric-card">
+                        <svg class="metric-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m3 17 6-6 4 4 8-8"/>
+                            <path d="M14 7h7v7"/>
+                        </svg>
+                        <p class="metric-value">Conversão</p>
+                        <p class="metric-label">copy estratégica</p>
+                    </div>
+                    <div class="metric-card">
+                        <svg class="metric-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                        <p class="metric-value">Entrega ágil</p>
+                        <p class="metric-label">processo objetivo</p>
+                    </div>
+                    <div class="metric-card">
+                        <svg class="metric-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+                            <path d="m9 12 2 2 4-4"/>
+                        </svg>
+                        <p class="metric-value">Premium</p>
+                        <p class="metric-label">visual profissional</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BENEFITS -->
+        <section id="beneficios" class="benefits">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-label">O que está incluso</p>
+                    <h2 class="section-title">Sites profissionais preparados para gerar clientes em Petrolina e Juazeiro</h2>
+                </div>
+
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <svg class="benefit-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="3"/>
+                            <path d="M3 9h18M9 21V9"/>
+                        </svg>
+                        <h3 class="benefit-title">Design Premium</h3>
+                        <p class="benefit-text">Layout moderno, profissional e adaptado à identidade do seu negócio. Visual de alto padrão que transmite confiança.</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <svg class="benefit-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>
+                        </svg>
+                        <h3 class="benefit-title">Domínio Incluso</h3>
+                        <p class="benefit-text">Sua landing page com domínio personalizado para fortalecer sua presença digital e autoridade no mercado.</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <svg class="benefit-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="7" y="2" width="10" height="20" rx="2"/>
+                            <path d="M11 18h2"/>
+                        </svg>
+                        <h3 class="benefit-title">100% Responsiva</h3>
+                        <p class="benefit-text">Perfeita para celular, tablet e computador, com carregamento rápido e experiência impecável em qualquer dispositivo.</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <svg class="benefit-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+                            <path d="m9 12 2 2 4-4"/>
+                        </svg>
+                        <h3 class="benefit-title">Estrutura Confiável</h3>
+                        <p class="benefit-text">Página organizada, segura e preparada para campanhas de tráfego pago no Google Ads e Meta Ads.</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <svg class="benefit-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                        <h3 class="benefit-title">SEO Local Otimizado</h3>
+                        <p class="benefit-text">Estrutura preparada para aparecer nas buscas do Google quando clientes procurarem por serviços na sua região.</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <svg class="benefit-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M13 2 3 14h8l-1 8 10-12h-8l1-8Z"/>
+                        </svg>
+                        <h3 class="benefit-title">Foco em Conversão</h3>
+                        <p class="benefit-text">Copy estratégica, CTAs posicionados e fluxo de navegação pensado para transformar visitantes em leads reais.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BANNER -->
+        <section class="banner">
+            <div class="container">
+                <div class="banner-card">
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1400&auto=format&fit=crop" alt="Equipe trabalhando em marketing digital e criação de sites" loading="lazy">
+                    <div class="banner-overlay">
+                        <div class="banner-content">
+                            <p class="banner-label">Mbya Marketing</p>
+                            <h2 class="banner-title">Sites modernos para empresas que querem crescer online.</h2>
+                            <p class="banner-text">Criação de sites profissionais, landing pages, ecommerce e sistemas empresariais para negócios que desejam autoridade digital e mais vendas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TESTIMONIALS -->
+        <section class="testimonials">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-label">O que dizem nossos clientes</p>
+                    <h2 class="section-title">Resultados que falam por si</h2>
+                </div>
+
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <div class="stars">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6 6 .9-4.5 4.4 1.1 6.2L12 16.6 6.4 19.5l1.1-6.2L3 8.9 9 8l3-6Z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6 6 .9-4.5 4.4 1.1 6.2L12 16.6 6.4 19.5l1.1-6.2L3 8.9 9 8l3-6Z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6 6 .9-4.5 4.4 1.1 6.2L12 16.6 6.4 19.5l1.1-6.2L3 8.9 9 8l3-6Z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6 6 .9-4.5 4.4 1.1 6.2L12 16.6 6.4 19.5l1.1-6.2L3 8.9 9 8l3-6Z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6 6 .9-4.5 4.4 1.1 6.2L12 16.6 6.4 19.5l1.1-6.2L3 8.9 9 8l3-6Z"/></svg>
+                        </div>
+                        <p class="testimonial-text">Página clara, bonita e pronta para receber clientes pelo WhatsApp. Meu comércio local nunca teve tanta visibilidade.</p>
+                        <p class="testimonial-name">Comércio Local</p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="stars">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6 6 .9-4.5 4.4 1.1 6.2L12 16.6 6.4 19.5l1.1-6.2L3 8.9 9 8l3-6Z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6 6 .9-4.5 4.4 1.1 6.2L12 16.6 6.4 19.5l1.1-6.2L3 8.9 9 8l3-6Z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6 6 .9-4.5 4.4 1.1 6.2L12 16.6 6.4 19.5l1.1-6.2L3 8.9 9 8l3-6Z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6 6 .9-4.5 4.4 1.1 6.2L12 16.6 6.4 19.5l1.1-6.2L3 8.9 9 8l3-6Z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6 6 .9-4.5 4.4 1.1 6.2L12 16.6 6.4 19.5l1.1-6.2L3 8.9 9 8l3-6Z"/></svg>
+                        </div>
+                        <p class="testimonial-text">Oferta organizada para transformar visitantes em pedidos de orçamento. Excelente para prestadores de serviço.</p>
+                        <p class="testimonial-name">Prestador de Serviço</p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="stars">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6 6 .9-4.5 4.4 1.1 6.2L12 16.6 6.4 19.5l1.1-6.2L3 8.9 9 8l3-6Z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6 6 .9-4.5 4.4 1.1 6.2L12 16.6 6.4 19.5l1.1-6.2L3 8.9 9 8l3-6Z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6 6 .9-4.5 4.4 1.1 6.2L12 16.6 6.4 19.5l1.1-6.2L3 8.9 9 8l3-6Z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6 6 .9-4.5 4.4 1.1 6.2L12 16.6 6.4 19.5l1.1-6.2L3 8.9 9 8l3-6Z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6 6 .9-4.5 4.4 1.1 6.2L12 16.6 6.4 19.5l1.1-6.2L3 8.9 9 8l3-6Z"/></svg>
+                        </div>
+                        <p class="testimonial-text">Presença digital profissional para campanhas de tráfego e captação. Nossa empresa cresceu muito online.</p>
+                        <p class="testimonial-name">Empresa em Crescimento</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- OFFER -->
+        <section class="offer">
+            <div class="container">
+                <div class="offer-card">
+                    <div class="offer-stars">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6 6 .9-4.5 4.4 1.1 6.2L12 16.6 6.4 19.5l1.1-6.2L3 8.9 9 8l3-6Z"/></svg>
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6 6 .9-4.5 4.4 1.1 6.2L12 16.6 6.4 19.5l1.1-6.2L3 8.9 9 8l3-6Z"/></svg>
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6 6 .9-4.5 4.4 1.1 6.2L12 16.6 6.4 19.5l1.1-6.2L3 8.9 9 8l3-6Z"/></svg>
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6 6 .9-4.5 4.4 1.1 6.2L12 16.6 6.4 19.5l1.1-6.2L3 8.9 9 8l3-6Z"/></svg>
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6 6 .9-4.5 4.4 1.1 6.2L12 16.6 6.4 19.5l1.1-6.2L3 8.9 9 8l3-6Z"/></svg>
+                    </div>
+
+                    <h2 class="offer-title">Quanto custa criar um site profissional?</h2>
+
+                    <div class="offer-price">
+                        <span class="offer-price-old">De R$ 1.500</span>
+                        <span class="offer-price-new">Por apenas R$ 600</span>
+                        <span class="offer-discount">60% OFF</span>
+                    </div>
+
+                    <p class="offer-desc">
+                        Aproveite a promoção exclusiva da Mbya Marketing e tenha uma landing page profissional com domínio incluso, estrutura SEO local e foco total em conversão para empresas e profissionais liberais em Petrolina e Juazeiro.
+                    </p>
+
+                    <div class="offer-actions">
+                        <a class="btn-primary" href="https://wa.me/5574981202260?text=Ol%C3%A1!%20Quero%20aproveitar%20a%20promo%C3%A7%C3%A3o%20da%20Landing%20Page%20por%20R%24600%20com%20dom%C3%ADnio%20incluso.">
+                            Garantir promoção agora
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/></svg>
+                        </a>
+                        <a class="btn-secondary" href="mailto:contato@mbyamarketing.com?subject=Quero minha Landing Page">
+                            Enviar por e-mail
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m22 2-7 20-4-9-9-4 20-7Z"/>
+                                <path d="M22 2 11 13"/>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <p class="urgency">
+                        <strong>⚡ Vagas limitadas</strong> — Garanta sua Landing Page antes que a promoção acabe.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="container">
+                <p>&copy; 2026 <a href="#">Mbya Marketing</a>. Todos os direitos reservados. | Criação de Sites Profissionais em Petrolina-PE e Juazeiro-BA</p>
+            </div>
+        </footer>
+    </main>
+</body>
+</html>

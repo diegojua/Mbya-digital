@@ -7,6 +7,7 @@ Uso rapido:
   ./jarvisagency advocacia
   ./jarvisagency amar
   ./jarvisagency design-brief --nicho "educação infantil" --cliente "Amar"
+  ./jarvisagency image-direction --cliente "Mbya Marketing" --nicho "marketing performance" --formatos feed,landing
   ./jarvisagency pipeline "Cliente" "Objetivo" --nicho "advocacia" --formatos feed,story
   ./jarvisagency pipeline "Amar" "conversão" --nicho "educação infantil" --formatos feed,story,carrossel
   ./jarvisagency qa caminho/arte.html
@@ -104,6 +105,26 @@ def cmd_design_brief(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_image_direction(args: argparse.Namespace) -> int:
+    from jarvis_agency_os.image_direction import build_image_manifest, save_image_manifest
+    from jarvis_agency_os.template_registry import normalize_formats
+
+    context = {
+        "client_name": args.cliente,
+        "niche": args.nicho,
+        "objective": args.objetivo,
+        "headline": args.headline or "",
+        "cta": args.cta or "",
+    }
+    formats = normalize_formats(args.formatos)
+    if args.save:
+        result = save_image_manifest(context, formats=formats)
+    else:
+        result = build_image_manifest(context, formats=formats)
+    _print_result(result)
+    return 0
+
+
 def cmd_qa(args: argparse.Namespace) -> int:
     from jarvis_agency_os.visual_qa import evaluate_visual_quality
 
@@ -197,6 +218,16 @@ def build_parser() -> argparse.ArgumentParser:
     p_design.add_argument("--cliente", default="Cliente")
     p_design.add_argument("--objetivo", default="conversão")
     p_design.set_defaults(func=cmd_design_brief)
+
+    p_img = sub.add_parser("image-direction", help="Gera prompts/manifesto de imagem por nicho e formato.")
+    p_img.add_argument("--nicho", default="geral")
+    p_img.add_argument("--cliente", default="Cliente")
+    p_img.add_argument("--objetivo", default="conversão")
+    p_img.add_argument("--formatos", default="feed", help="Ex: feed,story,landing")
+    p_img.add_argument("--headline", default="")
+    p_img.add_argument("--cta", default="")
+    p_img.add_argument("--save", action="store_true", help="Salva em workspace/project_images/<slug>/")
+    p_img.set_defaults(func=cmd_image_direction)
 
     p_pipeline = sub.add_parser("pipeline", help="Executa o pipeline SaaS completo.")
     p_pipeline.add_argument("cliente")

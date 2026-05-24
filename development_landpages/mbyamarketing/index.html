@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mbya Marketing - Landing Page Premium</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
+    * { box-sizing: border-box; }
+    html { font-family: Inter, system-ui, sans-serif; background: #050505; color: #f8fafc; }
+    body { margin: 0; min-height: 100vh; background: radial-gradient(circle at top left, rgba(255, 189, 89, 0.14), transparent 220px), radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.06), transparent 280px), #050505; }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1240px, calc(100% - 32px)); margin: 0 auto; padding: 32px 0 80px; }
+    .badge { display: inline-flex; padding: 0.75rem 1rem; border-radius: 999px; background: rgba(255, 189, 89, 0.16); color: #fbbf24; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; }
+    .hero { display: grid; gap: 40px; align-items: center; grid-template-columns: 1.2fr 0.8fr; padding-top: 20px; }
+    .hero-text h1 { font-size: clamp(2.8rem, 5vw, 4.8rem); line-height: 0.98; letter-spacing: -0.04em; margin: 24px 0 0; }
+    .hero-text p { max-width: 680px; margin-top: 24px; color: #cbd5e1; font-size: 1.05rem; line-height: 1.8; }
+    .actions { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 32px; }
+    .button-primary { display: inline-flex; align-items: center; justify-content: center; gap: 0.8rem; padding: 1rem 1.8rem; border-radius: 999px; background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #050505; font-weight: 800; box-shadow: 0 30px 80px rgba(251, 191, 36, 0.18); transition: transform 0.25s ease; }
+    .button-primary:hover { transform: translateY(-2px); }
+    .button-secondary { display: inline-flex; align-items: center; justify-content: center; padding: 1rem 1.8rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: #f8fafc; font-weight: 700; }
+    .hero-frame { position: relative; overflow: hidden; border-radius: 2rem; border: 1px solid rgba(255,255,255,0.08); background: #09090b; box-shadow: 0 40px 120px rgba(0,0,0,0.55); }
+    .hero-frame img { width: 100%; display: block; object-fit: cover; aspect-ratio: 4 / 5; }
+    .hero-pill { position: absolute; left: 24px; bottom: 24px; padding: 1rem 1.4rem; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(12px); color: #f8fafc; }
+    .hero-pill strong { display: block; font-size: 1rem; font-weight: 800; }
+    .hero-pill span { display: block; margin-top: 0.35rem; font-size: 0.9rem; color: #cbd5e1; }
+    .features { display: grid; gap: 20px; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 64px; }
+    .card { border-radius: 1.8rem; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); padding: 32px; backdrop-filter: blur(16px); }
+    .card h2 { margin: 0 0 1rem; font-size: 1.25rem; letter-spacing: -0.02em; }
+    .card p { margin: 0; color: #cbd5e1; line-height: 1.75; }
+    .grid-3 { display: grid; gap: 20px; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 64px; }
+    .metric { border-radius: 2rem; padding: 28px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); }
+    .metric strong { display: block; font-size: 2rem; font-weight: 800; line-height: 1; }
+    .metric span { display: block; margin-top: 0.75rem; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.78rem; }
+    .banner { margin-top: 88px; overflow: hidden; border-radius: 2.5rem; border: 1px solid rgba(255,255,255,0.08); background: linear-gradient(180deg, rgba(10,10,10,0.96), rgba(10,10,10,0.84)); }
+    .banner-content { display: grid; gap: 28px; grid-template-columns: 1fr 460px; align-items: center; padding: 4rem; }
+    .banner-content h2 { font-size: clamp(2.2rem, 3vw, 3.8rem); line-height: 0.98; margin: 0; }
+    .banner-content p { margin: 0; color: #cbd5e1; line-height: 1.8; font-size: 1.05rem; }
+    .banner-visual { border-radius: 2rem; overflow: hidden; min-height: 420px; }
+    .banner-visual img { width: 100%; height: 100%; object-fit: cover; }
+    .testimonials { margin-top: 88px; display: grid; gap: 24px; }
+    .testimonial { border-radius: 2rem; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); padding: 32px; }
+    .testimonial p { margin: 0 0 1.5rem; color: #cbd5e1; line-height: 1.8; }
+    .testimonial strong { display: block; color: #f8fafc; font-size: 1rem; }
+    .offer { margin-top: 96px; padding: 3rem; border-radius: 2.5rem; border: 1px solid rgba(255,255,255,0.1); background: linear-gradient(135deg, rgba(255,189,89,0.12), rgba(255,255,255,0.04)); }
+    .offer h2 { margin: 0 0 1rem; font-size: clamp(2.2rem, 3vw, 4rem); line-height: 1; }
+    .offer p { margin: 0 0 1.5rem; color: #cbd5e1; line-height: 1.8; font-size: 1.05rem; }
+    .price-chip { display: inline-flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem; border-radius: 999px; background: rgba(0,0,0,0.65); border: 1px solid rgba(255,255,255,0.08); }
+    .price-chip span { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.18em; color: #fbbf24; }
+    .price-chip strong { font-size: 2.4rem; font-weight: 900; color: #ffffff; }
+    .price-details { display: grid; gap: 12px; margin-top: 1.5rem; }
+    .price-details .detail { display: flex; justify-content: space-between; color: #cbd5e1; }
+    .price-details .detail strong { color: #f8fafc; }
+    .cta-block { margin-top: 2.5rem; display: grid; gap: 16px; align-items: start; }
+    .cta-block a { display: inline-flex; align-items: center; justify-content: center; gap: 0.9rem; padding: 1.2rem 1.8rem; border-radius: 999px; background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #050505; font-weight: 900; width: fit-content; transition: transform 0.25s ease; }
+    .cta-block a:hover { transform: translateY(-2px); }
+    .tags { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.8rem; }
+    .tag-pill { padding: 0.75rem 1rem; border-radius: 999px; background: rgba(255,255,255,0.06); color: #f8fafc; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.16em; }
+    .footer { margin-top: 120px; padding-top: 56px; border-top: 1px solid rgba(255,255,255,0.08); color: #94a3b8; font-size: 0.92rem; }
+    .subtitle { display: inline-flex; align-items: center; gap: 0.75rem; color: #fbbf24; font-size: 0.86rem; letter-spacing: 0.3em; text-transform: uppercase; }
+    .section-label { display: inline-flex; align-items: center; gap: 0.75rem; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.28em; font-size: 0.8rem; }
+    .grid-2 { display: grid; gap: 20px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    @media (max-width: 1024px) { .hero { grid-template-columns: 1fr; } .hero-frame { order: -1; } .features, .grid-3, .grid-2 { grid-template-columns: 1fr; } .banner-content { grid-template-columns: 1fr; } }
+    @media (max-width: 640px) { .container { padding: 24px 16px 60px; } .hero-text h1 { font-size: 3rem; } .hero p, .banner-content p, .testimonial p { font-size: 1rem; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <div class="hero-text">
+        <span class="badge">Oferta exclusiva Petrolina + Juazeiro</span>
+        <h1>Landing Page profissional com domínio incluso para empresas que querem crescer online.</h1>
+        <p>Mbya Marketing cria sites e landing pages premium, otimizados para SEO local, Google Ads e Meta Ads, transformando visitantes em leads via WhatsApp.</p>
+        <div class="actions">
+          <a class="button-primary" href="https://wa.me/5574981202260?text=Ol%C3%A1%2C%20quero%20sua%20Landing%20Page%20profissional%20por%20R%24600.">Falar no WhatsApp</a>
+          <a class="button-secondary" href="#benefits">Ver benefícios</a>
+        </div>
+      </div>
+      <div class="hero-frame">
+        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1400&auto=format&fit=crop" alt="Desenvolvedor de landing page premium" loading="lazy" />
+        <div class="hero-pill">
+          <strong>Landing Page + Domínio</strong>
+          <span>Preço promocional por tempo limitado</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="benefits" class="features">
+      <div class="card">
+        <p class="section-label">SEO e Localização</p>
+        <h2>Criação de sites profissionais para empresas com SEO local.</h2>
+        <p>Posicionamento efetivo para Petrolina e Juazeiro, fundamentado em palavras-chave como agência de marketing, desenvolvedor de sites e landing pages de alta conversão.</p>
+      </div>
+      <div class="card">
+        <p class="section-label">Performance e Conversão</p>
+        <h2>Páginas leves, rápidas e preparadas para tráfego pago.</h2>
+        <p>Estrutura técnica otimizada para Google Ads e Meta Ads, com foco em carregamento rápido, mobilidade e experiência fluida.</p>
+      </div>
+      <div class="card">
+        <p class="section-label">Domínio incluso</p>
+        <h2>Entrega completa com domínio e presença profissional.</h2>
+        <p>Suporte para domínio próprio e configuração inicial, tornando a página pronta para campanhas e credibilidade imediata.</p>
+      </div>
+    </section>
+
+    <section class="grid-3">
+      <div class="metric">
+        <strong>+48%</strong>
+        <span>Mais leads com páginas otimizadas</span>
+      </div>
+      <div class="metric">
+        <strong>+32%</strong>
+        <span>Maior conversão a partir do primeiro touchpoint</span>
+      </div>
+      <div class="metric">
+        <strong>Premium</strong>
+        <span>Visual sofisticado, autoridade e confiança</span>
+      </div>
+    </section>
+
+    <section class="banner">
+      <div class="banner-content">
+        <div>
+          <span class="subtitle">Sites modernos para empresas</span>
+          <h2>Sites modernos para empresas que querem crescer online.</h2>
+          <p>Projetos desenvolvidos para advogados, clínicas, prestadores de serviço, lojas e profissionais liberais que precisam de presença digital autêntica e escalável.</p>
+        </div>
+        <div class="banner-visual">
+          <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop" alt="Landing page corporativa premium" loading="lazy" />
+        </div>
+      </div>
+    </section>
+
+    <section class="testimonials">
+      <div class="testimonial">
+        <p>“A landing page chegou pronta para rodar com Google Ads e trouxe contatos reais em 24h.”</p>
+        <strong>Advogado em Juazeiro</strong>
+      </div>
+      <div class="testimonial">
+        <p>“Profissionalismo, velocidade e SEO local que fez nossa agenda encher rápido.”</p>
+        <strong>Clínica em Petrolina</strong>
+      </div>
+      <div class="testimonial">
+        <p>“Visual sofisticado e copy coerente. O cliente percebeu autoridade desde o primeiro clique.”</p>
+        <strong>Consultor independente</strong>
+      </div>
+    </section>
+
+    <section class="offer">
+      <span class="section-label">Oferta Final</span>
+      <h2>Landing Page Profissional + Domínio incluso por R$ 600.</h2>
+      <p>Promoção limitada para empresários e profissionais liberais de Petrolina-PE e Juazeiro-BA. Oferta completa com copy, SEO local e entrega rápida.</p>
+      <div class="price-chip">
+        <span>60% OFF</span>
+        <strong>R$ 600</strong>
+      </div>
+      <div class="price-details">
+        <div class="detail"><span>Preço original</span><strong>R$ 1.500</strong></div>
+        <div class="detail"><span>Entrega otimizada</span><strong>Landing + Domínio</strong></div>
+        <div class="detail"><span>Lead via WhatsApp</span><strong>Instalação completa</strong></div>
+      </div>
+      <div class="cta-block">
+        <a href="https://wa.me/5574981202260?text=Ol%C3%A1%2C%20quero%20a%20Landing%20Page%20premium%20por%20R%24600." target="_blank" rel="noreferrer">Quero agora no WhatsApp</a>
+        <div class="tags">
+          <span class="tag-pill">Criação de sites profissionais</span>
+          <span class="tag-pill">Landing pages de alta conversão</span>
+          <span class="tag-pill">Agência de marketing em Petrolina</span>
+          <span class="tag-pill">Agência digital em Juazeiro</span>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      Mais informação: desenvolvimento de sites, ecommerce, aplicativos mobile e sistemas empresariais com foco em performance, SEO local e captação de leads via WhatsApp.
+    </footer>
+  </div>
+</body>
+</html>

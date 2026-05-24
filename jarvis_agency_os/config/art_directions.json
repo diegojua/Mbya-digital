@@ -5,6 +5,8 @@
       "description": "Padrão global premium — composição editorial, baixa densidade visual e acabamento de agência.",
       "match": ["*"],
       "preferred_blueprints": [
+        "feed_professional_photo",
+        "story_professional_photo",
         "feed_split_editorial",
         "feed_dark_cinematic",
         "feed_fullbleed_overlay",
@@ -38,6 +40,56 @@
         "avoid_visual_noise": true,
         "prefer_editorial_image_crop": true
       }
+    },
+    "marketing_agency": {
+      "description": "Agência de marketing/performance — oferta clara, direção editorial e asset visual de campanha.",
+      "match": ["marketing", "growth", "mídia", "midia", "performance", "tráfego", "trafego", "social media", "mbya"],
+      "preferred_blueprints": [
+        "feed_mbya_premium",
+        "story_mbya_premium",
+        "feed_professional_photo",
+        "feed_split_editorial",
+        "feed_dark_cinematic"
+      ],
+      "design_state": "performance",
+      "palette": {
+        "bg_primary": "#0B0A08",
+        "bg_card": "#17130D",
+        "accent": "#F2C75A",
+        "accent_glow": "rgba(242, 199, 90, 0.24)",
+        "text_primary": "#F7F2E8",
+        "text_muted": "rgba(247, 242, 232, 0.62)",
+        "border_color": "rgba(247, 242, 232, 0.16)"
+      },
+      "typography": {
+        "font_headline": "Inter",
+        "font_body": "Inter",
+        "headline_weight": 900
+      },
+      "photography": {
+        "style": "editorial_marketing_campaign_visual",
+        "treatment": "warm_dark_editorial",
+        "images": [
+          "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1400&q=88",
+          "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1400&q=88",
+          "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=88"
+        ]
+      },
+      "composition": {
+        "visual_density": "low",
+        "spacing": "large",
+        "alignment": "left",
+        "cta_visibility": "high",
+        "layout": "editorial_offer_plate"
+      },
+      "avoid": [
+        "mockup genérico",
+        "dashboard lotado",
+        "foguete",
+        "métricas inventadas",
+        "gradiente roxo azul",
+        "stock photo de reunião corporativa"
+      ]
     },
     "advocacia_premium": {
       "description": "Legal boutique premium — autoridade moderna, institucional, sem clichês jurídicos.",

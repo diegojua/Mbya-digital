@@ -18,6 +18,7 @@ from xquads.engine import generate_copy
 from jarvis_agency_os.ranker import rank_creatives
 from jarvis_agency_os.visual_memory_v2 import get_memory
 from jarvis_agency_os.design_intelligence import apply_design_intelligence
+from jarvis_agency_os.image_direction import save_image_manifest
 from jarvis_agency_os.template_registry import (
     TEMPLATE_REGISTRY,
     get_template,
@@ -47,6 +48,15 @@ DEFAULT_IMAGES = {
     "jiujitsu": "https://images.unsplash.com/photo-1591117207239-788bf8de6c3b?auto=format&fit=crop&w=1080&q=90",
     "jiu-jitsu": "https://images.unsplash.com/photo-1591117207239-788bf8de6c3b?auto=format&fit=crop&w=1080&q=90",
     "academia": "https://images.unsplash.com/photo-1534258936925-c58bed479fcb?auto=format&fit=crop&w=1080&q=90",
+    "marketing": "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=85",
+    "growth": "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=85",
+    "mídia": "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=85",
+    "midia": "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=85",
+    "performance": "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=85",
+    "turismo": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=85",
+    "viagem": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=85",
+    "viagens": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=85",
+    "roteiro": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=85",
     "default": "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1080&q=90"
 }
 
@@ -266,6 +276,17 @@ def generate_creatives(workspace_dir: str = None, client_override: dict = None):
 
     angles = copy_result["copy_data"]["angles"]
     print(f"   → {len(angles)} ângulos de copy gerados")
+    first_angle = angles[0] if angles else {}
+    image_manifest = save_image_manifest(
+        {
+            **ctx,
+            "headline": f"{first_angle.get('headline_1', '')} {first_angle.get('headline_2', '')}".strip(),
+            "cta": first_angle.get("cta"),
+        },
+        workspace_dir=os.path.join(workspace_dir, "project_images"),
+        formats=requested_formats,
+    )
+    print(f"   → Image Direction: {image_manifest['direction']['key']}")
 
     # 3. Blueprint Selection
     print("⚛️  [3/4] Structure Engine: Selecionando blueprints compatíveis...")
@@ -293,7 +314,19 @@ def generate_creatives(workspace_dir: str = None, client_override: dict = None):
             continue
 
         for i, angle in enumerate(angles):
-            image_url = _get_image_for_niche(ctx["niche"], workspace_dir, ctx.get("art_direction"), i)
+            slot_prompt = next(
+                (
+                    slot
+                    for slot in image_manifest.get("slots", [])
+                    if slot.get("id") == template.get("format")
+                ),
+                None,
+            )
+            image_url = (
+                slot_prompt.get("asset_path")
+                if slot_prompt and os.path.exists(str(slot_prompt.get("asset_path", "")))
+                else _get_image_for_niche(ctx["niche"], workspace_dir, ctx.get("art_direction"), i)
+            )
             tokens = {
                 # Design tokens
                 "BG_PRIMARY": palette["bg_primary"],
@@ -307,6 +340,7 @@ def generate_creatives(workspace_dir: str = None, client_override: dict = None):
                 "FONT_HEADLINE": ctx.get("design_state_config", {}).get("font_headline", "Outfit"),
                 # Brand
                 "CLIENT_NAME": ctx["client_name"],
+                "NICHE": ctx["niche"],
                 "LOGO_ICON": ctx.get("logo_icon", "✦"),
                 "LOGO_TEXT": ctx.get("logo_text", ctx["client_name"]),
                 "LOGO_SUB": ctx.get("logo_sub", ctx["niche"]),
@@ -350,6 +384,9 @@ def generate_creatives(workspace_dir: str = None, client_override: dict = None):
                 "niche": ctx["niche"],
                 "objective": ctx.get("objective"),
                 "art_direction": ctx.get("art_direction", {}).get("key"),
+                "image_direction": image_manifest.get("direction", {}).get("key"),
+                "image_prompt_path": slot_prompt.get("prompt_path") if slot_prompt else None,
+                "image_asset_path": slot_prompt.get("asset_path") if slot_prompt else None,
                 "design_intelligence": ctx.get("design_intelligence"),
                 "premium_mode": ctx.get("premium_mode", False),
                 "headline": f"{angle['headline_1']} {angle['headline_2']}",
@@ -365,6 +402,8 @@ def generate_creatives(workspace_dir: str = None, client_override: dict = None):
         "generated": generated,
         "output_dir": output_dir,
         "design_state": design_state,
+        "image_manifest": image_manifest.get("manifest_path"),
+        "image_direction": image_manifest.get("direction", {}).get("key"),
         "total": len(generated)
     }
 

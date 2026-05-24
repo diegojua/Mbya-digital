@@ -6,6 +6,10 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
+const projectSlug = (process.env.PROJECT_NAME || 'campaign_preview')
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '_')
+  .replace(/^_+|_+$/g, '') || 'campaign_preview';
 
 // 1. Criar um servidor HTTP simples para contornar restrições de CORS
 const server = http.createServer((req, res) => {
@@ -87,7 +91,9 @@ server.listen(PORT, async () => {
     // Aguarda um pequeno delay para garantir que todas as transições de CSS e fetch local se consolidem
     await new Promise(resolve => setTimeout(resolve, 1500));
 
-    const outputScreenshot = path.join(rootDir, 'workspace/campaign_preview.png');
+    const outputDir = path.join(rootDir, 'workspace/project_images', projectSlug, 'screenshots');
+    fs.mkdirSync(outputDir, { recursive: true });
+    const outputScreenshot = path.join(outputDir, 'campaign_preview.png');
     console.log(`[Headless-Render] Tirando captura de tela de alta resolução...`);
     await page.screenshot({ path: outputScreenshot, fullPage: true });
 

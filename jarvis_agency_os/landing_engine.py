@@ -14,6 +14,7 @@ from typing import Any
 
 from jarvis_agency_os.creative_engine import _get_image_for_niche
 from jarvis_agency_os.design_intelligence import apply_design_intelligence
+from jarvis_agency_os.image_direction import save_image_manifest
 from jarvis_agency_os.visual_qa import evaluate_visual_quality
 from jarvis_agency_os.asset_catalog import match_catalog_entry
 
@@ -25,6 +26,8 @@ LANDING_BLUEPRINTS = {
     "landing_premium_agency": BLUEPRINT_PATH,
     "landing_education_premium": os.path.join(BASE_DIR, "blueprints", "landing_education_premium.html"),
     "landing_legal_premium": os.path.join(BASE_DIR, "blueprints", "landing_legal_premium.html"),
+    "landing_marketing_agency": os.path.join(BASE_DIR, "blueprints", "landing_marketing_agency.html"),
+    "landing_tourism_agency": os.path.join(BASE_DIR, "blueprints", "landing_tourism_agency.html"),
 }
 WORKSPACE_DIR = os.path.join(ROOT_DIR, "workspace")
 
@@ -96,6 +99,10 @@ def _first_angle(copy_data: dict[str, Any]) -> dict[str, Any]:
 
 def _landing_blueprint_for_niche(niche: str) -> tuple[str, str]:
     niche_lower = (niche or "").lower()
+    if any(term in niche_lower for term in ["marketing", "growth", "mídia", "midia", "performance", "tráfego", "trafego"]):
+        return "landing_marketing_agency", LANDING_BLUEPRINTS["landing_marketing_agency"]
+    if any(term in niche_lower for term in ["turismo", "viagem", "viagens", "roteiro", "hotel", "pacote"]):
+        return "landing_tourism_agency", LANDING_BLUEPRINTS["landing_tourism_agency"]
     if any(term in niche_lower for term in ["educação", "educacao", "pedagog", "reforço", "reforco", "infantil"]):
         return "landing_education_premium", LANDING_BLUEPRINTS["landing_education_premium"]
     if any(term in niche_lower for term in ["advocacia", "advogado", "juridic", "direito", "legal"]):
@@ -106,6 +113,24 @@ def _landing_blueprint_for_niche(niche: str) -> tuple[str, str]:
 def _landing_content_for_niche(niche: str) -> dict[str, str]:
     """Textos de suporte por nicho para a landing não soar como template genérico."""
     niche_lower = (niche or "").lower()
+    if any(term in niche_lower for term in ["marketing", "growth", "mídia", "midia", "performance", "tráfego", "trafego"]):
+        return {
+            "visual_card_title": "Marketing precisa conectar atenção, oferta e receita.",
+            "visual_card_text": "Campanhas, páginas e funis com rotina de teste, leitura de dados e execução criativa.",
+            "section_title": "Uma agência para conectar estratégia, criação e vendas",
+            "section_text": "O trabalho combina posicionamento, mídia paga, conteúdo e landing pages com acompanhamento dos indicadores que movem o negócio.",
+            "final_title": "Vamos desenhar seu próximo ciclo de crescimento?",
+            "final_text": "Fale com a equipe e receba uma leitura inicial de canais, oferta e oportunidades de campanha.",
+        }
+    if any(term in niche_lower for term in ["turismo", "viagem", "viagens", "roteiro", "hotel", "pacote"]):
+        return {
+            "visual_card_title": "Viajar melhor começa com uma curadoria bem feita.",
+            "visual_card_text": "Roteiro, hospedagem, deslocamentos e experiências organizados para reduzir improvisos.",
+            "section_title": "Experiências para estilos diferentes de viajante",
+            "section_text": "Curadoria humana, fornecedores selecionados e acompanhamento próximo para que o roteiro faça sentido para seu tempo, orçamento e expectativa.",
+            "final_title": "Pronto para transformar sua ideia de viagem em roteiro real?",
+            "final_text": "Envie destino desejado, datas e quantidade de viajantes para receber uma primeira curadoria.",
+        }
     if any(term in niche_lower for term in ["educação", "educacao", "pedagog", "reforço", "reforco", "infantil"]):
         return {
             "visual_card_title": "A criança aprende melhor quando se sente segura para tentar.",
@@ -161,7 +186,26 @@ def generate_landing_page(
         resolved_catalog_match = match_catalog_entry(niche, catalog, asset_type="page")
     whatsapp = context.get("whatsapp", "5587999999999")
     whatsapp_url = f"https://wa.me/{whatsapp}"
-    image_url = _get_image_for_niche(niche, workspace_dir, context.get("art_direction"), 0)
+    image_manifest = save_image_manifest(
+        {
+            **context,
+            "client_name": client_name,
+            "niche": niche,
+            "headline": f"{angle.get('headline_1', '')} {angle.get('headline_2', '')}".strip(),
+            "cta": angle.get("cta"),
+        },
+        workspace_dir=os.path.join(workspace_dir, "project_images"),
+        formats=["landing"],
+    )
+    hero_slot = next(
+        (slot for slot in image_manifest.get("slots", []) if slot.get("id") == "landing_hero"),
+        None,
+    )
+    image_url = (
+        hero_slot.get("asset_path")
+        if hero_slot and os.path.exists(str(hero_slot.get("asset_path", "")))
+        else _get_image_for_niche(niche, workspace_dir, context.get("art_direction"), 0)
+    )
 
     tokens = {
         "BG_PRIMARY": palette.get("bg_primary", "#0B1020"),
@@ -213,6 +257,8 @@ def generate_landing_page(
         "template_preview": resolved_catalog_match.get("preview_path"),
         "template_files": resolved_catalog_match.get("template_files", []),
         "template_key": template_key,
+        "image_manifest": image_manifest.get("manifest_path"),
+        "image_direction": image_manifest.get("direction", {}).get("key"),
         "headline": f"{tokens['HEADLINE_LINE1']} {tokens['HEADLINE_LINE2']}".strip(),
         "cta": tokens["CTA_TEXT"],
     }

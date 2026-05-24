@@ -44,6 +44,13 @@ def _slug(value: str) -> str:
     return re.sub(r"[^a-zA-Z0-9]+", "_", str(value or "campaign").lower()).strip("_") or "campaign"
 
 
+def project_image_dir(workspace_dir: str, project_name: str, *parts: str) -> str:
+    """Retorna a pasta canonica de imagens para um projeto."""
+    path = os.path.join(workspace_dir, "project_images", _slug(project_name), *parts)
+    os.makedirs(path, exist_ok=True)
+    return path
+
+
 def create_video_from_image(image_path: str, output_path: str, duration_seconds: int = 15,
                             width: int = 1080, height: int = 1920, fps: int = 30) -> Dict:
     """Converte um PNG/JPG estático em MP4 vertical para Reels/TikTok usando ffmpeg."""
@@ -112,10 +119,10 @@ def export_campaign_artifacts(pipeline_result: Dict, workspace_dir: str) -> Dict
     Organiza os artefatos finais em uma pasta única da campanha.
 
     Estrutura:
-      exports/campaign_slug/feed
-      exports/campaign_slug/story
-      exports/campaign_slug/landing
-      exports/campaign_slug/manifests
+      project_images/campaign_slug/exports/timestamp/feed
+      project_images/campaign_slug/exports/timestamp/story
+      project_images/campaign_slug/exports/timestamp/landing
+      project_images/campaign_slug/exports/timestamp/manifests
     """
     client = (
         (pipeline_result.get("landing") or {}).get("client")
@@ -123,8 +130,8 @@ def export_campaign_artifacts(pipeline_result: Dict, workspace_dir: str) -> Dict
         or "campaign"
     )
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    campaign_slug = f"{_slug(client)}_{timestamp}"
-    base_dir = os.path.join(workspace_dir, "exports", campaign_slug)
+    campaign_slug = _slug(client)
+    base_dir = os.path.join(project_image_dir(workspace_dir, campaign_slug, "exports"), timestamp)
     manifests_dir = os.path.join(base_dir, "manifests")
     os.makedirs(manifests_dir, exist_ok=True)
 
@@ -134,9 +141,21 @@ def export_campaign_artifacts(pipeline_result: Dict, workspace_dir: str) -> Dict
         "export_dir": base_dir,
         "formats": {},
         "landing": {},
+        "image_direction": {},
         "manifest_path": os.path.join(manifests_dir, "campaign_export_manifest.json"),
         "created_at": datetime.now().isoformat(),
     }
+
+    generation = pipeline_result.get("generation") or {}
+    image_manifest = generation.get("image_manifest")
+    if image_manifest and os.path.exists(image_manifest):
+        target_image_manifest = os.path.join(manifests_dir, os.path.basename(image_manifest))
+        shutil.copy2(image_manifest, target_image_manifest)
+        exported["image_direction"] = {
+            "direction": generation.get("image_direction"),
+            "source_manifest": image_manifest,
+            "manifest": target_image_manifest,
+        }
 
     rendered = pipeline_result.get("rendered_winners", {})
     for format_name, render_result in rendered.items():
@@ -189,6 +208,13 @@ def export_campaign_artifacts(pipeline_result: Dict, workspace_dir: str) -> Dict
             target_manifest = os.path.join(manifests_dir, os.path.basename(landing["manifest"]))
             shutil.copy2(landing["manifest"], target_manifest)
             exported["landing"]["manifest"] = target_manifest
+        if landing.get("image_manifest") and os.path.exists(landing["image_manifest"]):
+            target_landing_image_manifest = os.path.join(
+                manifests_dir,
+                f"landing_{os.path.basename(landing['image_manifest'])}",
+            )
+            shutil.copy2(landing["image_manifest"], target_landing_image_manifest)
+            exported["landing"]["image_manifest"] = target_landing_image_manifest
 
     with open(exported["manifest_path"], "w", encoding="utf-8") as f:
         json.dump(exported, f, indent=2, ensure_ascii=False)
@@ -201,7 +227,7 @@ class ExportManager:
 
     def __init__(self, workspace_dir: str):
         self.workspace_dir = workspace_dir
-        self.export_dir = os.path.join(workspace_dir, "exports")
+        self.export_dir = project_image_dir(workspace_dir, "exports")
         os.makedirs(self.export_dir, exist_ok=True)
         self.export_log = []
 
@@ -224,7 +250,7 @@ class ExportManager:
 
         try:
             basename = os.path.splitext(os.path.basename(creative_path))[0]
-            export_subdir = os.path.join(self.export_dir, "meta_ads")
+            export_subdir = project_image_dir(self.workspace_dir, campaign_name, "exports", "meta_ads")
             os.makedirs(export_subdir, exist_ok=True)
 
             # Validar dimensões
@@ -291,7 +317,7 @@ class ExportManager:
 
         try:
             basename = os.path.splitext(os.path.basename(creative_path))[0]
-            export_subdir = os.path.join(self.export_dir, "google_ads")
+            export_subdir = project_image_dir(self.workspace_dir, campaign_name, "exports", "google_ads")
             os.makedirs(export_subdir, exist_ok=True)
 
             from PIL import Image
@@ -349,7 +375,7 @@ class ExportManager:
             return {"error": f"Arquivo não encontrado: {video_path}"}
 
         try:
-            export_subdir = os.path.join(self.export_dir, "tiktok_ads")
+            export_subdir = project_image_dir(self.workspace_dir, campaign_name, "exports", "tiktok_ads")
             os.makedirs(export_subdir, exist_ok=True)
 
             basename = os.path.splitext(os.path.basename(video_path))[0]
@@ -416,7 +442,7 @@ class ExportManager:
             return {"error": f"Arquivo não encontrado: {creative_path}"}
 
         try:
-            export_subdir = os.path.join(self.export_dir, "google_shopping")
+            export_subdir = project_image_dir(self.workspace_dir, product_name, "exports", "google_shopping")
             os.makedirs(export_subdir, exist_ok=True)
 
             export_filename = f"{product_id}_{product_name}.jpg"

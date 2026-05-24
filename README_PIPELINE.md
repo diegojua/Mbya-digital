@@ -15,12 +15,14 @@ Também aceita carrossel:
 O pipeline executa:
 
 - briefing estruturado em `workspace/briefing.txt`;
+- direção de imagem por nicho inspirada no Open Design;
+- manifesto de prompts/assets em `workspace/project_images/<nome_do_projeto>/manifest.json`;
 - criação de `experiment_id` para rastrear variantes A/B;
-- geração de criativos HTML;
+- geração de criativos HTML como arquivo-fonte;
 - QA visual estático e renderizado;
 - ranking;
 - memória visual v2;
-- render dos campeões;
+- render dos campeões em PNG profissional;
 - landing page HTML real;
 - export final da campanha.
 
@@ -30,10 +32,12 @@ Os principais arquivos ficam em:
 
 - `workspace/generated_creatives/`
 - `workspace/generated_landings/`
-- `workspace/rendered_winners/`
-- `workspace/exports/<campanha_timestamp>/`
+- `workspace/project_images/<nome_do_projeto>/manifest.json`
+- `workspace/project_images/<nome_do_projeto>/prompts/*.txt`
+- `workspace/project_images/<nome_do_projeto>/renders/`
+- `workspace/project_images/<nome_do_projeto>/exports/<timestamp>/`
 
-A pasta `exports/<campanha_timestamp>/` organiza:
+A pasta `workspace/project_images/<nome_do_projeto>/exports/<timestamp>/` organiza:
 
 - `feed/`
 - `story/`
@@ -42,14 +46,43 @@ A pasta `exports/<campanha_timestamp>/` organiza:
 - `manifests/campaign_export_manifest.json`
 
 Quando `carrossel` é solicitado, o pipeline também expõe `carousel_slides`
-e renderiza múltiplos arquivos em `rendered_winners/carousel/` antes de copiar
-o pacote para `exports/<campanha_timestamp>/carousel/`.
+e renderiza múltiplos arquivos em `workspace/project_images/<nome_do_projeto>/renders/carousel/`
+antes de copiar o pacote para `exports/<timestamp>/carousel/`.
 
 No log final do comando, confira:
 
+- `Image Direction: marketing_agency` ou outra direção resolvida;
+- `Image manifest: workspace/project_images/<nome_do_projeto>/manifest.json`;
 - `Carrossel renderizado: 3/3 slides`
-- `Export final: workspace/exports/<campanha_timestamp>`
+- `Imagem feed/story pronta: workspace/project_images/<nome_do_projeto>/renders/...`
+- `Export final: workspace/project_images/<nome_do_projeto>/exports/<timestamp>`
 - `Pacote de carrossel: 3 slides no export`
+
+## Direção De Imagem
+
+Gerar ou inspecionar prompts sem rodar a campanha completa:
+
+```bash
+./jarvisagency image-direction --cliente "Mbya Marketing" --nicho "agência de marketing performance" --formatos feed,landing
+```
+
+Salvar o manifesto e os prompts no workspace:
+
+```bash
+./jarvisagency image-direction --cliente "Mbya Marketing" --nicho "agência de marketing performance" --formatos feed,landing --save
+```
+
+O comando cria:
+
+- `workspace/project_images/<slug>/manifest.json`
+- `workspace/project_images/<slug>/prompts/feed.txt`
+- `workspace/project_images/<slug>/prompts/landing_hero.txt`
+- `workspace/project_images/<slug>/assets/`
+- `workspace/project_images/<slug>/generated/`
+- `workspace/project_images/<slug>/renders/`
+- `workspace/project_images/<slug>/exports/`
+
+Esses prompts são a ponte entre o Open Design e os blueprints HTML: primeiro se define a direção visual, depois o HTML consome `{{IMAGE_URL}}`.
 
 ## QA Manual
 
@@ -117,7 +150,7 @@ comando de conversão sugerido.
 Preparar uma publicação para Meta/Instagram sem enviar nada por acidente:
 
 ```bash
-./jarvisagency publish-plan --asset workspace/rendered_winners/winner_story.png --caption "Nova campanha no ar" --campaign "Amar"
+./jarvisagency publish-plan --asset workspace/project_images/amar/renders/winner_story.png --caption "Nova campanha no ar" --campaign "Amar"
 ```
 
 O comando salva um job em `workspace/publication_queue.jsonl`. Para testar um
@@ -127,3 +160,5 @@ e passe `--live`.
 ## Direção Técnica
 
 Use `jarvis_agency_os.pipeline.run_campaign_pipeline()` como entrada principal em novas integrações. Evite criar fluxos paralelos que chamem Graphify, Xquads, Ranker e Landing Engine manualmente.
+
+Para posts, trate `workspace/generated_creatives/*.html` como fonte técnica. A imagem final para publicar deve ser sempre o PNG em `workspace/project_images/<nome_do_projeto>/renders/` ou o pacote em `workspace/project_images/<nome_do_projeto>/exports/`.

@@ -57,24 +57,26 @@ def render_slide(image_path, text, output_path, font_path):
 if __name__ == "__main__":
     base_dir = "/home/diego/.gemini/antigravity/brain/6a69e0b2-8c0e-4e35-86f9-a9a4ea99a445"
     workspace = "/home/diego/Documentos/Mbya Digital/workspace"
-    font_path = os.path.join(workspace, "Montserrat-Bold.ttf")
+    output_dir = os.path.join(workspace, "project_images", "amar_pedagogico", "generated")
+    os.makedirs(output_dir, exist_ok=True)
+    font_path = os.path.join(output_dir, "Montserrat-Bold.ttf")
 
     font_path = download_font(font_path)
 
     slides = [
         {
             "in": f"{base_dir}/amar_slide_1_1779062796795.png",
-            "out": f"{workspace}/amar_final_1.png",
+            "out": f"{output_dir}/amar_final_1.png",
             "text": "A ESCOLA ENSINA.\nA ESCOLA AMAR TRANSFORMA."
         },
         {
             "in": f"{base_dir}/amar_slide_2_1779062807932.png",
-            "out": f"{workspace}/amar_final_2.png",
+            "out": f"{output_dir}/amar_final_2.png",
             "text": "POR QUE SEU FILHO PRECISA DE MAIS?\n\nAjudamos a encaixar as\npeças do aprendizado."
         },
         {
             "in": f"{base_dir}/amar_slide_3_1779062852634.png",
-            "out": f"{workspace}/amar_final_3.png",
+            "out": f"{output_dir}/amar_final_3.png",
             "text": "CONSTRUINDO UM\nFUTURO BRILHANTE!\n\nClique no link da bio e agende\numa aula experimental."
         }
     ]

@@ -1,0 +1,127 @@
+{
+  "default_direction": "premium_editorial",
+  "directions": {
+    "premium_editorial": {
+      "description": "Direção base inspirada no Open Design: campanha editorial premium com composição limpa, textura tátil e fotografia/colagem autoral.",
+      "match": ["*"],
+      "design_systems": ["professional", "premium", "editorial"],
+      "style_anchor": "Use case: ads-marketing. Asset type: premium campaign visual for landing pages and social posts. Style/medium: refined editorial composition, modern Swiss grid, tactile paper or studio texture, precise typography-safe negative space, premium agency aesthetic. Scene/backdrop: quiet surface with subtle grain, architectural shadows, restrained props and strong art direction. Composition/framing: clear focal subject, generous negative space for HTML text overlay, strong asymmetrical grid, crisp edges, no clutter. Lighting/mood: soft diffused daylight or controlled studio light, calm, confident, polished, conversion-oriented. Color palette: brand accent used sparingly, neutral background, charcoal text area, warm highlights only when appropriate. Constraints: no generic stock-photo look, no cartoon, no neon, no glossy 3D, no busy gradients, no random text, no watermark.",
+      "avoid": [
+        "generic stock photo",
+        "random typography inside image",
+        "watermark",
+        "busy gradient",
+        "purple blue AI gradient",
+        "plastic 3D",
+        "crowded composition"
+      ],
+      "slots": {
+        "feed": {
+          "width": 1080,
+          "height": 1080,
+          "ratio": "1:1",
+          "composition": "Square social ad visual. Keep the left or lower third quiet for headline and CTA overlay. Use one strong editorial object or scene related to the niche, with controlled shadows and a premium campaign feel."
+        },
+        "story": {
+          "width": 1080,
+          "height": 1920,
+          "ratio": "9:16",
+          "composition": "Vertical story visual. Main subject sits in the upper or middle third, with safe space at the bottom for CTA. Cinematic depth, high readability zones, no important details near the edges."
+        },
+        "carousel": {
+          "width": 1080,
+          "height": 1080,
+          "ratio": "1:1",
+          "composition": "One slide in a coherent three-card sequence. Strong single idea, distinct color temperature from adjacent slides, enough negative space for numbering and short caption."
+        },
+        "landing_hero": {
+          "width": 1440,
+          "height": 1080,
+          "ratio": "4:3",
+          "composition": "Landing hero visual. Leave a generous text-safe field on the left or top-left and place the editorial focal subject to the right or center-right. Must feel like a real brand campaign, not a template mockup."
+        },
+        "landing_about": {
+          "width": 1024,
+          "height": 1024,
+          "ratio": "1:1",
+          "composition": "Support image for about/manifesto section. More intimate, tactile and detail-oriented than the hero. Use objects, workspace, craft details or metaphorical composition tied to the offer."
+        },
+        "landing_cta": {
+          "width": 1024,
+          "height": 1024,
+          "ratio": "1:1",
+          "composition": "Closing CTA image. Simple, high-contrast, optimistic final plate with one memorable subject and clean space for final call-to-action nearby."
+        }
+      }
+    },
+    "marketing_agency": {
+      "description": "Agência de marketing/performance: operação criativa, dados, mídia e crescimento com estética profissional.",
+      "match": ["marketing", "growth", "mídia", "midia", "performance", "tráfego", "trafego", "social media"],
+      "design_systems": ["professional", "enterprise", "editorial"],
+      "style_anchor": "Premium marketing agency campaign visual. Editorial studio scene with strategic planning artifacts, dashboards abstracted as clean light panels, campaign boards, notebooks, phones and brand grids. Modern professional atmosphere, sharp composition, warm neutral surfaces with one confident accent. Must suggest strategy, media, creative testing and revenue growth without cliché rocket icons or fake charts.",
+      "avoid": [
+        "rocket icon",
+        "fake 10x metrics",
+        "generic laptop mockup",
+        "purple blue SaaS gradient",
+        "crowded dashboard",
+        "stock business handshake"
+      ]
+    },
+    "tourism_editorial": {
+      "description": "Turismo e viagens: curadoria, memória, roteiro e experiência sensorial com estética editorial quente.",
+      "match": ["turismo", "viagem", "viagens", "roteiro", "hotel", "pacote", "destino"],
+      "design_systems": ["warm-editorial", "editorial", "clean"],
+      "style_anchor": "Editorial travel campaign visual. Curated travel desk, map fragments, boarding notes, sunlit textures, destination details and warm documentary photography. Premium but human, with imperfect tactile paper, natural light, coastal or urban memory cues depending on the brief. Avoid generic postcard tourism; make it feel like a carefully planned personal itinerary.",
+      "avoid": [
+        "generic beach stock photo",
+        "tourist cliché",
+        "over-saturated sunset",
+        "random passport text",
+        "crowded collage"
+      ]
+    },
+    "education_soft": {
+      "description": "Educação infantil/pedagogia: acolhedor, profissional, humano e leve.",
+      "match": ["educação", "educacao", "pedagog", "escola", "infantil", "criança", "crianca", "reforço", "reforco"],
+      "design_systems": ["warm-editorial", "clean", "professional"],
+      "style_anchor": "Warm educational campaign visual. Soft professional scene with learning materials, child-safe textures, notebooks, pencils, natural daylight and caring pedagogical atmosphere. Premium family-facing aesthetic, gentle color, organized composition, no childish clipart. Preserve empty zones for HTML text overlay and CTA.",
+      "avoid": [
+        "cartoon children",
+        "clipart",
+        "chaotic classroom",
+        "overly childish colors",
+        "emoji icons",
+        "stock child smiling at camera"
+      ]
+    },
+    "legal_luxury": {
+      "description": "Advocacia premium: autoridade moderna, sigilo, método e sobriedade sem clichês jurídicos.",
+      "match": ["advocacia", "advogado", "juridic", "direito", "legal"],
+      "design_systems": ["luxury", "professional", "editorial"],
+      "style_anchor": "Luxury legal boutique campaign visual. Dark restrained editorial composition with law office textures, documents, architectural shadows, refined desk details and confident negative space. Mood: discreet authority, clarity, confidentiality, high-end advisory. Use subtle gold or warm light only as an accent. No courthouse cliché.",
+      "avoid": [
+        "gavel",
+        "scales of justice",
+        "courthouse columns",
+        "giant gold symbol",
+        "generic lawyer at window",
+        "glassmorphism excess"
+      ]
+    },
+    "tech_futuristic": {
+      "description": "Tecnologia/local-first/automação: sistema sofisticado, futurista, mas controlado.",
+      "match": ["tech", "tecnologia", "software", "automação", "automacao", "ia", "ai", "mbya claw", "local-first"],
+      "design_systems": ["futuristic", "enterprise", "neon"],
+      "style_anchor": "Controlled futuristic product campaign visual. Dark interface atmosphere, local-first infrastructure hints, clean graph lines, terminal-like precision, hardware/software layers and restrained glow. Premium technical credibility, not cyberpunk. Keep composition legible and leave text-safe space for headline overlays.",
+      "avoid": [
+        "cyberpunk clutter",
+        "neon overload",
+        "hacker hooded figure",
+        "random code text",
+        "purple blue gradient",
+        "sci-fi noise"
+      ]
+    }
+  }
+}

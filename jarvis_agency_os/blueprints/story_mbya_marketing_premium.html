@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story Mbya Marketing Premium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { width: 1080px; height: 1920px; }
+        body {
+            min-height: 1920px;
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 20% 20%, rgba(255, 215, 0, 0.15), transparent 18%),
+                        radial-gradient(circle at 80% 15%, rgba(255, 245, 200, 0.1), transparent 20%),
+                        linear-gradient(180deg, #050505 0%, #090909 45%, #111111 100%);
+            color: #f8f6f3;
+            overflow: hidden;
+            position: relative;
+        }
+        .canvas {
+            position: relative;
+            width: 1080px;
+            min-height: 1920px;
+            padding: 72px 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 42px;
+        }
+        .glow-ring {
+            position: absolute;
+            width: 1100px;
+            height: 1100px;
+            top: -260px;
+            left: -260px;
+            border-radius: 50%;
+            box-shadow: 0 0 220px 80px rgba(212, 175, 55, 0.09);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .sparkle {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 70%);
+            border-radius: 50%;
+            filter: blur(0.5px);
+            opacity: 0.9;
+        }
+        .sparkle:nth-child(1) { top: 220px; left: 160px; width: 18px; height: 18px; }
+        .sparkle:nth-child(2) { top: 730px; left: 860px; width: 12px; height: 12px; }
+        .sparkle:nth-child(3) { top: 1380px; left: 360px; width: 16px; height: 16px; }
+        .sparkle:nth-child(4) { top: 1060px; left: 980px; width: 10px; height: 10px; }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 48px;
+            align-items: start;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 22px;
+            border-radius: 999px;
+            background: rgba(255, 192, 75, 0.12);
+            border: 1px solid rgba(255, 192, 75, 0.35);
+            color: #fff1d5;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            width: fit-content;
+        }
+        .badge::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffc950, #ffd88c);
+            box-shadow: 0 0 12px rgba(255, 210, 115, 0.6);
+        }
+        .headline {
+            font-size: 92px;
+            line-height: 0.95;
+            letter-spacing: -2px;
+            font-weight: 900;
+            max-width: 760px;
+        }
+        .headline strong {
+            display: block;
+            color: #fff;
+        }
+        .headline span {
+            display: block;
+            color: #d4af37;
+        }
+        .subheadline {
+            font-size: 34px;
+            line-height: 1.2;
+            color: #e3d8c1;
+            max-width: 640px;
+        }
+        .meta {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin-top: 20px;
+        }
+        .meta-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-left: 1px solid rgba(212,175,55,0.35);
+            border-radius: 32px;
+            padding: 32px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 35px 90px rgba(0,0,0,0.22);
+            backdrop-filter: blur(24px);
+        }
+        .meta-card strong {
+            font-size: 28px;
+            font-weight: 800;
+            color: #fff;
+        }
+        .meta-card span {
+            color: #bdb1a2;
+            font-size: 16px;
+        }
+        .price-cta {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+            margin-top: 12px;
+        }
+        .price-tag {
+            background: linear-gradient(180deg, rgba(255,209,108,0.96), rgba(212,175,55,0.18));
+            color: #111;
+            font-size: 44px;
+            font-weight: 900;
+            padding: 20px 32px;
+            border-radius: 28px;
+            box-shadow: 0 30px 55px rgba(212,175,55,0.22);
+        }
+        .cta-button {
+            align-self: stretch;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 22px 34px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #ffd966, #ffb73c);
+            color: #050505;
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            text-decoration: none;
+            box-shadow: 0 24px 60px rgba(255, 168, 65, 0.35);
+        }
+        .hero-right {
+            position: relative;
+            min-height: 1400px;
+        }
+        .hero-right::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top left, rgba(255, 207, 95, 0.12), transparent 32%),
+                        radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.08), transparent 22%);
+            z-index: 0;
+            border-radius: 42px;
+        }
+        .mockup-wrapper {
+            position: sticky;
+            top: 72px;
+            display: grid;
+            gap: 40px;
+            z-index: 1;
+        }
+        .mockup-card {
+            border-radius: 48px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(10,10,10,0.55);
+            box-shadow: 0 55px 120px rgba(0,0,0,0.35);
+            backdrop-filter: blur(22px);
+        }
+        .mockup-laptop {
+            height: 620px;
+            padding: 28px;
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+        .mockup-laptop::after {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 260px;
+            height: 18px;
+            background: rgba(212,175,55,0.15);
+            border-radius: 999px;
+            filter: blur(6px);
+        }
+        .laptop-screen {
+            background: linear-gradient(145deg, rgba(20,20,20,0.95), rgba(33,33,33,0.96));
+            border-radius: 34px;
+            box-shadow: inset 0 0 35px rgba(0,0,0,0.45);
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 24px;
+        }
+        .laptop-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+        }
+        .chip {
+            width: 90px;
+            height: 20px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .screen-block {
+            padding: 26px;
+            border-radius: 28px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .screen-block h3 {
+            font-size: 24px;
+            color: #f7f2e7;
+            font-weight: 800;
+        }
+        .screen-block p {
+            font-size: 18px;
+            color: #c6b7a3;
+            line-height: 1.5;
+        }
+        .screen-chart {
+            display: flex;
+            justify-content: space-between;
+            gap: 18px;
+        }
+        .bar {
+            flex: 1;
+            min-height: 120px;
+            border-radius: 24px;
+            background: linear-gradient(180deg, rgba(212,175,55,0.95), rgba(212,175,55,0.18));
+            box-shadow: 0 12px 40px rgba(212,175,55,0.18);
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+        .bar span {
+            color: #050505;
+            font-weight: 800;
+            margin-bottom: 18px;
+        }
+        .mockup-mobile {
+            width: 410px;
+            margin-left: auto;
+            padding: 26px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 64px;
+            box-shadow: 0 50px 110px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .phone-screen {
+            width: 100%;
+            height: 950px;
+            border-radius: 44px;
+            background: linear-gradient(180deg, rgba(15,15,15,0.98), rgba(34,34,34,0.98));
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 0 40px rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+            padding: 28px;
+            gap: 22px;
+        }
+        .phone-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #9e9584;
+            letter-spacing: 0.08em;
+            font-size: 13px;
+        }
+        .phone-status {
+            width: 58px;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.08);
+        }
+        .phone-content {
+            flex: 1;
+            display: grid;
+            gap: 18px;
+            align-items: center;
+        }
+        .phone-card {
+            padding: 20px;
+            border-radius: 32px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.18);
+        }
+        .phone-card h4 {
+            font-size: 24px;
+            color: #f5eddf;
+            margin-bottom: 12px;
+        }
+        .phone-card p {
+            color: #ccc1b1;
+            line-height: 1.55;
+            font-size: 16px;
+        }
+        .phone-quick {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+        .quick-item {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 26px;
+            padding: 18px;
+            color: #d9cfae;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .footer-strip {
+            position: absolute;
+            bottom: 84px;
+            left: 80px;
+            right: 80px;
+            padding: 28px 40px;
+            border-radius: 48px;
+            background: rgba(13,13,13,0.92);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 35px 80px rgba(0,0,0,0.4);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            z-index: 1;
+            backdrop-filter: blur(20px);
+        }
+        .footer-strip .text {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .footer-strip span:first-child {
+            color: #7f775f;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+        }
+        .footer-strip strong {
+            font-size: 46px;
+            color: #fff;
+            font-weight: 900;
+        }
+        .footer-strip .button {
+            padding: 22px 34px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #ffdb88, #ffb942);
+            color: #050505;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            box-shadow: 0 20px 60px rgba(255,180,60,0.35);
+            text-decoration: none;
+        }
+        .headline-secondary {
+            font-size: 26px;
+            color: rgba(255,255,255,0.82);
+            max-width: 680px;
+            line-height: 1.35;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+            margin-top: 14px;
+        }
+        .feature-pill {
+            border-radius: 999px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 16px 20px;
+            font-size: 17px;
+            color: #d9c8ab;
+            font-weight: 700;
+            backdrop-filter: blur(18px);
+        }
+    </style>
+</head>
+<body>
+    <div class="glow-ring"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="canvas">
+        <div class="hero">
+            <div class="hero-left">
+                <div class="badge">60% OFF</div>
+                <h1 class="headline"><strong>Transforme sua presença digital</strong><span>com design premium e resultados reais</span></h1>
+                <p class="subheadline">Sites, landing pages, ecommerces e sistemas empresariais com visual Apple / Stripe / Framer e performance de alta conversão.</p>
+                <div class="meta">
+                    <div class="meta-card">
+                        <span>Oferta exclusiva</span>
+                        <strong>R$ 600</strong>
+                    </div>
+                    <div class="meta-card">
+                        <span>Inclui</span>
+                        <strong>Landing Page profissional + domínio incluso</strong>
+                    </div>
+                </div>
+                <div class="price-cta">
+                    <a href="#" class="cta-button">Fale agora no WhatsApp</a>
+                </div>
+            </div>
+            <div class="hero-right">
+                <div class="mockup-wrapper">
+                    <div class="mockup-card mockup-laptop">
+                        <div class="laptop-screen">
+                            <div class="laptop-top">
+                                <div class="chip"></div>
+                                <div class="chip"></div>
+                            </div>
+                            <div class="screen-block">
+                                <h3>Dashboard de crescimento</h3>
+                                <p>Projetos com visual sofisticado e indicadores claros para sua equipe dominar resultados.</p>
+                            </div>
+                            <div class="screen-chart">
+                                <div class="bar" style="height: 84%;"><span>92%</span></div>
+                                <div class="bar" style="height: 68%;"><span>68%</span></div>
+                                <div class="bar" style="height: 54%;"><span>54%</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mockup-card mockup-mobile">
+                        <div class="phone-screen">
+                            <div class="phone-header">
+                                <span>MBYA CONNECT</span>
+                                <div class="phone-status"></div>
+                            </div>
+                            <div class="phone-content">
+                                <div class="phone-card">
+                                    <h4>Lead via WhatsApp</h4>
+                                    <p>Botão direto com design e copy irresistíveis para captar clientes no instante certo.</p>
+                                </div>
+                                <div class="phone-card">
+                                    <h4>Design responsivo</h4>
+                                    <p>Layouts claros e elegantes, perfeitos para mobile-first e jornada premium.</p>
+                                </div>
+                                <div class="phone-quick">
+                                    <div class="quick-item">Sites Corporativos</div>
+                                    <div class="quick-item">Landing Pages</div>
+                                    <div class="quick-item">Ecommerce</div>
+                                    <div class="quick-item">Sistemas</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-strip">
+            <div class="text">
+                <span>Conteúdo que vende</span>
+                <strong>Sites profissionais para empresas e profissionais liberais</strong>
+            </div>
+            <a href="#" class="button">Fale agora no WhatsApp</a>
+        </div>
+    </div>
+</body>
+</html>

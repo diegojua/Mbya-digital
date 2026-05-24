@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mbya Marketing - Post Instagram 1080x1080</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
+    :root {
+      color-scheme: dark;
+      color: #f8fafc;
+      background: #050505;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle at top left, rgba(255, 184, 28, 0.18), transparent 220px),
+                  radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.08), transparent 260px),
+                  linear-gradient(180deg, #050505 0%, #090909 100%);
+    }
+    .canvas {
+      width: min(1080px, calc(100vw - 32px));
+      aspect-ratio: 1 / 1;
+      border-radius: 42px;
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+      background: linear-gradient(180deg, #070707 0%, #0b0b0f 100%);
+      box-shadow: 0 60px 130px rgba(0,0,0,0.55);
+      position: relative;
+      padding: 40px;
+      display: grid;
+      grid-template-columns: 1.22fr 0.78fr;
+      gap: 30px;
+    }
+    .canvas::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 15% 20%, rgba(255,184,28,0.25), transparent 18%),
+                  radial-gradient(circle at 85% 10%, rgba(255,255,255,0.08), transparent 12%),
+                  radial-gradient(circle at 50% 85%, rgba(255,155,0,0.14), transparent 18%);
+      pointer-events: none;
+    }
+    .canvas::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
+                        linear-gradient(0deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.14;
+      pointer-events: none;
+    }
+    .hero-block {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .badge {
+      align-self: start;
+      display: inline-flex;
+      gap: 0.65rem;
+      padding: 0.85rem 1.3rem;
+      border-radius: 999px;
+      background: rgba(255, 189, 89, 0.12);
+      border: 1px solid rgba(255, 189, 89, 0.25);
+      color: #ffdd8b;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      backdrop-filter: blur(10px);
+    }
+    .badge::before {
+      content: "";
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ffd54f, rgba(255, 189, 89, 0));
+      box-shadow: 0 0 20px rgba(255, 189, 89, 0.5);
+    }
+    .hero-title {
+      margin: 0;
+      font-size: clamp(3.4rem, 5vw, 4.8rem);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      font-weight: 900;
+      max-width: 520px;
+      text-transform: none;
+      color: #f8fafc;
+    }
+    .hero-copy {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: #cbd5e1;
+      max-width: 520px;
+    }
+    .highlight {
+      color: #fbbf24;
+    }
+    .hero-subtitle {
+      margin-top: 22px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      max-width: 460px;
+      line-height: 1.8;
+    }
+    .cta-group {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 28px;
+    }
+    .cta-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      padding: 1rem 1.8rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ffd54f, #f59e0b);
+      color: #050505;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      box-shadow: 0 24px 50px rgba(255,189,89,0.24);
+      transition: transform 0.2s ease;
+    }
+    .cta-primary:hover { transform: translateY(-2px); }
+    .cta-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem 1.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: #f8fafc;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+    .hero-meta {
+      display: grid;
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .hero-meta span {
+      display: inline-flex;
+      gap: 0.7rem;
+      align-items: center;
+      color: #94a3b8;
+      font-size: 0.94rem;
+    }
+    .hero-meta span::before {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #fbbf24;
+      box-shadow: 0 0 14px rgba(251,189,36,0.45);
+    }
+    .visual-panel {
+      position: relative;
+      border-radius: 34px;
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      padding: 28px;
+      display: grid;
+      gap: 20px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+    }
+    .visual-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(255,255,255,0.15), transparent 24%),
+                  radial-gradient(circle at bottom right, rgba(255,189,36,0.14), transparent 20%);
+      pointer-events: none;
+    }
+    .device-stack {
+      display: grid;
+      gap: 18px;
+      align-items: center;
+      justify-items: center;
+    }
+    .screen-card {
+      position: relative;
+      width: 100%;
+      min-height: 420px;
+      border-radius: 32px;
+      background: linear-gradient(180deg, rgba(13,18,24,0.98), rgba(9,11,16,0.92));
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+      box-shadow: 0 35px 80px rgba(0,0,0,0.35);
+    }
+    .screen-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent 35%);
+      pointer-events: none;
+    }
+    .screen-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(14px);
+    }
+    .screen-dot { width: 10px; height: 10px; border-radius: 50%; background: #fbbf24; box-shadow: 0 0 12px rgba(251,189,36,0.35); }
+    .screen-title { color: #f8fafc; font-weight: 700; letter-spacing: 0.04em; font-size: 0.88rem; }
+    .screen-body { padding: 28px 24px; display: grid; gap: 18px; }
+    .screen-heading { color: #f8fafc; font-size: 1.3rem; font-weight: 800; line-height: 1.1; }
+    .screen-text { color: #cbd5e1; font-size: 0.95rem; line-height: 1.8; }
+    .mini-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 20px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #e2e8f0;
+      font-size: 0.92rem;
+    }
+    .mini-card strong { color: #f8fafc; }
+    .mobile-preview {
+      width: 270px;
+      border-radius: 40px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      padding: 18px;
+      position: relative;
+      box-shadow: 0 30px 70px rgba(0,0,0,0.35);
+      justify-self: center;
+    }
+    .mobile-frame {
+      background: #020406;
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,0.12);
+      overflow: hidden;
+      padding: 14px;
+      min-height: 360px;
+      display: grid;
+      gap: 20px;
+    }
+    .mobile-top { display: flex; justify-content: center; gap: 8px; margin-bottom: 14px; }
+    .mobile-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.35); }
+    .mobile-screen { border-radius: 22px; background: linear-gradient(180deg, #111827 0%, #080a10 100%); padding: 18px; min-height: 280px; display: grid; gap: 14px; }
+    .mobile-screen h3 { margin: 0; color: #f8fafc; font-size: 1rem; line-height: 1.2; }
+    .mobile-screen p { margin: 0; color: #94a3b8; line-height: 1.7; font-size: 0.88rem; }
+    .mobile-button { display: inline-flex; align-items: center; justify-content: center; padding: 0.85rem 1rem; border-radius: 999px; background: #fbbf24; color: #050505; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; }
+    .floating-chip {
+      position: absolute;
+      right: 18px;
+      top: 118px;
+      width: 200px;
+      border-radius: 22px;
+      padding: 18px 20px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(16px);
+      color: #f8fafc;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+    }
+    .floating-chip strong { display: block; font-size: 0.95rem; margin-bottom: 0.45rem; }
+    .floating-chip span { color: #fbbf24; font-weight: 700; }
+    .badge-glow {
+      position: absolute;
+      right: 34px;
+      top: 24px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: rgba(255,189,36,0.14);
+      color: #ffecb3;
+      border: 1px solid rgba(255,189,36,0.3);
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      box-shadow: 0 0 40px rgba(255,189,36,0.25);
+    }
+    .gold-line {
+      position: absolute;
+      left: -20px;
+      top: 48px;
+      width: 6px;
+      height: 120px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(255,221,123,0), rgba(255,221,123,0.75), rgba(255,221,123,0));
+      filter: blur(1px);
+    }
+    .glow-ring {
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      border-radius: 999px;
+      top: 20px;
+      right: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 0 90px rgba(251,189,36,0.4);
+    }
+    .bottom-panel {
+      display: grid;
+      gap: 18px;
+      margin-top: 12px;
+    }
+    .bottom-panel .label { display: inline-flex; align-items: center; gap: 0.7rem; color: #cbd5e1; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.18em; }
+    .bottom-panel .label::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #fbbf24; }
+    .bottom-panel .small-card { display: grid; gap: 10px; padding: 18px; border-radius: 1.5rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+    .small-card span { color: #cbd5e1; font-size: 0.88rem; }
+    .small-card strong { display: block; font-size: 1.1rem; color: #ffffff; }
+    .accent-grid { display: grid; gap: 14px; margin-top: 24px; }
+    .accent-grid div { display: flex; align-items: center; gap: 10px; padding: 18px; border-radius: 1.75rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+    .accent-grid span { display: inline-flex; justify-content: center; align-items: center; width: 34px; height: 34px; border-radius: 12px; background: rgba(251,189,36,0.15); color: #ffdd8b; font-size: 0.9rem; }
+    .accent-grid p { margin: 0; color: #cbd5e1; font-size: 0.95rem; }
+    @media (max-width: 1100px) { .canvas { grid-template-columns: 1fr; padding: 28px; } }
+    @media (max-width: 780px) { .canvas { padding: 20px; } .hero-title { font-size: 3rem; } .visual-panel { padding: 20px; } .mobile-preview { width: 100%; } }
+  </style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="hero-block">
+      <div class="badge">60% OFF</div>
+      <h1 class="hero-title">Seu negócio precisa de um site profissional.</h1>
+      <p class="hero-copy">Landing Page + Domínio incluso por apenas <span class="highlight">R$ 600</span> — solução premium para empresários e profissionais liberais em Petrolina e Juazeiro.</p>
+      <p class="hero-subtitle">Especialista em criação de sites em Petrolina e Juazeiro com design tecnológico, SEO local e performance focada em conversão.</p>
+      <div class="cta-group">
+        <a class="cta-primary" href="https://wa.me/5574981202260?text=Ol%C3%A1%2C%20quero%20a%20Landing%20Page%20premium%20por%20R%24600.">Chame no WhatsApp</a>
+        <a class="cta-secondary" href="#details">Ver oferta</a>
+      </div>
+      <div class="hero-meta">
+        <span>Criação de Sites</span>
+        <span>Landing Pages</span>
+        <span>Ecommerce</span>
+      </div>
+      <div class="accent-grid">
+        <div><span>•</span><p>Interface futurista estilo Apple, Stripe e Vercel</p></div>
+        <div><span>•</span><p>Glow dourado, glassmorphism e visual premium</p></div>
+      </div>
+    </div>
+
+    <div class="visual-panel">
+      <div class="gold-line"></div>
+      <div class="glow-ring"></div>
+      <div class="floating-chip">
+        <strong>Design Premium</strong>
+        <span>UI moderna & soft glow</span>
+      </div>
+      <div class="device-stack">
+        <div class="screen-card">
+          <div class="screen-top">
+            <div class="screen-dot"></div>
+            <div class="screen-title">Preview da landing</div>
+            <div class="screen-dot"></div>
+          </div>
+          <div class="screen-body">
+            <div class="mini-card"><strong>Link direto</strong><span>WhatsApp Lead</span></div>
+            <div class="mini-card"><strong>SEO local</strong><span>Petrolina & Juazeiro</span></div>
+            <div class="mini-card"><strong>Velocidade</strong><span>Performance 95+</span></div>
+          </div>
+        </div>
+        <div class="mobile-preview">
+          <div class="mobile-top"><div class="mobile-dot"></div><div class="mobile-dot"></div><div class="mobile-dot"></div></div>
+          <div class="mobile-frame">
+            <h3>Landing Page</h3>
+            <p>Seu site profissional em tela mobile com CTA rápido e visual tecnológico.</p>
+            <div class="mobile-button">Chame no WhatsApp</div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-panel" id="details">
+        <div class="label">Oferta Especial</div>
+        <div class="small-card"><strong>Landing Page + Domínio</strong><span>Preço promocional por tempo limitado</span></div>
+        <div class="small-card"><strong>Petrolina e Juazeiro</strong><span>Foco em empresas, advogados, clínicas e lojas</span></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

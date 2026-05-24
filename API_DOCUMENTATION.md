@@ -144,7 +144,38 @@ result = generate_rank_and_learn(workspace_dir="/path/to/workspace", top_n=2)
 }
 ```
 
-### 2. Ranker
+### 2. Landing Engine
+
+```python
+from jarvis_agency_os.landing_engine import generate_landing_page
+
+result = generate_landing_page(
+    workspace_dir="/path/to/workspace",
+    context={
+        "client_name": "Atlas Viagens",
+        "niche": "agência de turismo e viagens",
+        "whatsapp": "5587999999999"
+    },
+    copy_data={
+        "client_name": "Atlas Viagens",
+        "niche": "agência de turismo e viagens"
+    }
+)
+# Retorna: {"status": "success", "template_key": "landing_tourism_agency", ...}
+```
+
+**Selecao de templates oficiais:**
+- Marketing/growth/midia/performance/trafego: `landing_marketing_agency`
+- Turismo/viagens/roteiro/hotel/pacote: `landing_tourism_agency`
+- Educacao/pedagogico/reforco/infantil: `landing_education_premium`
+- Advocacia/juridico/direito/legal: `landing_legal_premium`
+- Fallback: `landing_premium_agency`
+
+Use esta API para gerar landpages. Os arquivos em `development_landpages/` sao prototipos de analise e nao substituem os blueprints oficiais hidratados pelo pipeline.
+
+**Convencao de saida:** consulte `OUTPUT_CONVENTIONS.md` antes de criar ou promover qualquer landpage ou imagem. Prototipos ficam em `development_landpages/<slug>/index.html`; toda imagem nova deve ir para `workspace/project_images/<project_slug>/`; blueprints oficiais ficam em `jarvis_agency_os/blueprints/`; saidas automaticas de imagem tambem usam `workspace/project_images/<project_slug>/renders/` e `workspace/project_images/<project_slug>/exports/`.
+
+### 3. Ranker
 
 ```python
 from jarvis_agency_os.ranker import rank_creatives
@@ -161,7 +192,7 @@ result = rank_creatives(creatives, top_n=3)
 - Design State Alignment (15%)
 - Batch Diversity (10%)
 
-### 3. Renderer
+### 4. Renderer
 
 ```python
 from jarvis_agency_os.renderer import render_html_to_png
@@ -174,7 +205,7 @@ result = render_html_to_png(
 # Retorna: {"status": "success", "path": "..."}
 ```
 
-### 4. Export Engine
+### 5. Export Engine
 
 ```python
 from jarvis_agency_os.export_engine import ExportManager
@@ -190,7 +221,7 @@ result = manager.export_for_meta_ads(
 )
 ```
 
-### 5. Visual Memory v2
+### 6. Visual Memory v2
 
 ```python
 from jarvis_agency_os.visual_memory_v2 import get_memory

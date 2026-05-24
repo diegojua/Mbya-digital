@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MbyaClaw - Local-First Hybrid Workflow Automation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            void: "#0b0f19",
+            panel: "#111827",
+            line: "rgba(148, 163, 184, 0.18)",
+            ai: "#00d2ff",
+            logic: "#00e676",
+            human: "#f7b955"
+          },
+          fontFamily: {
+            sans: ["Inter", "ui-sans-serif", "system-ui"],
+            mono: ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "Menlo", "monospace"]
+          },
+          boxShadow: {
+            ai: "0 0 34px rgba(0, 210, 255, 0.32)",
+            logic: "0 0 34px rgba(0, 230, 118, 0.24)",
+            human: "0 0 28px rgba(247, 185, 85, 0.24)"
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap");
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: #0b0f19; }
+    body {
+      min-width: 320px;
+      background:
+        linear-gradient(180deg, rgba(11,15,25,0.88), rgba(11,15,25,0.98)),
+        radial-gradient(circle at 12% 4%, rgba(0,210,255,0.18), transparent 340px),
+        radial-gradient(circle at 88% 12%, rgba(0,230,118,0.13), transparent 360px),
+        #0b0f19;
+      color: #f8fafc;
+    }
+    .grid-skin {
+      background-image:
+        linear-gradient(rgba(148,163,184,0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148,163,184,0.055) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+    .node-line {
+      position: absolute;
+      height: 2px;
+      transform-origin: left center;
+      background: linear-gradient(90deg, rgba(148,163,184,0.2), currentColor);
+      opacity: 0.9;
+    }
+    .node-pulse::after {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      border: 1px solid currentColor;
+      opacity: 0.3;
+      animation: pulse-ring 2.6s ease-out infinite;
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(1); opacity: 0.35; }
+      100% { transform: scale(1.16); opacity: 0; }
+    }
+    .mode-panel { display: none; }
+    .mode-panel.active { display: block; }
+    .mode-button[aria-selected="true"].agent {
+      color: #020617;
+      background: #00d2ff;
+      box-shadow: 0 0 28px rgba(0,210,255,0.32);
+    }
+    .mode-button[aria-selected="true"].manual {
+      color: #02130a;
+      background: #00e676;
+      box-shadow: 0 0 28px rgba(0,230,118,0.24);
+    }
+  </style>
+</head>
+<body class="font-sans antialiased">
+  <nav class="fixed inset-x-0 top-0 z-50 border-b border-line bg-void/82 backdrop-blur-xl">
+    <div class="mx-auto flex min-h-[72px] w-[min(1180px,calc(100%-40px))] items-center justify-between gap-5">
+      <a href="#" class="flex min-w-0 items-center gap-3 text-white no-underline">
+        <span class="grid h-10 w-10 place-items-center rounded-lg border border-ai/40 bg-ai/10 font-mono text-sm font-black text-ai shadow-ai">M</span>
+        <span class="min-w-0">
+          <strong class="block text-base leading-none">MbyaClaw</strong>
+          <span class="mt-1 block font-mono text-xs leading-4 text-slate-400">local-first automation</span>
+        </span>
+      </a>
+      <div class="hidden items-center gap-6 text-sm font-bold text-slate-300 md:flex">
+        <a href="#manifesto" class="hover:text-ai">Manifesto</a>
+        <a href="#modes" class="hover:text-ai">Modes</a>
+        <a href="#features" class="hover:text-ai">Features</a>
+        <a href="#specs" class="hover:text-ai">Specs</a>
+      </div>
+      <a href="#download" class="inline-flex min-h-11 items-center justify-center rounded-lg bg-ai px-4 text-sm font-black text-slate-950 shadow-ai transition hover:-translate-y-0.5">Download Beta</a>
+    </div>
+  </nav>
+
+  <header class="grid-skin relative overflow-hidden pt-[72px]">
+    <div class="mx-auto grid min-h-[760px] w-[min(1180px,calc(100%-40px))] items-center gap-10 py-20 lg:grid-cols-[0.92fr_1.08fr]">
+      <div>
+        <div class="inline-flex min-h-8 items-center rounded-full border border-ai/30 bg-ai/10 px-3 font-mono text-xs font-bold uppercase text-ai">
+          Rust bones / AI brain / private by default
+        </div>
+        <h1 class="mt-6 max-w-3xl text-5xl font-black leading-[0.98] tracking-normal text-white md:text-7xl">
+          The Power of AI Agents. The Certainty of Local Logic.
+        </h1>
+        <p class="mt-7 max-w-2xl text-lg font-semibold leading-8 text-slate-300 md:text-xl">
+          Orchestrate automated workflows with pre-trained AI agents or deterministic rules. 100% private, runs offline, powered by Rust & Tauri, with zero token costs.
+        </p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href="#download" class="inline-flex min-h-14 items-center justify-center rounded-lg bg-ai px-6 text-base font-black text-slate-950 shadow-ai transition hover:-translate-y-0.5">Download Beta (Local-First)</a>
+          <a href="#demo" class="inline-flex min-h-14 items-center justify-center rounded-lg border border-slate-500/60 px-6 text-base font-black text-white transition hover:border-ai hover:text-ai">Watch 2-Min Demo</a>
+        </div>
+        <div class="mt-8 grid max-w-2xl grid-cols-3 gap-3">
+          <div class="border-l-2 border-ai pl-3">
+            <strong class="block font-mono text-2xl text-white">0</strong>
+            <span class="mt-1 block text-xs font-bold text-slate-400">cloud token burn</span>
+          </div>
+          <div class="border-l-2 border-logic pl-3">
+            <strong class="block font-mono text-2xl text-white">100%</strong>
+            <span class="mt-1 block text-xs font-bold text-slate-400">local execution</span>
+          </div>
+          <div class="border-l-2 border-human pl-3">
+            <strong class="block font-mono text-2xl text-white">HITL</strong>
+            <span class="mt-1 block text-xs font-bold text-slate-400">critical action gates</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="demo" class="relative rounded-lg border border-line bg-slate-950/72 p-4 shadow-2xl shadow-black/40">
+        <div class="mb-4 flex items-center justify-between gap-3 border-b border-line pb-4">
+          <div>
+            <strong class="block text-sm">MbyaClaw Workflow Builder</strong>
+            <span class="font-mono text-xs text-slate-500">flow://lead-intake/private</span>
+          </div>
+          <div class="flex gap-1.5">
+            <span class="h-3 w-3 rounded-full bg-human"></span>
+            <span class="h-3 w-3 rounded-full bg-logic"></span>
+            <span class="h-3 w-3 rounded-full bg-ai"></span>
+          </div>
+        </div>
+        <div class="grid-skin relative min-h-[460px] overflow-hidden rounded-lg border border-line bg-void/80">
+          <div class="node-line left-[22%] top-[40%] w-[24%] text-ai"></div>
+          <div class="node-line left-[50%] top-[40%] w-[25%] rotate-[22deg] text-logic"></div>
+          <div class="node-line left-[50%] top-[40%] w-[22%] -rotate-[28deg] text-human"></div>
+
+          <div class="node-pulse absolute left-[5%] top-[33%] w-[190px] rounded-lg border border-slate-500/40 bg-slate-900 p-4 text-slate-200">
+            <div class="font-mono text-xs font-bold text-slate-400">INPUT</div>
+            <strong class="mt-2 block text-lg">Webhook Input</strong>
+            <p class="mt-2 text-sm font-semibold leading-5 text-slate-400">Receives lead payload locally on port 8787.</p>
+          </div>
+
+          <div class="node-pulse absolute left-[36%] top-[27%] w-[220px] rounded-lg border border-ai/50 bg-ai/10 p-4 text-ai shadow-ai">
+            <div class="font-mono text-xs font-bold">AGENT</div>
+            <strong class="mt-2 block text-lg text-white">SDR AI Agent</strong>
+            <p class="mt-2 text-sm font-semibold leading-5 text-slate-300">Scores intent with Ollama, then emits structured JSON.</p>
+          </div>
+
+          <div class="absolute right-[4%] top-[11%] w-[210px] rounded-lg border border-human/50 bg-human/10 p-4 text-human shadow-human">
+            <div class="font-mono text-xs font-bold">SAFETY GATE</div>
+            <strong class="mt-2 block text-lg text-white">Human Approval</strong>
+            <p class="mt-2 text-sm font-semibold leading-5 text-slate-300">Pause before billing, email, CRM write, or public action.</p>
+          </div>
+
+          <div class="absolute bottom-[12%] right-[8%] w-[215px] rounded-lg border border-logic/50 bg-logic/10 p-4 text-logic shadow-logic">
+            <div class="font-mono text-xs font-bold">SUCCESS</div>
+            <strong class="mt-2 block text-lg text-white">Google Sheets</strong>
+            <p class="mt-2 text-sm font-semibold leading-5 text-slate-300">Append approved row through deterministic local logic.</p>
+          </div>
+
+          <div class="absolute bottom-4 left-4 right-4 rounded-lg border border-line bg-slate-950/80 p-3 font-mono text-xs text-slate-400">
+            <span class="text-logic">status:</span> running locally
+            <span class="mx-2 text-slate-600">/</span>
+            <span class="text-ai">llm:</span> gemma:7b
+            <span class="mx-2 text-slate-600">/</span>
+            <span class="text-human">approval:</span> required
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="manifesto" class="mx-auto w-[min(1180px,calc(100%-40px))] py-20">
+      <div class="max-w-3xl">
+        <span class="font-mono text-sm font-bold uppercase text-logic">The Hybrid Manifesto</span>
+        <h2 class="mt-4 text-4xl font-black leading-tight text-white md:text-5xl">Not pure AI chaos. Not brittle linear automation.</h2>
+        <p class="mt-5 text-lg font-semibold leading-8 text-slate-400">MbyaClaw gives every workflow the right kind of intelligence: judgment when the situation is ambiguous, strict logic when precision matters.</p>
+      </div>
+      <div class="mt-10 grid gap-4 md:grid-cols-3">
+        <article class="rounded-lg border border-ai/30 bg-ai/10 p-6 shadow-ai">
+          <div class="font-mono text-xs font-bold uppercase text-ai">01 / Agent judgment</div>
+          <h3 class="mt-5 text-2xl font-black text-white">AI Brain, Rust Bones</h3>
+          <p class="mt-4 font-semibold leading-7 text-slate-300">Use LLMs like Gemma or Llama via Ollama only when judgment is needed. Use strict hardcoded logic for everything else.</p>
+        </article>
+        <article class="rounded-lg border border-logic/30 bg-logic/10 p-6 shadow-logic">
+          <div class="font-mono text-xs font-bold uppercase text-logic">02 / Private by design</div>
+          <h3 class="mt-5 text-2xl font-black text-white">Local-First Privacy</h3>
+          <p class="mt-4 font-semibold leading-7 text-slate-300">Your data, webhooks, and files never leave your machine. Perfect for sensitive corporate data and internal operations.</p>
+        </article>
+        <article class="rounded-lg border border-human/30 bg-human/10 p-6 shadow-human">
+          <div class="font-mono text-xs font-bold uppercase text-human">03 / Scale without burn</div>
+          <h3 class="mt-5 text-2xl font-black text-white">Zero-Cost Scale</h3>
+          <p class="mt-4 font-semibold leading-7 text-slate-300">Run heavy automated pipelines without burning cloud tokens, hidden worker minutes, or escalating subscription fees.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="modes" class="border-y border-line bg-slate-950/55 py-20">
+      <div class="mx-auto grid w-[min(1180px,calc(100%-40px))] gap-8 lg:grid-cols-[0.84fr_1.16fr] lg:items-start">
+        <div>
+          <span class="font-mono text-sm font-bold uppercase text-ai">Choose your mode</span>
+          <h2 class="mt-4 text-4xl font-black leading-tight text-white md:text-5xl">Switch from autonomous agent to deterministic logic in one click.</h2>
+          <p class="mt-5 text-lg font-semibold leading-8 text-slate-400">Use AI for flexible reasoning. Use manual logic when compliance, cost, or repeatability matters more than creativity.</p>
+          <div class="mt-7 inline-grid grid-cols-2 rounded-lg border border-line bg-void p-1">
+            <button class="mode-button agent min-h-11 rounded-md px-4 text-sm font-black text-slate-300 transition" type="button" aria-selected="true" data-mode="agent">Agent Mode</button>
+            <button class="mode-button manual min-h-11 rounded-md px-4 text-sm font-black text-slate-300 transition" type="button" aria-selected="false" data-mode="manual">Manual Mode</button>
+          </div>
+        </div>
+
+        <div class="rounded-lg border border-line bg-void p-4">
+          <div id="agent-panel" class="mode-panel active">
+            <div class="rounded-lg border border-ai/35 bg-ai/10 p-5 shadow-ai">
+              <div class="flex items-center justify-between gap-4">
+                <div>
+                  <div class="font-mono text-xs font-bold uppercase text-ai">Agent Card</div>
+                  <h3 class="mt-2 text-2xl font-black text-white">SDR AI Agent</h3>
+                </div>
+                <span class="rounded-full bg-ai px-3 py-1 font-mono text-xs font-black text-slate-950">AI</span>
+              </div>
+              <div class="mt-5 grid gap-3 sm:grid-cols-3">
+                <label class="flex min-h-14 items-center justify-between rounded-lg border border-line bg-slate-950/70 px-4 text-sm font-bold text-slate-200">Web Search <input checked type="checkbox" class="h-4 w-4 accent-ai"></label>
+                <label class="flex min-h-14 items-center justify-between rounded-lg border border-line bg-slate-950/70 px-4 text-sm font-bold text-slate-200">Document Reader <input checked type="checkbox" class="h-4 w-4 accent-ai"></label>
+                <label class="flex min-h-14 items-center justify-between rounded-lg border border-line bg-slate-950/70 px-4 text-sm font-bold text-slate-200">Memory <input type="checkbox" class="h-4 w-4 accent-ai"></label>
+              </div>
+              <div class="mt-4 rounded-lg border border-line bg-slate-950 p-4">
+                <div class="font-mono text-xs font-bold text-slate-500">PROMPT</div>
+                <p class="mt-3 font-mono text-sm leading-7 text-slate-300">Classify this lead, explain the risk, and return <span class="text-ai">{ score, intent, next_step }</span> as strict JSON.</p>
+              </div>
+            </div>
+          </div>
+
+          <div id="manual-panel" class="mode-panel">
+            <div class="rounded-lg border border-logic/35 bg-logic/10 p-5 shadow-logic">
+              <div class="flex items-center justify-between gap-4">
+                <div>
+                  <div class="font-mono text-xs font-bold uppercase text-logic">Logic Editor</div>
+                  <h3 class="mt-2 text-2xl font-black text-white">Deterministic Route</h3>
+                </div>
+                <span class="rounded-full bg-logic px-3 py-1 font-mono text-xs font-black text-slate-950">RULE</span>
+              </div>
+              <div class="mt-5 grid gap-3 font-mono text-sm">
+                <div class="grid gap-3 rounded-lg border border-line bg-slate-950/70 p-4 sm:grid-cols-[80px_1fr] sm:items-center">
+                  <span class="font-black text-logic">IF</span>
+                  <div class="grid gap-3 sm:grid-cols-3">
+                    <div class="rounded-md border border-line bg-void px-3 py-3 text-slate-200">input.status</div>
+                    <div class="rounded-md border border-line bg-void px-3 py-3 text-slate-200">==</div>
+                    <div class="rounded-md border border-line bg-void px-3 py-3 text-logic">'pago'</div>
+                  </div>
+                </div>
+                <div class="grid gap-3 rounded-lg border border-line bg-slate-950/70 p-4 sm:grid-cols-[80px_1fr] sm:items-center">
+                  <span class="font-black text-logic">THEN</span>
+                  <div class="rounded-md border border-logic/40 bg-logic/10 px-3 py-3 text-logic">route to Success</div>
+                </div>
+                <div class="grid gap-3 rounded-lg border border-line bg-slate-950/70 p-4 sm:grid-cols-[80px_1fr] sm:items-center">
+                  <span class="font-black text-human">ELSE</span>
+                  <div class="rounded-md border border-human/40 bg-human/10 px-3 py-3 text-human">request Human Approval</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="mx-auto w-[min(1180px,calc(100%-40px))] py-20">
+      <div class="grid gap-4 lg:grid-cols-3">
+        <article class="rounded-lg border border-line bg-slate-950/70 p-6">
+          <div class="font-mono text-xs font-bold uppercase text-ai">Smart Variables</div>
+          <h3 class="mt-4 text-2xl font-black text-white">Type <span class="font-mono text-ai">{{</span> and map context instantly.</h3>
+          <div class="mt-5 rounded-lg border border-line bg-void p-4 font-mono text-sm leading-7 text-slate-300">
+            email: <span class="text-ai">{{webhook.email}}</span><br>
+            status: <span class="text-logic">{{payment.status}}</span><br>
+            risk: <span class="text-human">{{agent.risk_score}}</span>
+          </div>
+          <p class="mt-5 font-semibold leading-7 text-slate-400">Pull data from any previous node without learning technical JSON paths.</p>
+        </article>
+
+        <article class="rounded-lg border border-line bg-slate-950/70 p-6">
+          <div class="font-mono text-xs font-bold uppercase text-logic">Time-Travel Debugging</div>
+          <h3 class="mt-4 text-2xl font-black text-white">Replay, inspect, and retry with an edit.</h3>
+          <div class="mt-5 overflow-hidden rounded-lg border border-line">
+            <div class="grid grid-cols-[70px_1fr_92px] bg-void px-3 py-2 font-mono text-xs font-bold text-slate-500">
+              <span>TIME</span><span>EVENT</span><span>ACTION</span>
+            </div>
+            <div class="grid grid-cols-[70px_1fr_92px] border-t border-line px-3 py-3 text-sm font-semibold text-slate-300">
+              <span class="font-mono text-slate-500">00:02</span><span>Agent evaluated intent</span><button class="rounded-md bg-ai px-2 py-1 text-xs font-black text-slate-950">Retry</button>
+            </div>
+            <div class="grid grid-cols-[70px_1fr_92px] border-t border-line px-3 py-3 text-sm font-semibold text-slate-300">
+              <span class="font-mono text-slate-500">00:04</span><span>Rule routed paid lead</span><button class="rounded-md bg-logic px-2 py-1 text-xs font-black text-slate-950">Edit</button>
+            </div>
+          </div>
+          <p class="mt-5 font-semibold leading-7 text-slate-400">See the decision timeline and retry failed steps without rerunning the full flow.</p>
+        </article>
+
+        <article class="rounded-lg border border-human/30 bg-human/10 p-6 shadow-human">
+          <div class="font-mono text-xs font-bold uppercase text-human">Human-In-The-Loop</div>
+          <h3 class="mt-4 text-2xl font-black text-white">Autonomy with a brake pedal.</h3>
+          <div class="mt-5 rounded-lg border border-human/35 bg-void p-4">
+            <div class="font-mono text-xs font-bold text-human">CRITICAL ACTION PAUSED</div>
+            <p class="mt-3 text-sm font-semibold leading-6 text-slate-300">The agent wants to send 428 billing emails. Approval required before execution.</p>
+            <div class="mt-4 flex gap-2">
+              <button class="min-h-10 rounded-lg bg-human px-4 text-sm font-black text-slate-950">Approve</button>
+              <button class="min-h-10 rounded-lg border border-line px-4 text-sm font-black text-white">Review</button>
+            </div>
+          </div>
+          <p class="mt-5 font-semibold leading-7 text-slate-400">Pause agents before billing, sending emails, writing to CRMs, or touching production data.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="specs" class="border-y border-line bg-slate-950/55 py-16">
+      <div class="mx-auto w-[min(1180px,calc(100%-40px))]">
+        <div class="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+          <div>
+            <span class="font-mono text-sm font-bold uppercase text-logic">Technical specs</span>
+            <h2 class="mt-4 text-4xl font-black text-white">Built for developers who hate mystery boxes.</h2>
+          </div>
+          <span class="font-mono text-sm font-bold text-slate-500">native / inspectable / offline-capable</span>
+        </div>
+        <div class="grid gap-3 md:grid-cols-4">
+          <div class="rounded-lg border border-line bg-void p-5"><strong class="block text-lg text-white">Rust & Tauri</strong><span class="mt-3 block text-sm font-semibold leading-6 text-slate-400">Ultra-lightweight desktop runtime with no browser tab sprawl.</span></div>
+          <div class="rounded-lg border border-line bg-void p-5"><strong class="block text-lg text-white">SQLite Storage</strong><span class="mt-3 block text-sm font-semibold leading-6 text-slate-400">Durable local state, logs, credentials metadata, and execution history.</span></div>
+          <div class="rounded-lg border border-line bg-void p-5"><strong class="block text-lg text-white">Ollama & OpenAI</strong><span class="mt-3 block text-sm font-semibold leading-6 text-slate-400">Run private local models first, then optionally route selected tasks to cloud.</span></div>
+          <div class="rounded-lg border border-line bg-void p-5"><strong class="block text-lg text-white">Docker Sandbox</strong><span class="mt-3 block text-sm font-semibold leading-6 text-slate-400">Execute risky code in isolated containers with controlled permissions.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="download" class="mx-auto w-[min(1180px,calc(100%-40px))] py-20">
+      <div class="rounded-lg border border-ai/35 bg-[linear-gradient(135deg,rgba(0,210,255,0.16),rgba(0,230,118,0.08),rgba(247,185,85,0.10))] p-8 shadow-ai md:p-12">
+        <div class="max-w-3xl">
+          <span class="font-mono text-sm font-bold uppercase text-ai">Build your first claw-flow</span>
+          <h2 class="mt-4 text-4xl font-black leading-tight text-white md:text-5xl">Take control of your data and automation.</h2>
+          <p class="mt-5 text-lg font-semibold leading-8 text-slate-300">Install the beta, connect a local model, and ship a private workflow without sending your operational data into another SaaS black box.</p>
+        </div>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="#" class="inline-flex min-h-14 items-center justify-center rounded-lg bg-ai px-6 text-base font-black text-slate-950 shadow-ai transition hover:-translate-y-0.5">Get Started for Free</a>
+          <a href="#specs" class="inline-flex min-h-14 items-center justify-center rounded-lg border border-slate-500/60 px-6 text-base font-black text-white transition hover:border-logic hover:text-logic">View Specs</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const buttons = document.querySelectorAll(".mode-button");
+    const panels = {
+      agent: document.getElementById("agent-panel"),
+      manual: document.getElementById("manual-panel")
+    };
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const mode = button.dataset.mode;
+        buttons.forEach((item) => item.setAttribute("aria-selected", String(item === button)));
+        Object.entries(panels).forEach(([key, panel]) => {
+          panel.classList.toggle("active", key === mode);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

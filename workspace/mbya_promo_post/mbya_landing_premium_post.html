@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mbya Marketing — Landing Page Premium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=SF+Pro+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .post {
+            width: 1080px;
+            height: 1080px;
+            position: relative;
+            overflow: hidden;
+            background: #050505;
+        }
+
+        /* ═══════════════════════════════════════
+           BACKGROUND LAYERS
+           ═══════════════════════════════════════ */
+        .bg-base {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, #0a0a0a 0%, #050505 50%, #020202 100%);
+        }
+
+        .bg-gradient-1 {
+            position: absolute;
+            top: -200px;
+            right: -150px;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(245, 180, 60, 0.10), transparent 65%);
+            filter: blur(40px);
+        }
+
+        .bg-gradient-2 {
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(217, 119, 6, 0.08), transparent 60%);
+            filter: blur(50px);
+        }
+
+        .bg-gradient-3 {
+            position: absolute;
+            top: 40%;
+            left: 30%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(252, 211, 77, 0.05), transparent 55%);
+            filter: blur(60px);
+        }
+
+        /* GRID */
+        .bg-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+        }
+
+        /* NOISE TEXTURE */
+        .bg-noise {
+            position: absolute;
+            inset: 0;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-size: 256px 256px;
+        }
+
+        /* DECORATIVE LINES */
+        .line-accent {
+            position: absolute;
+            z-index: 2;
+        }
+
+        .line-1 {
+            top: 120px;
+            left: 48px;
+            width: 1px;
+            height: 180px;
+            background: linear-gradient(180deg, transparent, rgba(245, 180, 60, 0.15), transparent);
+        }
+
+        .line-2 {
+            bottom: 280px;
+            right: 48px;
+            width: 1px;
+            height: 120px;
+            background: linear-gradient(180deg, transparent, rgba(245, 180, 60, 0.10), transparent);
+        }
+
+        .line-3 {
+            top: 45%;
+            right: 100px;
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(245, 180, 60, 0.12), transparent);
+        }
+
+        /* PARTICLES */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(245, 180, 60, 0.25);
+            pointer-events: none;
+        }
+
+        .particle-1 { width: 4px; height: 4px; top: 18%; left: 22%; opacity: 0.5; }
+        .particle-2 { width: 3px; height: 3px; top: 28%; right: 18%; opacity: 0.35; }
+        .particle-3 { width: 5px; height: 5px; bottom: 30%; left: 28%; opacity: 0.4; }
+        .particle-4 { width: 2px; height: 2px; top: 55%; right: 32%; opacity: 0.3; }
+        .particle-5 { width: 4px; height: 4px; top: 42%; left: 12%; opacity: 0.35; }
+        .particle-6 { width: 3px; height: 3px; bottom: 38%; right: 14%; opacity: 0.45; }
+        .particle-7 { width: 2px; height: 2px; top: 72%; left: 42%; opacity: 0.25; }
+        .particle-8 { width: 3px; height: 3px; top: 15%; left: 62%; opacity: 0.3; }
+        .particle-9 { width: 4px; height: 4px; top: 65%; left: 75%; opacity: 0.2; }
+        .particle-10 { width: 2px; height: 2px; top: 35%; left: 48%; opacity: 0.4; }
+
+        /* ═══════════════════════════════════════
+           BRAND HEADER
+           ═══════════════════════════════════════ */
+        .brand {
+            position: absolute;
+            top: 44px;
+            left: 48px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            z-index: 20;
+        }
+
+        .brand-mark {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, #fcd34d, #d97706);
+            color: #050505;
+            font-weight: 900;
+            font-size: 20px;
+            box-shadow: 0 8px 32px rgba(245, 180, 60, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .brand-name {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: #fafafa;
+        }
+
+        .brand-sub {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            color: #f5b43c;
+            text-transform: uppercase;
+            margin-top: 1px;
+        }
+
+        /* BADGE */
+        .badge {
+            position: absolute;
+            top: 44px;
+            right: 48px;
+            padding: 10px 22px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, rgba(245, 180, 60, 0.12), rgba(217, 119, 6, 0.08));
+            border: 1px solid rgba(245, 180, 60, 0.25);
+            color: #fcd34d;
+            font-size: 15px;
+            font-weight: 900;
+            letter-spacing: 0.04em;
+            z-index: 20;
+            box-shadow: 0 8px 32px rgba(245, 180, 60, 0.12);
+            backdrop-filter: blur(12px);
+        }
+
+        /* ═══════════════════════════════════════
+           DEVICES SECTION
+           ═══════════════════════════════════════ */
+        .devices {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -52%);
+            z-index: 8;
+        }
+
+        /* NOTEBOOK */
+        .notebook {
+            position: relative;
+            width: 540px;
+            height: 360px;
+        }
+
+        .notebook-screen {
+            width: 100%;
+            height: 320px;
+            border-radius: 14px 14px 0 0;
+            border: 2px solid #1f1f23;
+            background: linear-gradient(180deg, #0f0f0f, #0a0a0a);
+            overflow: hidden;
+            position: relative;
+            box-shadow:
+                0 25px 70px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(255, 255, 255, 0.03),
+                inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        }
+
+        .notebook-camera {
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #1a1a1a;
+            border: 1px solid #27272a;
+            z-index: 5;
+        }
+
+        .notebook-browser-bar {
+            height: 34px;
+            background: #141414;
+            display: flex;
+            align-items: center;
+            padding: 0 14px;
+            gap: 7px;
+            border-bottom: 1px solid #1f1f23;
+        }
+
+        .notebook-browser-bar span {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+        }
+
+        .notebook-browser-bar span:nth-child(1) { background: #ef4444; }
+        .notebook-browser-bar span:nth-child(2) { background: #eab308; }
+        .notebook-browser-bar span:nth-child(3) { background: #22c55e; }
+
+        .notebook-url {
+            margin-left: 14px;
+            padding: 5px 14px;
+            background: #0f0f0f;
+            border-radius: 5px;
+            font-size: 10px;
+            color: #52525b;
+            flex: 1;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+
+        .notebook-content {
+            padding: 22px;
+            height: calc(100% - 34px);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            background: linear-gradient(180deg, #0a0a0a 0%, #080808 100%);
+        }
+
+        .notebook-hero {
+            height: 90px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(245, 180, 60, 0.12), rgba(217, 119, 6, 0.06));
+            border: 1px solid rgba(245, 180, 60, 0.15);
+            display: flex;
+            align-items: center;
+            padding: 0 18px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .notebook-hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 120px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(245, 180, 60, 0.05));
+        }
+
+        .notebook-hero-text { width: 65%; }
+
+        .notebook-hero-line {
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        .notebook-hero-line:nth-child(1) {
+            width: 75%;
+            background: linear-gradient(90deg, rgba(252, 211, 77, 0.5), rgba(245, 180, 60, 0.3));
+        }
+
+        .notebook-hero-line:nth-child(2) {
+            width: 45%;
+            background: rgba(245, 180, 60, 0.2);
+        }
+
+        .notebook-hero-btn {
+            margin-left: auto;
+            padding: 8px 18px;
+            border-radius: 7px;
+            background: linear-gradient(135deg, #fcd34d, #d97706);
+            width: 85px;
+            height: 26px;
+            box-shadow: 0 4px 16px rgba(245, 180, 60, 0.2);
+        }
+
+        .notebook-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .notebook-card {
+            height: 55px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid #1f1f23;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .notebook-card-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(245, 180, 60, 0.35), rgba(217, 119, 6, 0.2));
+            box-shadow: 0 2px 8px rgba(245, 180, 60, 0.15);
+        }
+
+        .notebook-bar {
+            height: 6px;
+            border-radius: 3px;
+            background: #1f1f23;
+            margin-top: auto;
+            overflow: hidden;
+        }
+
+        .notebook-bar-fill {
+            height: 100%;
+            width: 72%;
+            border-radius: 3px;
+            background: linear-gradient(90deg, #fcd34d, #d97706);
+        }
+
+        .notebook-base {
+            width: 112%;
+            margin-left: -6%;
+            height: 14px;
+            background: linear-gradient(180deg, #27272a, #18181b);
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .notebook-base::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+        }
+
+        .notebook-base-notch {
+            width: 90px;
+            height: 4px;
+            background: #3f3f46;
+            border-radius: 2px;
+            margin: 0 auto;
+            margin-top: 3px;
+        }
+
+        /* PHONE */
+        .phone {
+            position: absolute;
+            bottom: -50px;
+            right: -70px;
+            width: 150px;
+            height: 300px;
+            border-radius: 28px;
+            border: 3px solid #1f1f23;
+            background: linear-gradient(180deg, #0f0f0f, #0a0a0a);
+            box-shadow:
+                0 25px 70px rgba(0, 0, 0, 0.7),
+                0 0 0 1px rgba(255, 255, 255, 0.03),
+                inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            overflow: hidden;
+        }
+
+        .phone-notch {
+            width: 70px;
+            height: 18px;
+            background: #050505;
+            border-radius: 0 0 14px 14px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .phone-content {
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .phone-hero {
+            height: 45px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(245, 180, 60, 0.12), rgba(217, 119, 6, 0.06));
+            border: 1px solid rgba(245, 180, 60, 0.15);
+        }
+
+        .phone-line {
+            height: 5px;
+            border-radius: 3px;
+            background: #1f1f23;
+        }
+
+        .phone-line:nth-child(2) { width: 85%; }
+        .phone-line:nth-child(3) { width: 65%; }
+        .phone-line:nth-child(4) { width: 95%; }
+
+        .phone-btn {
+            margin-top: 10px;
+            height: 22px;
+            border-radius: 5px;
+            background: linear-gradient(135deg, #fcd34d, #d97706);
+            box-shadow: 0 4px 12px rgba(245, 180, 60, 0.2);
+        }
+
+        .phone-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 7px;
+            margin-top: 10px;
+        }
+
+        .phone-card {
+            height: 32px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid #1f1f23;
+        }
+
+        /* ═══════════════════════════════════════
+           FLOATING UI CARDS
+           ═══════════════════════════════════════ */
+        .float-card {
+            position: absolute;
+            padding: 14px 18px;
+            border-radius: 14px;
+            background: rgba(20, 20, 20, 0.75);
+            border: 1px solid rgba(245, 180, 60, 0.15);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: 15;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .float-card-1 {
+            top: 140px;
+            left: 52px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .float-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(245, 180, 60, 0.18), rgba(217, 119, 6, 0.08));
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(245, 180, 60, 0.1);
+        }
+
+        .float-icon svg {
+            width: 18px;
+            height: 18px;
+            color: #fcd34d;
+        }
+
+        .float-text {
+            font-size: 13px;
+            font-weight: 700;
+            color: #e4e4e7;
+            letter-spacing: -0.01em;
+        }
+
+        .float-sub {
+            font-size: 10px;
+            color: #71717a;
+            font-weight: 500;
+            margin-top: 1px;
+        }
+
+        .float-card-2 {
+            bottom: 200px;
+            right: 52px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .float-metric {
+            font-size: 20px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fef3c7, #f5b43c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .float-metric-label {
+            font-size: 10px;
+            color: #71717a;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* ═══════════════════════════════════════
+           TEXT CONTENT
+           ═══════════════════════════════════════ */
+        .content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 52px 48px 48px;
+            z-index: 20;
+            background: linear-gradient(180deg, transparent 0%, rgba(5, 5, 5, 0.85) 25%, rgba(5, 5, 5, 0.98) 100%);
+        }
+
+        .headline {
+            font-size: 44px;
+            font-weight: 900;
+            line-height: 1.08;
+            letter-spacing: -0.03em;
+            color: #fafafa;
+            margin-bottom: 14px;
+        }
+
+        .headline .gradient {
+            background: linear-gradient(135deg, #fef3c7 0%, #f5b43c 50%, #d97706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subheadline {
+            font-size: 19px;
+            font-weight: 600;
+            color: #a1a1aa;
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+
+        .sub-price {
+            color: #fcd34d;
+            font-weight: 800;
+        }
+
+        .secondary-text {
+            font-size: 13px;
+            color: #52525b;
+            margin-bottom: 26px;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+        }
+
+        .cta-row {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #fcd34d, #d97706);
+            color: #050505;
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            box-shadow:
+                0 12px 40px rgba(245, 180, 60, 0.25),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.15), transparent);
+            border-radius: 14px 14px 0 0;
+        }
+
+        .cta-btn svg {
+            width: 20px;
+            height: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-secondary {
+            font-size: 13px;
+            color: #52525b;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        /* BOTTOM BAR */
+        .bottom-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(245, 180, 60, 0.3), rgba(252, 211, 77, 0.5), rgba(245, 180, 60, 0.3), transparent);
+            z-index: 25;
+        }
+    </style>
+</head>
+<body>
+    <div class="post">
+        <!-- BACKGROUNDS -->
+        <div class="bg-base"></div>
+        <div class="bg-gradient-1"></div>
+        <div class="bg-gradient-2"></div>
+        <div class="bg-gradient-3"></div>
+        <div class="bg-grid"></div>
+        <div class="bg-noise"></div>
+
+        <!-- DECORATIVE LINES -->
+        <div class="line-accent line-1"></div>
+        <div class="line-accent line-2"></div>
+        <div class="line-accent line-3"></div>
+
+        <!-- PARTICLES -->
+        <div class="particle particle-1"></div>
+        <div class="particle particle-2"></div>
+        <div class="particle particle-3"></div>
+        <div class="particle particle-4"></div>
+        <div class="particle particle-5"></div>
+        <div class="particle particle-6"></div>
+        <div class="particle particle-7"></div>
+        <div class="particle particle-8"></div>
+        <div class="particle particle-9"></div>
+        <div class="particle particle-10"></div>
+
+        <!-- BRAND -->
+        <div class="brand">
+            <div class="brand-mark">M</div>
+            <div>
+                <div class="brand-name">Mbya</div>
+                <div class="brand-sub">MARKETING</div>
+            </div>
+        </div>
+
+        <!-- BADGE -->
+        <div class="badge">60% OFF</div>
+
+        <!-- DEVICES -->
+        <div class="devices">
+            <div class="notebook">
+                <div class="notebook-screen">
+                    <div class="notebook-camera"></div>
+                    <div class="notebook-browser-bar">
+                        <span></span><span></span><span></span>
+                        <div class="notebook-url">mbyamarketing.com.br</div>
+                    </div>
+                    <div class="notebook-content">
+                        <div class="notebook-hero">
+                            <div class="notebook-hero-text">
+                                <div class="notebook-hero-line"></div>
+                                <div class="notebook-hero-line"></div>
+                            </div>
+                            <div class="notebook-hero-btn"></div>
+                        </div>
+                        <div class="notebook-cards">
+                            <div class="notebook-card"><div class="notebook-card-dot"></div></div>
+                            <div class="notebook-card"><div class="notebook-card-dot"></div></div>
+                            <div class="notebook-card"><div class="notebook-card-dot"></div></div>
+                        </div>
+                        <div class="notebook-bar"><div class="notebook-bar-fill"></div></div>
+                    </div>
+                </div>
+                <div class="notebook-base">
+                    <div class="notebook-base-notch"></div>
+                </div>
+            </div>
+
+            <div class="phone">
+                <div class="phone-notch"></div>
+                <div class="phone-content">
+                    <div class="phone-hero"></div>
+                    <div class="phone-line"></div>
+                    <div class="phone-line"></div>
+                    <div class="phone-line"></div>
+                    <div class="phone-btn"></div>
+                    <div class="phone-cards">
+                        <div class="phone-card"></div>
+                        <div class="phone-card"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FLOATING CARDS -->
+        <div class="float-card float-card-1">
+            <div class="float-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M13 2 3 14h8l-1 8 10-12h-8l1-8Z"/>
+                </svg>
+            </div>
+            <div>
+                <div class="float-text">Alta Conversão</div>
+                <div class="float-sub">SEO + Performance</div>
+            </div>
+        </div>
+
+        <div class="float-card float-card-2">
+            <div>
+                <div class="float-metric">3x</div>
+                <div class="float-metric-label">mais leads</div>
+            </div>
+        </div>
+
+        <!-- TEXT CONTENT -->
+        <div class="content">
+            <h1 class="headline">
+                Seu negócio precisa de um <span class="gradient">site profissional.</span>
+            </h1>
+            <p class="subheadline">
+                Landing Page + Domínio incluso por apenas <span class="sub-price">R$ 600</span>
+            </p>
+            <p class="secondary-text">
+                Especialista em criação de sites em Petrolina e Juazeiro
+            </p>
+            <div class="cta-row">
+                <div class="cta-btn">
+                    <span>Chame no WhatsApp</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/>
+                    </svg>
+                </div>
+                <span class="cta-secondary">Vagas limitadas</span>
+            </div>
+        </div>
+
+        <!-- BOTTOM ACCENT BAR -->
+        <div class="bottom-bar"></div>
+    </div>
+</body>
+</html>

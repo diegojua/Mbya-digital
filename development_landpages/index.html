@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Analise De Landpages - Marketing x Turismo</title>
+  <title>Analise De Landpages - Marketing, Turismo e MbyaClaw</title>
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
 
@@ -15,6 +15,7 @@
       --line: #e5e7eb;
       --marketing: #f05a42;
       --tourism: #006b70;
+      --mbyaclaw: #00d2ff;
       --accent: #f3b233;
       --shadow: 0 18px 44px rgba(17, 24, 39, 0.10);
     }
@@ -141,6 +142,14 @@
       background-image: url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=85");
     }
 
+    .preview.mbyaclaw {
+      background:
+        linear-gradient(135deg, rgba(0,210,255,0.22), rgba(0,230,118,0.13)),
+        radial-gradient(circle at 74% 26%, rgba(0,210,255,0.4), transparent 180px),
+        radial-gradient(circle at 18% 76%, rgba(0,230,118,0.26), transparent 210px),
+        #0b0f19;
+    }
+
     .tag {
       width: fit-content;
       min-height: 30px;
@@ -197,6 +206,7 @@
 
     .button.marketing { background: var(--marketing); }
     .button.tourism { background: var(--tourism); }
+    .button.mbyaclaw { background: var(--mbyaclaw); color: #0b0f19; }
 
     .button.secondary {
       background: var(--white);
@@ -278,8 +288,8 @@
     <header class="hero">
       <div>
         <div class="eyebrow">Pacote de analise de desenvolvimento</div>
-        <h1>Duas landpages distintas para comparar posicionamento, layout e experiencia.</h1>
-        <p>Use esta página como hub para revisar as versões de agência de marketing e agência de turismo, avaliando clareza da oferta, hierarquia visual, responsividade e estrutura técnica.</p>
+        <h1>Landpages distintas para comparar posicionamento, layout e experiencia.</h1>
+        <p>Use esta página como hub para revisar as versões de agência de marketing, agência de turismo e plataforma MbyaClaw, avaliando clareza da oferta, hierarquia visual, responsividade e estrutura técnica.</p>
       </div>
       <aside class="summary">
         <strong>Arquivos estáticos, sem build.</strong>
@@ -303,6 +313,34 @@
       </article>
 
       <article class="page-card">
+        <div class="preview marketing">
+          <span class="tag">Mbya Marketing</span>
+          <h2>Landing page premium para agências e profissionais de Petrolina e Juazeiro.</h2>
+        </div>
+        <div class="page-body">
+          <p>Landing page criada para converter visitantes em leads via WhatsApp com oferta de domínio incluso e SEO local.</p>
+          <div class="actions">
+            <a class="button marketing" href="mbyamarketing/index.html">Abrir página</a>
+            <a class="button secondary" href="mbyamarketing/index.html" target="_blank" rel="noreferrer">Nova aba</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="page-card">
+        <div class="preview marketing">
+          <span class="tag">Post Instagram</span>
+          <h2>Post 1080x1080 para campanha Mbya Marketing.</h2>
+        </div>
+        <div class="page-body">
+          <p>Visual premium dark com badge 60% OFF, mobile e notebook modernos e CTA para WhatsApp.</p>
+          <div class="actions">
+            <a class="button marketing" href="instagram-mbya-post/index.html">Abrir post</a>
+            <a class="button secondary" href="instagram-mbya-post/index.html" target="_blank" rel="noreferrer">Nova aba</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="page-card">
         <div class="preview tourism">
           <span class="tag">Agencia de Turismo</span>
           <h2>Roteiros personalizados com suporte e curadoria.</h2>
@@ -312,6 +350,20 @@
           <div class="actions">
             <a class="button tourism" href="tourism-agency/index.html">Abrir página</a>
             <a class="button secondary" href="tourism-agency/index.html" target="_blank" rel="noreferrer">Nova aba</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="page-card">
+        <div class="preview mbyaclaw">
+          <span class="tag">MbyaClaw</span>
+          <h2>Automação local-first com agentes de IA e lógica determinística.</h2>
+        </div>
+        <div class="page-body">
+          <p>Landing cyberpunk-shamanic para uma plataforma híbrida de workflow automation privada, local e orientada a nós visuais.</p>
+          <div class="actions">
+            <a class="button mbyaclaw" href="mbyaclaw/index.html">Abrir página</a>
+            <a class="button secondary" href="mbyaclaw/index.html" target="_blank" rel="noreferrer">Nova aba</a>
           </div>
         </div>
       </article>

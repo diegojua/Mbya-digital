@@ -15,7 +15,7 @@ from graphify.engine import process_briefing
 from xquads.engine import generate_copy
 from jarvis_agency_os.asset_catalog import match_catalog_entry
 from jarvis_agency_os.creative_engine import generate_creatives
-from jarvis_agency_os.export_engine import export_campaign_artifacts
+from jarvis_agency_os.export_engine import export_campaign_artifacts, project_image_dir
 from jarvis_agency_os.landing_engine import generate_landing_page
 from jarvis_agency_os.ranker import rank_creatives
 from jarvis_agency_os.renderer import render_html_to_png
@@ -40,6 +40,9 @@ def _write_briefing(workspace_dir: str, client_name: str, niche: str, objective:
                     formats: list[str], extra: dict[str, Any] | None = None) -> str:
     os.makedirs(workspace_dir, exist_ok=True)
     extra = extra or {}
+    is_mbya = "mbya" in (client_name or "").lower()
+    default_logo_text = "MBYA" if is_mbya else client_name.upper()
+    default_logo_sub = "MARKETING" if is_mbya else niche.lower()
     path = os.path.join(workspace_dir, "briefing.txt")
     with open(path, "w", encoding="utf-8") as f:
         f.write(f"Cliente: {client_name}\n")
@@ -49,8 +52,8 @@ def _write_briefing(workspace_dir: str, client_name: str, niche: str, objective:
         f.write("Detalhes: Geração automatizada de alta conversão sob o padrão do Creative OS.\n")
         f.write(f"Localização: {extra.get('location', 'Petrolina e Juazeiro')}\n")
         f.write(f"Logo_icone: {extra.get('logo_icon', '+')}\n")
-        f.write(f"Logo_texto: {extra.get('logo_text', client_name.upper())}\n")
-        f.write(f"Logo_subtitulo: {extra.get('logo_sub', niche.lower())}\n")
+        f.write(f"Logo_texto: {extra.get('logo_text', default_logo_text)}\n")
+        f.write(f"Logo_subtitulo: {extra.get('logo_sub', default_logo_sub)}\n")
         if extra.get("whatsapp"):
             f.write(f"WhatsApp: {extra['whatsapp']}\n")
     return path
@@ -82,8 +85,8 @@ def _slides_by_format(scored: list[dict[str, Any]], format_name: str, limit: int
     return slides[:limit]
 
 
-def _render_winners(workspace_dir: str, winners: dict[str, dict[str, Any]]) -> dict[str, Any]:
-    output_dir = os.path.join(workspace_dir, "rendered_winners")
+def _render_winners(workspace_dir: str, project_name: str, winners: dict[str, dict[str, Any]]) -> dict[str, Any]:
+    output_dir = project_image_dir(workspace_dir, project_name, "renders")
     os.makedirs(output_dir, exist_ok=True)
     rendered = {}
     for format_name, creative in winners.items():
@@ -97,8 +100,8 @@ def _render_winners(workspace_dir: str, winners: dict[str, dict[str, Any]]) -> d
     return rendered
 
 
-def _render_carousel_slides(workspace_dir: str, slides: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    output_dir = os.path.join(workspace_dir, "rendered_winners", "carousel")
+def _render_carousel_slides(workspace_dir: str, project_name: str, slides: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    output_dir = project_image_dir(workspace_dir, project_name, "renders", "carousel")
     os.makedirs(output_dir, exist_ok=True)
     rendered = []
     for index, creative in enumerate(slides, start=1):
@@ -161,9 +164,9 @@ def run_campaign_pipeline(
 
     winners = _top_by_format(all_scored)
     carousel_slides = _slides_by_format(all_scored, "carousel", limit=3) if "carousel" in selected_formats else []
-    rendered = _render_winners(workspace_dir, winners) if render_winners and winners else {}
+    rendered = _render_winners(workspace_dir, client_name, winners) if render_winners and winners else {}
     rendered_carousel_slides = (
-        _render_carousel_slides(workspace_dir, carousel_slides)
+        _render_carousel_slides(workspace_dir, client_name, carousel_slides)
         if render_winners and carousel_slides
         else []
     )
@@ -190,6 +193,8 @@ def run_campaign_pipeline(
         "experiment_id": experiment_id,
         "formats": selected_formats,
         "generation": generation,
+        "image_manifest": generation.get("image_manifest"),
+        "image_direction": generation.get("image_direction"),
         "ranking": ranking,
         "winners": winners,
         "carousel_slides": carousel_slides,

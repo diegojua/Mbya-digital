@@ -178,6 +178,38 @@ COPY_BANK = {
 }
 
 NICHE_COPY_OVERRIDES = {
+    "marketing_agency": {
+        "match": ["marketing", "growth", "mídia", "midia", "performance", "tráfego", "trafego", "social media", "landing page", "landing pages", "mbya"],
+        "angles": [
+            {
+                "headline_1": "Seu negócio precisa de um",
+                "headline_2": "site profissional.",
+                "body": "Atraia, conquiste e converta mais clientes todos os dias com site profissional e landing page de conversão.",
+                "badge": "60% OFF",
+                "checklist": ["Design moderno e responsivo", "Alta performance e velocidade", "SEO local e Google Maps", "Domínio incluso"],
+                "cta": "Fale no WhatsApp",
+                "footer_cta": "Landing page profissional com oferta clara, autoridade e contato direto."
+            },
+            {
+                "headline_1": "Pare de mandar tráfego",
+                "headline_2": "para página fraca.",
+                "body": "Criamos uma página clara, rápida e persuasiva para sua campanha ter mais foco, valor percebido e ação.",
+                "badge": "Landing page + performance",
+                "checklist": ["Oferta organizada", "CTA visível", "Layout profissional", "Estrutura para leads"],
+                "cta": "Falar com a Mbya",
+                "footer_cta": "Diagnóstico inicial para entender sua oferta e montar a página certa."
+            },
+            {
+                "headline_1": "Seu negócio precisa de",
+                "headline_2": "uma página que converte.",
+                "body": "Página profissional para empresas e prestadores de serviço que querem aparecer melhor e receber contatos qualificados.",
+                "badge": "Site profissional",
+                "checklist": ["Presença digital forte", "Copy objetiva", "Visual de agência", "Contato direto"],
+                "cta": "Solicitar orçamento",
+                "footer_cta": "Atendimento para Petrolina, Juazeiro e negócios digitais."
+            }
+        ]
+    },
     "pedagogia_infantil": {
         "match": ["educação infantil", "educacao infantil", "pedagog", "reforço", "reforco", "acompanhamento pedagógico", "acompanhamento pedagogico"],
         "angles": [
@@ -326,6 +358,13 @@ def _context_defaults_for_niche(niche: str) -> dict:
             "badge": "Atendimento jurídico especializado",
             "checklist": ["Análise objetiva", "Estratégia personalizada", "Atendimento direto"],
             "footer_cta": "Consultoria jurídica para decisões trabalhistas, cíveis, empresariais e previdenciárias.",
+        }
+    if any(term in niche_lower for term in ["marketing", "growth", "mídia", "midia", "performance", "tráfego", "trafego", "social media", "landing page", "landing pages", "mbya"]):
+        return {
+            "body": "Landing page premium com copy, design e estrutura de conversão para transformar cliques em conversas no WhatsApp.",
+            "badge": "Oferta de lançamento",
+            "checklist": ["Copy de alta conversão", "Design premium responsivo", "WhatsApp e SEO local"],
+            "footer_cta": "Campanha preparada para publicar, medir e validar sua oferta.",
         }
     return {
         "body": "Atendimento especializado com clareza, método e acompanhamento próximo.",

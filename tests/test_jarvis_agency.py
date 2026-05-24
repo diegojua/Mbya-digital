@@ -46,6 +46,12 @@ class TestConfigValidation:
         path = config_dir / "design_intelligence.json"
         assert path.exists(), "design_intelligence.json não encontrado"
 
+    def test_image_directions_exists(self):
+        """Verifica se image_directions.json existe."""
+        config_dir = Path(__file__).parent.parent / "jarvis_agency_os" / "config"
+        path = config_dir / "image_directions.json"
+        assert path.exists(), "image_directions.json não encontrado"
+
 
 class TestVisualMemory:
     """Testa funcionalidades de Visual Memory."""
@@ -384,6 +390,29 @@ class TestVisualQA:
         assert "text_clipped" in codes
         assert result["rendered"]["source"] == "rendered_layout"
 
+    def test_visual_qa_flags_missing_data_od_id_without_failing(self):
+        from jarvis_agency_os.visual_qa import evaluate_visual_quality
+
+        creative = {
+            "blueprint": "feed_test",
+            "headline": "Marketing com direção clara",
+            "cta": "Fale com a equipe",
+            "html": """
+            <html>
+              <body>
+                <h1>Marketing com direção clara</h1>
+                <a href="#">Fale com a equipe</a>
+              </body>
+            </html>
+            """,
+        }
+
+        result = evaluate_visual_quality(creative)
+        codes = {issue["code"] for issue in result["issues"]}
+
+        assert "missing_data_od_id" in codes
+        assert result["status"] in {"pass", "review"}
+
 
 class TestDesignIntelligence:
     """Testa a camada de Design Intelligence."""
@@ -414,6 +443,63 @@ class TestDesignIntelligence:
         assert "Design Intelligence Brief" in brief
         assert "Quality Gates" in brief
         assert "advocacia_premium" in brief
+
+
+class TestImageDirection:
+    """Testa direção de imagem inspirada no Open Design."""
+
+    def test_resolve_marketing_image_direction(self):
+        from jarvis_agency_os.image_direction import resolve_image_direction
+
+        direction = resolve_image_direction({
+            "client_name": "Mbya Marketing",
+            "niche": "agência de marketing performance",
+            "objective": "conversão",
+        })
+
+        assert direction["key"] == "marketing_agency"
+        assert "professional" in direction["design_systems"]
+        assert "landing_hero" in direction["slots"]
+
+    def test_build_manifest_creates_landing_slots(self):
+        from jarvis_agency_os.image_direction import build_image_manifest
+
+        manifest = build_image_manifest({
+            "client_name": "Mbya Marketing",
+            "niche": "agência de marketing performance",
+            "objective": "conversão",
+            "headline": "Marketing que transforma atenção em receita",
+            "cta": "Quero um plano de crescimento",
+        }, formats=["landing"])
+
+        slot_ids = [slot["id"] for slot in manifest["slots"]]
+
+        assert manifest["direction"]["key"] == "marketing_agency"
+        assert slot_ids == ["landing_hero", "landing_about", "landing_cta"]
+        assert "open-design/skills/open-design-landing/assets/imagegen-prompts.md" in manifest["inspired_by"]
+        assert "generic laptop mockup" in manifest["slots"][0]["prompt"]
+
+    def test_save_manifest_writes_prompt_files(self):
+        from jarvis_agency_os.image_direction import save_image_manifest
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            manifest = save_image_manifest({
+                "client_name": "Atlas Viagens",
+                "niche": "agência de turismo e viagens",
+                "objective": "leads",
+            }, workspace_dir=tmpdir, formats=["feed", "story"])
+
+            assert os.path.exists(manifest["manifest_path"])
+            assert os.path.exists(manifest["slots"][0]["prompt_path"])
+            assert manifest["slots"][0]["asset_path"].endswith(".png")
+            assert os.path.exists(manifest["slots"][0]["asset_path"])
+            assert manifest["slots"][0]["asset_status"] == "fallback_open_design"
+            assert manifest["direction"]["key"] == "tourism_editorial"
+            assert os.path.isdir(manifest["directories"]["generated"])
+            assert os.path.isdir(manifest["directories"]["screenshots"])
+            saved_manifest = json.loads(Path(manifest["manifest_path"]).read_text(encoding="utf-8"))
+            assert saved_manifest["directories"]["prompts"].endswith("prompts")
+            assert saved_manifest["slots"][0]["asset_status"] == "fallback_open_design"
 
 
 class TestTemplateRegistry:
@@ -471,6 +557,21 @@ class TestTemplateRegistry:
         )
 
         assert selected[0] == "story_legal_authority"
+
+    def test_select_mbya_marketing_feed_template_first(self):
+        from jarvis_agency_os.template_registry import get_template, select_templates
+
+        selected = select_templates(
+            "performance",
+            niche="agência de marketing performance Mbya",
+            formats=["feed"],
+            preferred_templates=["feed_mbya_premium"],
+        )
+        template = get_template(selected[0])
+
+        assert selected[0] == "feed_mbya_premium"
+        assert template["path"].endswith("blueprints/creatives/../mbya_feed_premium.html")
+        assert os.path.exists(template["path"])
 
 
 class TestLandingEngine:
@@ -561,6 +662,74 @@ class TestLandingEngine:
             assert "Precisa de uma orientação segura?" in html
             assert "Atuação jurídica com método e sigilo" in html
 
+    def test_generate_marketing_landing_uses_updated_template(self):
+        from jarvis_agency_os.landing_engine import generate_landing_page
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            result = generate_landing_page(
+                workspace_dir=tmpdir,
+                context={
+                    "client_name": "Northstar Growth",
+                    "niche": "agência de marketing performance",
+                    "whatsapp": "5587999999999",
+                },
+                copy_data={
+                    "client_name": "Northstar Growth",
+                    "niche": "agência de marketing performance",
+                    "angles": [{
+                        "headline_1": "Marketing que transforma",
+                        "headline_2": "atenção em receita",
+                        "body": "Campanhas, páginas e funis com rotina de teste e leitura de dados.",
+                        "badge": "Performance, marca e operação comercial",
+                        "cta": "Quero um plano de crescimento",
+                        "footer_cta": "Estratégia, criação e leitura de dados.",
+                        "checklist": ["Growth e mídia paga", "Copy e posicionamento", "Landing pages e CRO"],
+                    }],
+                },
+            )
+
+            assert result["status"] == "success"
+            assert result["template_key"] == "landing_marketing_agency"
+            assert result["visual_qa"]["status"] in {"pass", "review"}
+            html = Path(result["file"]).read_text(encoding="utf-8")
+            assert "Uma agência para conectar estratégia, criação e vendas" in html
+            assert "hero-metrics" in html
+            assert "landing_premium_agency" not in html
+
+    def test_generate_tourism_landing_uses_updated_template(self):
+        from jarvis_agency_os.landing_engine import generate_landing_page
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            result = generate_landing_page(
+                workspace_dir=tmpdir,
+                context={
+                    "client_name": "Atlas Viagens",
+                    "niche": "agência de turismo e viagens",
+                    "whatsapp": "5587999999999",
+                },
+                copy_data={
+                    "client_name": "Atlas Viagens",
+                    "niche": "agência de turismo e viagens",
+                    "angles": [{
+                        "headline_1": "Viagens planejadas",
+                        "headline_2": "sem improviso",
+                        "body": "Roteiros, hospedagens e experiências organizadas para cada perfil.",
+                        "badge": "Roteiros sob medida e suporte real",
+                        "cta": "Solicitar roteiro personalizado",
+                        "footer_cta": "Roteiros personalizados, reservas e suporte próximo.",
+                        "checklist": ["Briefing de viagem", "Roteiro e reservas", "Acompanhamento"],
+                    }],
+                },
+            )
+
+            assert result["status"] == "success"
+            assert result["template_key"] == "landing_tourism_agency"
+            assert result["visual_qa"]["status"] in {"pass", "review"}
+            html = Path(result["file"]).read_text(encoding="utf-8")
+            assert "Experiências para estilos diferentes de viajante" in html
+            assert "trip-strip" in html
+            assert "landing_premium_agency" not in html
+
 
 class TestAssetCatalog:
     """Testa matching inteligente do catálogo global."""
@@ -613,10 +782,16 @@ class TestExportEngine:
             Path(png_path).write_bytes(b"fakepng")
             html_path = os.path.join(tmpdir, "landing.html")
             manifest_path = os.path.join(tmpdir, "landing_manifest.json")
+            image_manifest_path = os.path.join(tmpdir, "image_manifest.json")
             Path(html_path).write_text("<html></html>", encoding="utf-8")
             Path(manifest_path).write_text("{}", encoding="utf-8")
+            Path(image_manifest_path).write_text("{}", encoding="utf-8")
 
             result = export_campaign_artifacts({
+                "generation": {
+                    "image_direction": "marketing_agency",
+                    "image_manifest": image_manifest_path,
+                },
                 "winners": {"story": {"client": "Export Test", "blueprint": "story_premium_editorial"}},
                 "rendered_winners": {"story": {"status": "success", "path": png_path}},
                 "landing": {"file": html_path, "manifest": manifest_path, "client": "Export Test"},
@@ -625,6 +800,8 @@ class TestExportEngine:
             assert result["status"] == "success"
             assert os.path.exists(result["manifest_path"])
             assert result["formats"]["story"]["status"] == "success"
+            assert result["image_direction"]["direction"] == "marketing_agency"
+            assert os.path.exists(result["image_direction"]["manifest"])
 
     def test_export_campaign_artifacts_copies_carousel_slides(self):
         from jarvis_agency_os.export_engine import export_campaign_artifacts
@@ -841,6 +1018,30 @@ class TestXquads:
         assert "futuro do seu filho" in first["headline_2"]
         assert first["cta"] == "Fale com nossa equipe"
 
+    def test_marketing_copy_override_avoids_performance_sports_copy(self):
+        """Marketing/performance deve receber copy de landing page, não de performance física."""
+        from xquads.engine import generate_copy
+
+        result = generate_copy({
+            "client_name": "Mbya Marketing",
+            "niche": "agência de marketing performance",
+            "design_state": "performance",
+        }, "conversão")
+
+        first = result["copy_data"]["angles"][0]
+        full_text = " ".join([
+            first["headline_1"],
+            first["headline_2"],
+            first["body"],
+            " ".join(first["checklist"]),
+        ]).lower()
+
+        assert first["headline_1"] == "Seu negócio precisa de um"
+        assert first["cta"] == "Fale no WhatsApp"
+        assert "landing" in full_text
+        assert "tatame" not in full_text
+        assert "jiu-jitsu" not in full_text
+
     def test_validate_copy_truncation(self):
         """Testa truncamento de copy longo."""
         from xquads.engine import _validate_copy
@@ -994,6 +1195,51 @@ class TestIntegration:
         assert selected[0] == "story_education_soft_premium"
         assert "story_premium_editorial" in selected
         assert all(key.startswith("story_") for key in selected)
+
+    def test_select_blueprints_prefers_professional_posts_for_generic_niches(self):
+        """Nichos genéricos devem priorizar templates image-first profissionais."""
+        from jarvis_agency_os.creative_engine import _select_blueprints
+
+        selected = _select_blueprints(
+            "performance",
+            niche="agência de marketing",
+            formats=["feed", "story"],
+            use_memory=False,
+        )
+
+        assert selected[0] == "feed_mbya_premium"
+        assert "story_mbya_premium" in selected[:3]
+        assert "feed_professional_photo" in selected[:4]
+
+    def test_campaign_render_paths_use_project_images(self, monkeypatch):
+        """Renders de posts devem sair na pasta única de imagens por projeto."""
+        import jarvis_agency_os.pipeline as pipeline
+
+        captured_paths = []
+
+        def fake_render_html_to_png(html_path, output_path, width=1080, height=1080):
+            captured_paths.append(output_path)
+            Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+            Path(output_path).write_bytes(b"fakepng")
+            return {"status": "success", "path": output_path}
+
+        monkeypatch.setattr(pipeline, "render_html_to_png", fake_render_html_to_png)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            result = pipeline.run_campaign_pipeline(
+                client_name="Projeto Imagem",
+                objective="conversão",
+                niche="agência de marketing",
+                workspace_dir=tmpdir,
+                formats="feed",
+                include_landing=False,
+                render_winners=True,
+                export_campaign=False,
+            )
+
+            assert result["status"] == "success"
+            assert captured_paths
+            assert "/project_images/projeto_imagem/renders/" in captured_paths[0]
 
 
 # Markers para categorizar testes

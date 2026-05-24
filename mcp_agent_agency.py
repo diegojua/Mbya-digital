@@ -114,7 +114,10 @@ def executar_pipeline_completo_saas(nome_cliente: str, objetivo: str, nicho: str
             f"Score {creative['score']} ({creative['action']}, QA {qa_status})"
         )
     for format_name, creative in result.get("winners", {}).items():
-        logs.append(f"📸 Campeão {format_name}: {creative['file']}")
+        render_path = (result.get("rendered_winners", {}).get(format_name) or {}).get("path")
+        logs.append(f"📸 Campeão {format_name} HTML-fonte: {creative['file']}")
+        if render_path:
+            logs.append(f"🖼️ Imagem {format_name} pronta: {render_path}")
     carousel_slides = result.get("rendered_carousel_slides") or []
     if carousel_slides:
         rendered_count = sum(1 for slide in carousel_slides if slide.get("status") == "success")

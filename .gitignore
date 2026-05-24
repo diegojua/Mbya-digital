@@ -10,8 +10,11 @@ node_modules/
 *.db
 workspace/generated_creatives/
 workspace/generated_landings/
+workspace/project_images/
+workspace/generated_images/
 workspace/rendered_winners/
 workspace/**/exports/
+workspace/campaign_preview.*
 amar_pedagogico/**/exports/
 assets_globais/
 open-design/
@@ -31,6 +34,7 @@ workspace/amar_pedagogico/
 workspace/ad_advocacia_premium_pipeline/
 workspace/render_ad_*.js
 gerar_ad_*.py
+jarvis_agency_os/workspace/output_code/
 
 # External/cloned toolkits kept outside this repository history
 pm-claude-skills/

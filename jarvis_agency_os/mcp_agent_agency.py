@@ -239,12 +239,18 @@ def executar_pipeline_completo_saas(nome_cliente: str, objetivo: str, nicho: str
         f"{fmt}: {creative['blueprint']}"
         for fmt, creative in result.get("winners", {}).items()
     ) or "nenhum"
+    rendered_images = ", ".join(
+        f"{fmt}: {render.get('path')}"
+        for fmt, render in result.get("rendered_winners", {}).items()
+        if render.get("path")
+    ) or "nenhuma"
     landing = (result.get("landing") or {}).get("file", "não gerada")
     export_manifest = (result.get("campaign_export") or {}).get("manifest_path", "não gerado")
     return (
         "✅ Campaign Pipeline executado pela rota canônica.\n"
         f"Formatos: {', '.join(result.get('formats', []))}\n"
         f"Campeões: {winners}\n"
+        f"Imagens prontas: {rendered_images}\n"
         f"Landing: {landing}\n"
         f"Manifest export: {export_manifest}"
     )

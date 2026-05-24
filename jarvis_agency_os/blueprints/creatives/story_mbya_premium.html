@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>{{CLIENT_NAME}} - Story</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            width: 1080px;
+            height: 1920px;
+            overflow: hidden;
+            background: #050505;
+            color: #fff8e8;
+            font-family: Inter, Arial, sans-serif;
+        }
+        .story {
+            position: relative;
+            width: 1080px;
+            height: 1920px;
+            overflow: hidden;
+            padding: 74px 70px 54px;
+            background:
+                radial-gradient(circle at 50% 28%, rgba(245,188,49,0.2), transparent 26%),
+                radial-gradient(circle at 78% 62%, rgba(245,188,49,0.14), transparent 24%),
+                linear-gradient(165deg, #050505 0%, #0f0d09 45%, #030303 100%);
+        }
+        .story::before {
+            content: "";
+            position: absolute;
+            inset: 26px;
+            border: 1px solid rgba(245,188,49,0.55);
+            box-shadow: inset 0 0 32px rgba(245,188,49,0.11);
+            pointer-events: none;
+        }
+        .story::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            opacity: 0.12;
+            background-image:
+                linear-gradient(125deg, transparent 0 47%, rgba(245,188,49,0.42) 48%, transparent 49%),
+                linear-gradient(rgba(255,255,255,0.052) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 380px 380px, 48px 48px, 48px 48px;
+            pointer-events: none;
+        }
+        .brand {
+            position: relative;
+            z-index: 8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 18px;
+        }
+        .brand-mark {
+            width: 80px;
+            height: 70px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(145deg, #fff1a4 0%, #d99417 48%, #704009 100%);
+            clip-path: polygon(0 0, 28% 0, 50% 30%, 72% 0, 100% 0, 100% 100%, 72% 100%, 72% 39%, 50% 68%, 28% 39%, 28% 100%, 0 100%);
+            box-shadow: 0 0 28px rgba(245,188,49,0.35);
+        }
+        .brand-mark span { opacity: 0; }
+        .brand-name {
+            color: #f2bd3c;
+            font-size: 43px;
+            line-height: 0.9;
+            letter-spacing: 0.22em;
+            font-weight: 950;
+            text-transform: uppercase;
+        }
+        .brand-sub {
+            margin-top: 11px;
+            color: #fff;
+            font-size: 14px;
+            letter-spacing: 0.42em;
+            font-weight: 850;
+            text-transform: uppercase;
+        }
+        .headline {
+            position: relative;
+            z-index: 6;
+            margin: 72px auto 0;
+            width: 900px;
+            text-align: center;
+        }
+        .headline h1 {
+            font-size: 52px;
+            line-height: 0.96;
+            letter-spacing: 0;
+            font-weight: 950;
+            text-transform: uppercase;
+            text-shadow: 0 5px 0 rgba(0,0,0,0.25), 0 0 26px rgba(0,0,0,0.7);
+        }
+        .headline h1 span {
+            display: block;
+            margin-top: 10px;
+            font-size: 83px;
+            line-height: 0.86;
+            background: linear-gradient(180deg, #fff2a6 0%, #f2b631 52%, #94580d 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 16px rgba(245,188,49,0.22));
+        }
+        .headline p {
+            margin: 22px auto 0;
+            max-width: 640px;
+            color: #fff6df;
+            font-size: 26px;
+            line-height: 1.18;
+            font-weight: 650;
+        }
+        .offer {
+            position: relative;
+            z-index: 8;
+            margin: 46px auto 0;
+            width: 820px;
+            min-height: 226px;
+            display: grid;
+            grid-template-columns: 1fr 1px 1.06fr;
+            align-items: center;
+            overflow: visible;
+            border-radius: 17px;
+            border: 1px solid rgba(245,188,49,0.62);
+            background: linear-gradient(120deg, rgba(18,14,7,0.96), rgba(45,32,9,0.86));
+            box-shadow: 0 0 34px rgba(245,188,49,0.26), inset 0 0 22px rgba(255,255,255,0.035);
+        }
+        .package {
+            padding: 30px 42px;
+            text-transform: uppercase;
+            font-weight: 950;
+        }
+        .package strong {
+            display: block;
+            font-size: 37px;
+            line-height: 1.04;
+        }
+        .package span {
+            display: inline-flex;
+            margin-top: 22px;
+            min-height: 48px;
+            align-items: center;
+            padding: 0 20px;
+            border-radius: 11px;
+            border: 1px solid rgba(245,188,49,0.72);
+            color: #f6c247;
+            background: rgba(245,188,49,0.08);
+            font-size: 19px;
+        }
+        .divider { width: 1px; height: 154px; background: rgba(245,188,49,0.42); }
+        .price {
+            padding: 26px 38px;
+            text-transform: uppercase;
+            font-weight: 950;
+        }
+        .price .label {
+            color: #f5c047;
+            font-size: 18px;
+            letter-spacing: 0.04em;
+        }
+        .old-price {
+            display: inline-block;
+            margin-top: 6px;
+            color: #fff;
+            font-size: 28px;
+            line-height: 1;
+            text-decoration: line-through 4px #d72828;
+            text-decoration-skip-ink: none;
+        }
+        .only { display: block; margin-top: 18px; color: #f5c047; font-size: 21px; }
+        .price-row {
+            display: flex;
+            align-items: end;
+            gap: 8px;
+            margin-top: 6px;
+            color: #ffd34f;
+        }
+        .currency { font-size: 44px; line-height: 0.9; }
+        .amount {
+            font-size: 88px;
+            line-height: 0.76;
+            background: linear-gradient(180deg, #fff5a8, #f3b733 70%, #9f6210);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .cents { font-size: 29px; line-height: 1; padding-bottom: 8px; }
+        .discount {
+            position: absolute;
+            left: 50%;
+            bottom: -84px;
+            width: 150px;
+            height: 150px;
+            transform: translateX(-50%);
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            color: #ffd75a;
+            background: radial-gradient(circle at 45% 35%, #30210a, #050505 64%);
+            border: 5px solid #eab43a;
+            box-shadow: 0 0 34px rgba(245,188,49,0.58), inset 0 0 26px rgba(245,188,49,0.28);
+            text-align: center;
+            text-transform: uppercase;
+        }
+        .discount strong {
+            display: block;
+            font-size: 61px;
+            line-height: 0.78;
+            background: linear-gradient(180deg, #fff5a8, #e8aa25 80%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .discount small { display: block; margin-top: 9px; color: #fff1a8; font-size: 23px; line-height: 0.9; font-weight: 950; }
+        .device-stage {
+            position: relative;
+            z-index: 5;
+            width: 925px;
+            height: 452px;
+            margin: 118px auto 0;
+        }
+        .aura {
+            position: absolute;
+            left: 130px;
+            right: 30px;
+            bottom: 4px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient(ellipse, rgba(245,188,49,0.22), transparent 70%);
+            filter: blur(18px);
+        }
+        .laptop {
+            position: absolute;
+            left: 38px;
+            top: 18px;
+            width: 650px;
+            height: 392px;
+            transform: perspective(1020px) rotateX(7deg) rotateZ(5deg);
+            transform-origin: bottom center;
+        }
+        .screen {
+            height: 334px;
+            padding: 22px;
+            border-radius: 22px 22px 11px 11px;
+            border: 3px solid #383838;
+            background: linear-gradient(150deg, #101010, #030303);
+            box-shadow: 0 30px 58px rgba(0,0,0,0.78), inset 0 0 0 1px rgba(255,255,255,0.06);
+            overflow: hidden;
+        }
+        .browser {
+            height: 30px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin: -7px -5px 20px;
+            color: rgba(255,255,255,0.24);
+            font-size: 10px;
+        }
+        .dot { width: 9px; height: 9px; border-radius: 50%; background: #f5bd36; opacity: 0.85; }
+        .nav { margin-left: auto; display: flex; gap: 18px; color: rgba(255,255,255,0.62); font-size: 11px; font-weight: 800; }
+        .mock-title {
+            max-width: 360px;
+            color: #fff8e8;
+            font-size: 36px;
+            line-height: 1.06;
+            font-weight: 900;
+        }
+        .mock-title span { color: #f5c047; }
+        .mock-body {
+            margin-top: 18px;
+            max-width: 330px;
+            color: rgba(255,255,255,0.68);
+            font-size: 14px;
+            line-height: 1.35;
+            font-weight: 650;
+        }
+        .mock-button {
+            display: inline-flex;
+            margin-top: 18px;
+            padding: 10px 17px;
+            border-radius: 8px;
+            color: #120c03;
+            background: linear-gradient(180deg, #ffe78a, #d99718);
+            font-size: 11px;
+            font-weight: 950;
+            text-transform: uppercase;
+        }
+        .spark {
+            position: absolute;
+            right: 75px;
+            top: 92px;
+            width: 155px;
+            height: 108px;
+            border: 1px solid rgba(245,188,49,0.34);
+            background: linear-gradient(135deg, rgba(245,188,49,0.16), rgba(255,255,255,0.02));
+            transform: skew(-9deg) rotate(-8deg);
+            box-shadow: 0 0 32px rgba(245,188,49,0.18);
+        }
+        .base {
+            height: 58px;
+            margin: 0 -38px;
+            border-radius: 0 0 34px 34px;
+            background: linear-gradient(180deg, #dddddd, #696969 62%, #242424);
+            box-shadow: 0 34px 34px rgba(0,0,0,0.54);
+        }
+        .phone {
+            position: absolute;
+            right: 40px;
+            top: 122px;
+            width: 170px;
+            height: 320px;
+            padding: 15px;
+            border-radius: 34px;
+            border: 4px solid #202020;
+            background: #050505;
+            box-shadow: 0 30px 46px rgba(0,0,0,0.74), 0 0 18px rgba(245,188,49,0.24);
+        }
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 24px;
+            padding: 22px 14px;
+            background: radial-gradient(circle at 72% 16%, rgba(245,188,49,0.3), transparent 26%), #0b0b0b;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .phone h3 {
+            margin-top: 98px;
+            color: #fff8e8;
+            font-size: 21px;
+            line-height: 1.05;
+            font-weight: 900;
+        }
+        .phone h3 span { color: #f5c047; }
+        .phone p {
+            margin-top: 14px;
+            color: rgba(255,255,255,0.62);
+            font-size: 10px;
+            line-height: 1.35;
+            font-weight: 700;
+        }
+        .benefits {
+            position: relative;
+            z-index: 8;
+            margin: 30px auto 0;
+            width: 830px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            text-align: center;
+        }
+        .benefit {
+            min-height: 104px;
+            display: grid;
+            justify-items: center;
+            align-content: start;
+            gap: 9px;
+            color: #fff8e8;
+            text-transform: uppercase;
+            font-size: 14px;
+            line-height: 1.1;
+            font-weight: 850;
+        }
+        .benefit .icon {
+            width: 46px;
+            height: 46px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            border: 2px solid #e9b43c;
+            color: #f5c047;
+            background: rgba(245,188,49,0.08);
+        }
+        .benefit svg { width: 24px; height: 24px; stroke-width: 2.3; }
+        .location {
+            position: relative;
+            z-index: 8;
+            margin-top: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 13px;
+            color: #fff8e8;
+            font-size: 25px;
+            font-weight: 950;
+            text-transform: uppercase;
+        }
+        .location svg { width: 32px; height: 32px; color: #f5c047; }
+        .cta {
+            position: relative;
+            z-index: 9;
+            margin: 30px auto 0;
+            width: 820px;
+            min-height: 112px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            border-radius: 16px;
+            border: 2px solid #e9b43c;
+            color: #ffe083;
+            background: linear-gradient(120deg, rgba(28,20,7,0.96), rgba(66,45,9,0.78));
+            box-shadow: 0 0 34px rgba(245,188,49,0.32), inset 0 0 22px rgba(255,255,255,0.04);
+            text-decoration: none;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: 950;
+            font-size: 0;
+        }
+        .cta svg { width: 56px; height: 56px; flex: 0 0 auto; }
+        .cta strong { display: block; font-size: 31px; line-height: 1.02; }
+        .cta span { display: block; margin-top: 6px; color: #fff5d3; font-size: 18px; letter-spacing: 0.04em; }
+        .micro {
+            position: relative;
+            z-index: 8;
+            margin: 26px auto 0;
+            width: 790px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            color: rgba(255,248,232,0.78);
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 12px;
+            line-height: 1.12;
+            font-weight: 750;
+        }
+    </style>
+</head>
+<body>
+    <main class="story" data-od-id="mbya-story-premium">
+        <header class="brand">
+            <div class="brand-mark"><span>M</span></div>
+            <div>
+                <div class="brand-name">{{LOGO_TEXT}}</div>
+                <div class="brand-sub">{{LOGO_SUB}}</div>
+            </div>
+        </header>
+
+        <section class="headline">
+            <h1>{{HEADLINE_LINE1}}<span>{{HEADLINE_LINE2}}</span></h1>
+            <p>{{BODY_TEXT}}</p>
+        </section>
+
+        <section class="offer">
+            <div class="package">
+                <strong>Landing page<br>profissional</strong>
+                <span>+ dominio incluso</span>
+            </div>
+            <div class="divider"></div>
+            <div class="price">
+                <span class="label">De:</span><br>
+                <span class="old-price">R$ 1.500,00</span>
+                <span class="only">Por apenas:</span>
+                <div class="price-row"><span class="currency">R$</span><strong class="amount">600</strong><span class="cents">,00</span></div>
+            </div>
+            <div class="discount"><div><strong>60%</strong><small>OFF</small></div></div>
+        </section>
+
+        <section class="device-stage" aria-hidden="true">
+            <div class="aura"></div>
+            <div class="laptop">
+                <div class="screen">
+                    <div class="browser">
+                        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                        <div class="nav"><span>Inicio</span><span>Servico</span><span>Contato</span></div>
+                    </div>
+                    <div class="mock-title">Estrategia. Design. Tecnologia. <span>Resultado.</span></div>
+                    <p class="mock-body">Solucoes digitais completas para impulsionar o seu negocio com autoridade e conversao.</p>
+                    <span class="mock-button">Falar com especialista</span>
+                    <div class="spark"></div>
+                </div>
+                <div class="base"></div>
+            </div>
+            <div class="phone">
+                <div class="phone-screen">
+                    <h3>Resultados que constroem <span>autoridade.</span></h3>
+                    <p>Sites e landing pages pensados para gerar negocios todos os dias.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="benefits" aria-label="Beneficios">
+            <div class="benefit"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></span>Foco em resultados</div>
+            <div class="benefit"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg></span>Mais leads e clientes</div>
+            <div class="benefit"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z"/><path d="M9 12l2 2 4-5"/></svg></span>Seguranca e confianca</div>
+            <div class="benefit"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"/></svg></span>Rapido e otimizado</div>
+        </section>
+
+        <div class="location">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>{{LOCATION}}</span>
+        </div>
+
+        <a class="cta" href="{{WHATSAPP_URL}}">{{CTA_TEXT}}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 11.5a8 8 0 0 1-11.8 7l-4.2 1.1 1.1-4A8 8 0 1 1 20 11.5z"/><path d="M8.8 8.7c.4 3.4 2.1 5.1 5.5 5.5"/></svg>
+            <span><strong>{{CTA_TEXT}}</strong><span>Solicite seu orcamento</span></span>
+        </a>
+
+        <div class="micro">
+            <span>Atendimento personalizado</span>
+            <span>Suporte especializado</span>
+            <span>Sites 100% responsivos</span>
+        </div>
+    </main>
+</body>
+</html>

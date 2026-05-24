@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --accent: {{ACCENT}}; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: {{BG_PRIMARY}}; color: {{TEXT_PRIMARY}}; }
+        .glass-card { background: rgba(255, 255, 255, 0.02); border: 1px solid {{BORDER_COLOR}}; backdrop-filter: blur(10px); }
+        .hero-gradient { background: radial-gradient(circle at top right, rgba(212, 175, 55, 0.08), transparent); }
+    </style>
+</head>
+<body class="antialiased selection:bg-amber-500/30">
+    <!-- Nav -->
+    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-black/50 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-2 font-black text-2xl tracking-tighter">
+                <span class="text-amber-500">{{LOGO_ICON}}</span>
+                <span>{{CLIENT_NAME}}</span>
+            </div>
+            <a href="{{WHATSAPP_URL}}" class="bg-white text-black px-6 py-2.5 rounded-full font-bold text-sm hover:bg-amber-500 transition-colors">
+                {{CTA_TEXT}}
+            </a>
+        </div>
+    </nav>
+
+    <main class="pt-32 hero-gradient">
+        <!-- Hero Section -->
+        <section class="max-w-7xl mx-auto px-6 py-20 grid lg:grid-cols-2 gap-12 items-center">
+            <div class="space-y-8">
+                <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass-card text-amber-500 text-sm font-bold uppercase tracking-widest">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                    </span>
+                    <span>{{BADGE_TEXT}}</span>
+                </div>
+                <h1 class="text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.9]">
+                    {{HEADLINE_LINE1}} <span class="text-zinc-500">{{HEADLINE_LINE2}}</span>
+                </h1>
+                <p class="text-xl text-zinc-400 leading-relaxed max-w-xl">
+                    {{BODY_TEXT}}
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                    <a href="{{WHATSAPP_URL}}" class="px-10 py-5 bg-amber-500 text-black rounded-xl font-black text-lg text-center shadow-[0_20px_40px_rgba(212,175,55,0.2)] hover:scale-105 transition-transform">
+                        {{CTA_TEXT}}
+                    </a>
+                    <div class="px-8 py-5 glass-card rounded-xl flex items-center justify-center space-x-3">
+                        <span class="text-zinc-500">A partir de</span>
+                        <span class="text-2xl font-bold">R$ 600</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mockup Visual -->
+            <div class="relative">
+                <div class="absolute inset-0 bg-amber-500/20 blur-[120px] rounded-full"></div>
+                <div class="relative glass-card p-4 rounded-3xl shadow-2xl rotate-2">
+                    <img src="{{IMAGE_URL}}" alt="{{IMAGE_ALT}}" class="rounded-2xl w-full h-auto grayscale hover:grayscale-0 transition duration-700">
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="max-w-7xl mx-auto px-6 py-32">
+            <div class="grid md:grid-cols-3 gap-8">
+                {{BENEFITS_HTML}}
+            </div>
+        </section>
+
+        <!-- Content Section -->
+        <section class="max-w-5xl mx-auto px-6 py-32 text-center space-y-12">
+            <h2 class="text-5xl font-extrabold tracking-tight">{{SECTION_TITLE}}</h2>
+            <p class="text-2xl text-zinc-500">{{SECTION_TEXT}}</p>
+            
+            <div class="grid md:grid-cols-2 gap-8 text-left">
+                <div class="glass-card p-10 rounded-3xl space-y-4">
+                    <h3 class="text-2xl font-bold text-amber-500">{{VISUAL_CARD_TITLE}}</h3>
+                    <p class="text-zinc-400">{{VISUAL_CARD_TEXT}}</p>
+                </div>
+                <div class="glass-card p-10 rounded-3xl bg-white/5 border-amber-500/20 space-y-4">
+                    <h3 class="text-2xl font-bold">Petrolina e Juazeiro</h3>
+                    <p class="text-zinc-400">Atendimento presencial e suporte local para empresários da região do Vale do São Francisco.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA -->
+        <section class="max-w-7xl mx-auto px-6 py-40">
+            <div class="glass-card p-20 rounded-[4rem] text-center space-y-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 blur-[100px] -mr-48 -mt-48"></div>
+                <h2 class="text-6xl font-black tracking-tighter">{{FINAL_TITLE}}</h2>
+                <p class="text-2xl text-zinc-400 max-w-2xl mx-auto">{{FINAL_TEXT}}</p>
+                <a href="{{WHATSAPP_URL}}" class="inline-block px-12 py-6 bg-white text-black rounded-full font-black text-xl hover:bg-amber-500 transition-colors">
+                    {{FOOTER_CTA_TEXT}}
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-white/5 py-20 text-center text-zinc-600">
+        <div class="flex items-center justify-center space-x-3 mb-6">
+            <span class="text-2xl font-black text-amber-500/50">{{LOGO_ICON}}</span>
+            <span class="text-sm font-bold tracking-[0.8em] uppercase">{{CLIENT_NAME}}</span>
+        </div>
+        <p>&copy; 2026 Mbya Marketing. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>
