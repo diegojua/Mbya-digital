@@ -139,15 +139,16 @@ def rodar_campanha_completa(nome_cliente: str, objetivo: str, nicho: str = "gera
     """
     Inicia o fluxo completo de marketing do JarvisAgency MCP integrado ao novo Creative OS.
     """
-    yield f"🚀 Iniciando campanha integrada JarvisAgency MCP para: {nome_cliente}..."
+    logs = []
+    logs.append(f"🚀 Iniciando campanha integrada JarvisAgency MCP para: {nome_cliente}...")
 
     # 1. Pipeline SaaS
-    yield "📊 [1/4] Processando e gerando criativos baseados em Design States..."
+    logs.append("📊 [1/4] Processando e gerando criativos baseados em Design States...")
     result_str = executar_pipeline_completo_saas(nome_cliente, objetivo, nicho)
-    yield result_str
+    logs.append(result_str)
 
     # 2. Next.js Hydration (Landing Page)
-    yield "🖌️ [2/4] Hydration: Preparando modelo estruturado da Landing Page..."
+    logs.append("🖌️ [2/4] Hydration: Preparando modelo estruturado da Landing Page...")
     catalog = load_catalog()
     graph_result = process_briefing(WORKSPACE_DIR)
     context = graph_result["context_graph"]
@@ -162,17 +163,20 @@ def rodar_campanha_completa(nome_cliente: str, objetivo: str, nicho: str = "gera
         context=context,
     )
     if "error" in design_result:
-        yield f"❌ Erro no Open-Design: {design_result['error']}"
-        return
+        logs.append(f"❌ Erro no Open-Design: {design_result['error']}")
+        return "\n".join(logs)
 
     # 3. Deer-Flow
-    yield "🤖 [3/4] Deer-Flow: Instanciando Chatbot de Atendimento..."
-    deploy_typebot_flow(nicho, catalog, ASSETS_DIR)
+    logs.append("🤖 [3/4] Deer-Flow: Instanciando Chatbot de Atendimento...")
+    deploy_result = deploy_typebot_flow(nicho, catalog, ASSETS_DIR)
+    logs.append(f"   → {deploy_result.get('message', 'Ok')}")
 
-    yield "⏳ [4/4] Deer-Flow: Registrando aprovação da campanha no pipeline..."
-    dispatch_for_approval(design_result["asset_path"], copy_data)
+    logs.append("⏳ [4/4] Deer-Flow: Registrando aprovação da campanha no pipeline...")
+    approval_result = dispatch_for_approval(design_result["asset_path"], copy_data)
+    logs.append(f"   → {approval_result.get('message', 'Ok')}")
 
-    yield "🎉 Campanha registrada com sucesso no pipeline de tráfego!"
+    logs.append("🎉 Campanha registrada com sucesso no pipeline de tráfego!")
+    return "\n".join(logs)
 
 
 if __name__ == "__main__":
