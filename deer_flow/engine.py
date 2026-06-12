@@ -13,39 +13,50 @@ import time
 import requests
 from dotenv import load_dotenv
 
+# Carrega .env do Hermes primeiro (token real), depois Mbya Digital (override pra vars locais)
+load_dotenv(os.path.expanduser("~/.hermes/.env"), override=True)
 load_dotenv()
 
 # ──────────────────────────────────────────────
-# Configurações (lê do .env da Mbya Digital)
+# Configurações (lê do .env com fallbacks)
 # ──────────────────────────────────────────────
-TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN") or os.getenv("HERMES_TELEGRAM_BOT_TOKEN", "")
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "1001733126")
+
+def _telegram_bot_token() -> str:
+    """Retorna o token do Telegram, lendo na hora da chamada."""
+    return os.getenv("TELEGRAM_BOT_TOKEN") or ""
+
+def _telegram_chat_id() -> str:
+    """Retorna o chat ID do Telegram."""
+    return os.getenv("TELEGRAM_CHAT_ID") or os.getenv("TELEGRAM_HOME_CHANNEL") or "1001733126"
 
 META_GRAPH_TOKEN = os.getenv("META_GRAPH_TOKEN", "")
 INSTAGRAM_ACCOUNT_ID = os.getenv("INSTAGRAM_ACCOUNT_ID", "")
 
-TELEGRAM_API = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}"
 META_GRAPH_URL = "https://graph.facebook.com/v22.0"
 
 
 def _telegram_send(text: str, photo_path: str | None = None) -> dict:
     """Envia mensagem ou foto para o Telegram."""
-    if not TELEGRAM_BOT_TOKEN:
+    token = _telegram_bot_token()
+    chat_id = _telegram_chat_id()
+    if not token:
         return {"status": "error", "message": "TELEGRAM_BOT_TOKEN não configurado"}
+
+    api_url = f"https://api.telegram.org/bot{token}"
 
     try:
         if photo_path and os.path.exists(photo_path):
             with open(photo_path, "rb") as f:
                 resp = requests.post(
-                    f"{TELEGRAM_API}/sendPhoto",
-                    data={"chat_id": TELEGRAM_CHAT_ID, "caption": text[:1024]},
+                    f"{api_url}/sendPhoto",
+                    data={"chat_id": chat_id, "caption": text[:1024]},
                     files={"photo": f},
                     timeout=30,
                 )
         else:
             resp = requests.post(
-                f"{TELEGRAM_API}/sendMessage",
-                json={"chat_id": TELEGRAM_CHAT_ID, "text": text, "parse_mode": "HTML"},
+                f"{api_url}/sendMessage",
+                json={"chat_id": chat_id, "text": text, "parse_mode": "HTML"},
                 timeout=30,
             )
 
